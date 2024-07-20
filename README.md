@@ -2,7 +2,7 @@
 
 ### 현재 개발 중 
 
-원본 = https://github.com/tmddn7475/MusicHub/tree/master
+원본 - https://github.com/tmddn7475/MusicHub/tree/master
 
 안드로이드 개발 언어 대세가 kotlin 언어가 되어가고 있기에 
 
