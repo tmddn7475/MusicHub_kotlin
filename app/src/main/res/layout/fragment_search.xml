@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    tools:context=".Fragment1.SearchFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            app:queryHint="검색어를 입력하세요"
+            app:iconifiedByDefault="false"
+            app:searchIcon="@drawable/baseline_search_24"
+            app:queryBackground="@null"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:inputType="textPersonName"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginVertical="8dp"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:text="최근 검색어" />
+
+        <TextView
+            android:id="@+id/none"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:text="최근 검색어가 없습니다"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ListView
+            android:id="@+id/search_recent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="0px"
+            android:divider="@color/black"/>
+
+    </LinearLayout>
+
+</FrameLayout>

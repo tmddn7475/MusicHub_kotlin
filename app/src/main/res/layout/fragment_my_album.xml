@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    tools:context=".Fragment1.Library.MyAlbumFragment">
+
+    <TextView
+        android:id="@+id/add_my_list"
+        android:text="앨범 추가"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        android:padding="8dp"
+        app:drawableLeftCompat="@drawable/baseline_add_24" />
+
+    <ListView
+        android:id="@+id/my_list_view"
+        android:layout_marginTop="42dp"
+        android:dividerHeight="0px"
+        android:divider="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/my_list_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="앨범이 존재하지 않습니다"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textColor="@color/white"/>
+
+</FrameLayout>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".Activity.AddAlbumActivity">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:text="앨범 추가"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="24dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/list_back_btn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:padding="3dp"
+            android:src="@drawable/baseline_arrow_back_24" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/relativeLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/list_selectImage"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/edit_text_layout"
+                app:srcCompat="@drawable/ic_baseline_photo_24" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="내 앨범 제목"
+                android:textColor="@color/white"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="36dp"
+                android:textSize="18dp" />
+
+            <EditText
+                android:id="@+id/list_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:maxLength="40"
+                android:textColor="@color/white"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="32dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textSize="16sp"
+                android:background="@drawable/edit_text_layout"/>
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:text="내 앨범 설명"
+                android:layout_marginLeft="36dp" />
+
+            <EditText
+                android:id="@+id/list_description"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:gravity="left"
+                android:textColor="@color/white"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/edit_text_layout"
+                android:inputType="textMultiLine"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:maxLength="2000"
+                android:paddingStart="10dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:paddingEnd="10dp"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/list_description_length"
+                android:textColor="@color/gray3"
+                android:layout_gravity="right"
+                android:text="0 / 2000"
+                android:textSize="14dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="36dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:text="공개설정"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <Switch
+                    android:id="@+id/my_list_set"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textColor="@color/white"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/list_upload_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                android:backgroundTint="@color/blue_dark"
+                android:textColor="@color/white"
+                android:text="저장"
+                android:textSize="20dp"
+                app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.MediumComponent" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

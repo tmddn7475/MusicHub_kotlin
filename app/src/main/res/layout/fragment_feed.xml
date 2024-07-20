@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    tools:context=".Fragment1.FeedFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="MusicHub"
+                android:textStyle="bold"
+                android:layout_marginLeft="6dp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"
+                android:textSize="24dp" />
+
+            <ImageView
+                android:id="@+id/feed_logout"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/baseline_logout_24"
+                android:layout_toStartOf="@id/feed_upload"
+                android:layout_centerVertical="true" />
+
+            <ImageView
+                android:id="@+id/feed_upload"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_toStartOf="@id/feed_account"
+                android:layout_marginEnd="12dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/baseline_file_upload_24" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/feed_account"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/baseline_account_circle_24"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/blue_dark"/>
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/feed_account_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="83dp" />
+
+        <ListView
+            android:id="@+id/feed_list"
+            android:dividerHeight="0px"
+            android:divider="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/feed_text"
+        android:text="팔로우 한 유저가 없습니다"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:visibility="invisible"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</FrameLayout>
