@@ -70,6 +70,7 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
         upload = v.findViewById(R.id.home_upload)
         account = v.findViewById(R.id.home_account)
         logout = v.findViewById(R.id.home_logout)
+
         homeIntent()
         
         // 카테고리
@@ -162,7 +163,9 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<AccountData>()
                         if(data != null){
-                            Glide.with(requireContext()).load(data.imageUrl).into(account)
+                            if(isAdded){
+                                Glide.with(requireContext()).load(data.imageUrl).into(account)
+                            }
                         }
                     }
                 }

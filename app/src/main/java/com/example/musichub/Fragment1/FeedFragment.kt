@@ -152,7 +152,9 @@ class FeedFragment : Fragment() {
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<AccountData>()
                         if(data != null){
-                            Glide.with(requireContext()).load(data.imageUrl).into(feed_account)
+                            if(isAdded){
+                                Glide.with(requireContext()).load(data.imageUrl).into(feed_account)
+                            }
                         }
                     }
                 }
