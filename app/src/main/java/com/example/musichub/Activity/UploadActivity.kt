@@ -123,7 +123,7 @@ class UploadActivity : AppCompatActivity() {
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val length: Int = songDescriptionEdit.text.length
-                descriptionLength.setText("$length / 2000")
+                descriptionLength.text = "$length / 2000"
             }
             override fun afterTextChanged(s: Editable?) {}
         })

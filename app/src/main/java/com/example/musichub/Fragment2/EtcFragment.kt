@@ -1,5 +1,6 @@
 package com.example.musichub.Fragment2
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.example.musichub.Activity.SongEditActivity
 import com.example.musichub.Fragment1.Account.AccountFragment
 import com.example.musichub.Command
 import com.example.musichub.Data.MusicData
@@ -148,6 +150,7 @@ class EtcFragment : BottomSheetDialogFragment() {
                 Toast.makeText(requireContext(), "해당 곡이 좋아요에 추가되었습니다", Toast.LENGTH_SHORT).show()
             }
         }
+
         // 댓글 보기
         etc_comment.setOnClickListener{
             val commentFragment = CommentFragment()
@@ -155,6 +158,13 @@ class EtcFragment : BottomSheetDialogFragment() {
             bundle.putString("url", getUrl)
             commentFragment.arguments = bundle
             commentFragment.show(fragmentManager, commentFragment.getTag())
+        }
+
+        // 곡 정보 수정
+        etc_song_edit.setOnClickListener {
+            val intent = Intent(requireContext(), SongEditActivity::class.java)
+            intent.putExtra("url", getUrl)
+            startActivity(intent)
         }
 
         return v

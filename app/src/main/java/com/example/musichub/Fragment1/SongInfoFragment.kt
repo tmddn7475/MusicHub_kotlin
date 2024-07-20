@@ -2,6 +2,7 @@ package com.example.musichub.Fragment1
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.example.musichub.Activity.SongEditActivity
 import com.example.musichub.Data.MusicData
 import com.example.musichub.MainActivity
 import com.example.musichub.R
@@ -44,6 +46,8 @@ class SongInfoFragment : Fragment() {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_song_info, container, false)
 
+        val getUrl: String = arguments?.getString("url").toString()
+
         dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.progress_layout2)
@@ -65,10 +69,16 @@ class SongInfoFragment : Fragment() {
         info_song_name.ellipsize = TextUtils.TruncateAt.MARQUEE
         info_song_name.isSelected = true
 
-        getData(arguments?.getString("url").toString())
+        getData(getUrl)
 
         info_back_btn.setOnClickListener{
             back()
+        }
+
+        info_edit_btn.setOnClickListener{
+            val intent = Intent(requireContext(), SongEditActivity::class.java)
+            intent.putExtra("url", getUrl)
+            startActivity(intent)
         }
 
         return v

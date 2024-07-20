@@ -72,6 +72,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentListener {
         getAccounts(email)
         setComments(songUrl)
 
+        // 댓글 쓰기
         comment_send.setOnClickListener{
             val comment = comment_edit.text.toString()
             if(comment.isEmpty()){
