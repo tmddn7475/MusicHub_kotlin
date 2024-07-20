@@ -1,13 +1,14 @@
 package com.example.musichub.Fragment1
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -35,11 +36,19 @@ class SongInfoFragment : Fragment() {
     lateinit var info_song_thumbnail: ImageView
     lateinit var info_edit_btn: ImageView
 
+    lateinit var dialog: Dialog
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_song_info, container, false)
+
+        dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.progress_layout2)
+        dialog.setCancelable(false)
+        dialog.show()
 
         val info_back_btn: ImageView = v.findViewById(R.id.info_back_btn)
         info_song_name = v.findViewById(R.id.info_song_name)
@@ -66,6 +75,7 @@ class SongInfoFragment : Fragment() {
     }
 
     private fun getData(url: String){
+        // 스트리밍 수
         FirebaseDatabase.getInstance().getReference("History").orderByChild("songUrl").equalTo(url)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -77,7 +87,7 @@ class SongInfoFragment : Fragment() {
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
-
+        // 좋아요
         FirebaseDatabase.getInstance().getReference("Like").orderByChild("songUrl").equalTo(url)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -89,7 +99,7 @@ class SongInfoFragment : Fragment() {
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
-
+        // 음악 데이터
         FirebaseDatabase.getInstance().getReference("Songs").orderByChild("songUrl").equalTo(url).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 @SuppressLint("SetTextI18n")
@@ -103,7 +113,7 @@ class SongInfoFragment : Fragment() {
                             info_song_duration.text = " · " + data.songDuration
                             info_song_desc.text = data.songInfo
                             Glide.with(requireContext()).load(data.imageUrl).into(info_song_thumbnail)
-                            getDday(data.time, data.songCategory)
+                            getDay(data.time, data.songCategory)
 
                             if(data.email == FirebaseAuth.getInstance().currentUser?.email.toString()){
                                 info_edit_btn.visibility = View.VISIBLE
@@ -112,6 +122,7 @@ class SongInfoFragment : Fragment() {
                             }
                         }
                     }
+                    dialog.dismiss()
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
@@ -124,7 +135,7 @@ class SongInfoFragment : Fragment() {
         fragmentManager.popBackStack()
     }
 
-    private fun getDday(time: String, category:String){
+    private fun getDay(time: String, category:String){
         val times = time.split("/")
 
         val dDayCalendar = Calendar.getInstance()

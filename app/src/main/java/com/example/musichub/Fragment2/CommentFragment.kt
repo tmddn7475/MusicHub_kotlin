@@ -17,7 +17,10 @@ import com.example.musichub.Command
 import com.example.musichub.Data.AccountData
 import com.example.musichub.Data.CommentData
 import com.example.musichub.Data.MusicData
+import com.example.musichub.Fragment1.Account.AccountFragment
+import com.example.musichub.Fragment1.SongInfoFragment
 import com.example.musichub.Interface.CommentListener
+import com.example.musichub.MainActivity
 import com.example.musichub.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -159,6 +162,24 @@ class CommentFragment : BottomSheetDialogFragment(), CommentListener {
     }
 
     override fun goProfile(email: String) {
-        Toast.makeText(requireContext(), email, Toast.LENGTH_SHORT).show()
+        val mainActivity: MainActivity = context as MainActivity
+        val fragmentManager = mainActivity.supportFragmentManager
+        val accountFragment = AccountFragment()
+
+        val bundle = Bundle()
+        bundle.putString("email", email)
+        accountFragment.setArguments(bundle)
+        fragmentManager.beginTransaction().replace(R.id.container, accountFragment).addToBackStack(null).commit()
+
+        if(mainActivity.mediaFragment.isAdded){
+            mainActivity.mediaFragment.dismiss()
+        }
+        if(mainActivity.playlistFragment.isAdded){
+            mainActivity.playlistFragment.dismiss()
+        }
+        if(mainActivity.etcFragment.isAdded){
+            mainActivity.etcFragment.dismiss()
+        }
+        dismiss()
     }
 }

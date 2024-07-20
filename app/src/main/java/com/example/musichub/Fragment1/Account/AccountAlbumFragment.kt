@@ -63,8 +63,10 @@ class AccountAlbumFragment : Fragment() {
                         for(ds: DataSnapshot in snapshot.children) {
                             val data = ds.getValue<AlbumData>()
                             if (data != null) {
-                                keyList.add(ds.key.toString())
-                                items.add(data)
+                                if(data.list_mode == "public" || FirebaseAuth.getInstance().currentUser?.email.toString() == data.email){
+                                    keyList.add(ds.key.toString())
+                                    items.add(data)
+                                }
                             }
                         }
                         album_none.visibility = View.GONE
