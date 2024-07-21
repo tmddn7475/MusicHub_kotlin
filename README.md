@@ -12,7 +12,7 @@ kotlin을 공부 할 겸 자바로 개발했던 앱을 kotlin으로 변경하였
 
 ### 변경점
 
-sqlite -> RoomDB로 변경
+SQLite -> RoomDB로 변경
 
 Package 경로 변경
 
