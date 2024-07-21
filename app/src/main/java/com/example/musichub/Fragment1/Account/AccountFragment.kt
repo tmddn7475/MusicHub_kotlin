@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -18,6 +19,7 @@ import com.example.musichub.Activity.UploadActivity
 import com.example.musichub.Data.AccountData
 import com.example.musichub.R
 import com.example.musichub.Adapter.ViewPagerAdapter
+import com.example.musichub.Command
 import com.example.musichub.MainActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -28,7 +30,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import de.hdodenhof.circleimageview.CircleImageView
-import org.w3c.dom.Text
 
 class AccountFragment : Fragment() {
 
@@ -44,6 +45,8 @@ class AccountFragment : Fragment() {
     lateinit var dialog: Dialog
 
     var getEmail:String = ""
+    var follow_check: Boolean = false
+    var follow_key: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -93,6 +96,7 @@ class AccountFragment : Fragment() {
         }
         tm.attach()
 
+        // 계정 info
         account_show_more.setOnClickListener{
             showMore()
         }
@@ -102,18 +106,34 @@ class AccountFragment : Fragment() {
             back()
         }
 
+        // 업로드
         account_upload.setOnClickListener{
             val intent = Intent(requireContext(), UploadActivity::class.java)
             startActivity(intent)
+        }
+
+        // 팔로우
+        account_follow.setOnClickListener{
+            if(follow_check){
+                Command().unfollow(follow_key)
+                account_follow.setImageResource(R.drawable.baseline_person_add_24)
+                Toast.makeText(requireContext(), "해당 계정을 언팔로우했습니다", Toast.LENGTH_SHORT).show()
+                follow_check = false
+            } else {
+                Command().follow(getEmail)
+                account_follow.setImageResource(R.drawable.baseline_person_add_disabled_24)
+                Toast.makeText(requireContext(), "해당 계정을 팔로우했습니다", Toast.LENGTH_SHORT).show()
+                follow_check = true
+            }
         }
 
         return v
     }
 
     private fun getAccountData(email: String){
-        val account = FirebaseAuth.getInstance().currentUser?.email.toString()
+        val myEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
 
-        if(account == email){
+        if(myEmail == email){
             account_upload.visibility = View.VISIBLE
             account_follow.visibility = View.GONE
             account_edit.visibility = View.VISIBLE
@@ -121,6 +141,7 @@ class AccountFragment : Fragment() {
             account_upload.visibility = View.GONE
             account_follow.visibility = View.VISIBLE
             account_edit.visibility = View.GONE
+            setFollow(myEmail, email)
         }
 
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
@@ -188,6 +209,28 @@ class AccountFragment : Fragment() {
             })
     }
 
+    private fun setFollow(myEmail: String, email: String){
+        val str: String = myEmail + "_" + email
+
+        FirebaseDatabase.getInstance().getReference("Follow").orderByChild("email_follow").equalTo(str).limitToFirst(1)
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.children.iterator().hasNext()){
+                        for (ds: DataSnapshot in snapshot.children){
+                            follow_key = ds.key.toString()
+                            account_follow.setImageResource(R.drawable.baseline_person_add_disabled_24)
+                            follow_check = true
+                        }
+                    } else {
+                        account_follow.setImageResource(R.drawable.baseline_person_add_24)
+                        follow_check = false
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            })
+    }
+
+    @SuppressLint("SetTextI18n")
     private fun showMore(){
         if(account_info.maxLines == 1){
             account_info.maxLines = Int.MAX_VALUE

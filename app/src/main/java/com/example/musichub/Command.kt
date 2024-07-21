@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.example.musichub.Data.AlbumToSongData
+import com.example.musichub.Data.FollowData
 import com.example.musichub.Data.LikeData
 import com.example.musichub.RoomDB.PlaylistDatabase
 import com.google.firebase.auth.FirebaseAuth
@@ -65,6 +66,7 @@ class Command {
         FirebaseDatabase.getInstance().getReference("Like").child(key).removeValue()
     }
 
+    // 앨범에 곡 추가
     fun putTrack(key: String, url: String){
         FirebaseDatabase.getInstance().getReference("PlayLists_song").orderByChild("key_songUrl")
             .equalTo(key + "_" + url).limitToFirst(1).addListenerForSingleValueEvent(object : ValueEventListener{
@@ -80,5 +82,15 @@ class Command {
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
+    }
+
+    fun follow(email: String){
+        val myEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
+        val followData = FollowData(email = myEmail, follow = email)
+        FirebaseDatabase.getInstance().getReference("Follow").push().setValue(followData)
+    }
+
+    fun unfollow(key: String){
+        FirebaseDatabase.getInstance().getReference("Follow").child(key).removeValue()
     }
 }

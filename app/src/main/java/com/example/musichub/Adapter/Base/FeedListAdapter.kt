@@ -76,7 +76,7 @@ class FeedListAdapter(val list: MutableList<MusicData>, val musicListener: Music
         val dDayCalendar = Calendar.getInstance()
 
         // 입력 받은 날짜로 설정한다
-        dDayCalendar.set(times[0].toInt(), times[1].toInt(), times[2].toInt())
+        dDayCalendar.set(times[0].toInt(), times[1].toInt()-1, times[2].toInt())
 
         // millisecond 으로 환산한 뒤 입력한 날짜에서 현재 날짜의 차를 구한다
         val dDay: Long = dDayCalendar.timeInMillis / ONE_DAY

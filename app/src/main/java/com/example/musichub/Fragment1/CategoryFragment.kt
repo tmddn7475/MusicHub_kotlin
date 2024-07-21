@@ -55,8 +55,8 @@ class CategoryFragment : Fragment(), MusicListListener {
         category_name.text = category
         category_image.setImageResource(getImage(category))
 
-        list_item.clear()
         musicListAdapter = MusicListAdapter(list_item, this)
+        getSongs(category)
 
         category_list.setOnItemClickListener { parent, view, position, id ->
             val data = list_item[position]
@@ -64,7 +64,6 @@ class CategoryFragment : Fragment(), MusicListListener {
             musicListener.playMusic(url)
         }
 
-        getSongs(category)
         category_back_btn.setOnClickListener{
             back()
         }
@@ -89,18 +88,19 @@ class CategoryFragment : Fragment(), MusicListListener {
         FirebaseDatabase.getInstance().getReference("Songs").orderByChild("songCategory").equalTo(str)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    for(ds: DataSnapshot in snapshot.children) {
-                        val data = ds.getValue<MusicData>()
-                        if(data != null){
-                            list_item.add(data)
+                    if(snapshot.children.iterator().hasNext()){
+                        list_item.clear()
+                        for(ds: DataSnapshot in snapshot.children) {
+                            val data = ds.getValue<MusicData>()
+                            if(data != null){
+                                list_item.add(data)
+                            }
                         }
-                    }
-                    category_list.adapter = musicListAdapter
-
-                    if(list_item.size == 0){
-                        category_text.visibility = View.VISIBLE
-                    } else {
+                        category_list.adapter = musicListAdapter
                         category_text.visibility = View.GONE
+                    } else {
+                        category_list.visibility = View.GONE
+                        category_text.visibility = View.VISIBLE
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}

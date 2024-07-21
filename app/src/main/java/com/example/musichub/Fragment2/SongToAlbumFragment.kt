@@ -1,7 +1,6 @@
 package com.example.musichub.Fragment2
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import android.widget.Toast
 import com.example.musichub.Adapter.Base.MyAlbumAdapter
 import com.example.musichub.Command
 import com.example.musichub.Data.AlbumData
-import com.example.musichub.Fragment1.Library.MyAlbumFragment
 import com.example.musichub.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -22,7 +20,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
-import org.w3c.dom.Text
 
 class SongToAlbumFragment : BottomSheetDialogFragment() {
 
@@ -44,6 +41,8 @@ class SongToAlbumFragment : BottomSheetDialogFragment() {
         song_to_list_view = v.findViewById(R.id.song_to_list_view)
         song_to_list_text = v.findViewById(R.id.song_to_list_text)
         albumAdapter = MyAlbumAdapter(list, keyList)
+
+        getList()
 
         song_to_list_view.setOnItemClickListener{ parent, view, position, id ->
             val key = keyList[position]
