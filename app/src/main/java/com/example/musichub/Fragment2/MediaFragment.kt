@@ -2,7 +2,6 @@ package com.example.musichub.Fragment2
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,9 @@ import android.widget.Toast
 import androidx.media3.session.MediaController
 import com.bumptech.glide.Glide
 import com.example.musichub.Command
+import com.example.musichub.Data.AccountData
 import com.example.musichub.Data.MusicData
+import com.example.musichub.Fragment1.Account.AccountFragment
 import com.example.musichub.Interface.MusicListener
 import com.example.musichub.MainActivity
 import com.example.musichub.R
@@ -26,6 +27,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
+import de.hdodenhof.circleimageview.CircleImageView
 
 class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() {
 
@@ -34,7 +36,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
     lateinit var media_thumbnail: ImageView
     lateinit var media_playlist_btn: ImageView
     lateinit var media_comment: ImageView
-    lateinit var media_follow: ImageView
+    lateinit var media_account: CircleImageView
     lateinit var media_like_btn: ImageView
     lateinit var media_song_name: TextView
     lateinit var media_song_artist: TextView
@@ -42,6 +44,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
     lateinit var media_song_current: TextView
     lateinit var data: MusicData
 
+    var media_email: String = ""
     var like_check: Boolean = false
     var like_key: String = ""
 
@@ -60,13 +63,13 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
         val v = inflater.inflate(R.layout.fragment_media, container, false)
 
         val mainActivity = (activity as MainActivity)
-        val media_etc_btn:ImageView = v.findViewById(R.id.media_etc_btn)
+        val media_etc_btn:ImageButton = v.findViewById(R.id.media_etc_btn)
         val media_play_btn:ImageView = v.findViewById(R.id.media_play_btn)
         val media_next_btn:ImageView = v.findViewById(R.id.media_next_btn)
         val media_previous_btn:ImageView = v.findViewById(R.id.media_previous_btn)
 
         media_seekbar = v.findViewById(R.id.media_seekbar)
-        media_follow = v.findViewById(R.id.media_follow)
+        media_account = v.findViewById(R.id.media_account)
         media_comment = v.findViewById(R.id.media_comment)
         media_thumbnail = v.findViewById(R.id.media_song_thumnail)
         media_like_btn = v.findViewById(R.id.media_like_btn)
@@ -117,6 +120,18 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
             }
         }
 
+        media_account.setOnClickListener{
+            val fragmentManager = mainActivity.supportFragmentManager
+            val accountFragment = AccountFragment()
+
+            val bundle = Bundle()
+            bundle.putString("email", media_email)
+            accountFragment.arguments = bundle
+            fragmentManager.beginTransaction().replace(R.id.container, accountFragment).addToBackStack(null).commit()
+            dismiss()
+        }
+
+        // 좋아요
         media_like_btn.setOnClickListener{
             if(like_check){
                 Command().uncheckLike(like_key)
@@ -186,12 +201,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
                             media_song_name.text = mld.songName
                             media_song_artist.text = mld.songArtist
                             media_song_duration.text = mld.songDuration
-
-                            if(mld.email.equals(email)){
-                                media_follow.visibility = View.GONE
-                            } else {
-                                media_follow.visibility = View.VISIBLE
-                            }
+                            setAccount(mld.email)
                         }
                     }
                 }
@@ -207,12 +217,31 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
                             like_key = ds.key.toString()
                             media_like_btn.setImageResource(R.drawable.baseline_favorite_24)
                             like_check = true
-                            Log.i("like", like_key)
                         }
                     } else {
                         //not exist
                         media_like_btn.setImageResource(R.drawable.baseline_favorite_border_24)
                         like_check = false
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            })
+    }
+
+    fun setAccount(email:String){
+        FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
+            .addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (ds in snapshot.children) {
+                        val data = ds.getValue<AccountData>()
+                        if (data != null) {
+                            media_email = data.email
+                            if(data.imageUrl != ""){
+                                Glide.with(requireContext()).load(data.imageUrl).into(media_account)
+                            } else {
+                                media_account.setImageResource(R.drawable.baseline_account_circle_24)
+                            }
+                        }
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
