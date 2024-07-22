@@ -135,9 +135,9 @@ class SongEditActivity : AppCompatActivity() {
 
     private fun saveEdit(){
         val hashMap = HashMap<String, Any>()
-        hashMap.put("songName", song_edit_name.text.toString())
-        hashMap.put("songCategory", song_edit_category.text.toString())
-        hashMap.put("songInfo", song_edit_description.text.toString())
+        hashMap["songName"] = song_edit_name.text.toString()
+        hashMap["songCategory"] = song_edit_category.text.toString()
+        hashMap["songInfo"] = song_edit_description.text.toString()
 
         FirebaseDatabase.getInstance().getReference("Songs").child(songKey).updateChildren(hashMap)
         Toast.makeText(this, "저장되었습니다", Toast.LENGTH_SHORT).show()

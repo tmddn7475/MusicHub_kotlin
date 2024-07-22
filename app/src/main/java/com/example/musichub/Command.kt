@@ -36,6 +36,16 @@ class Command {
         return mFormat.format(mDate)
     }
 
+    @SuppressLint("SimpleDateFormat")
+    fun getTime3(): String {
+        val mFormat = SimpleDateFormat("yyyy_MM_dd")
+        val mNow:Long = System.currentTimeMillis()
+        val mDate = Date(mNow)
+
+        return mFormat.format(mDate)
+    }
+
+
     // 검색, 플레이리스트 기록 삭제
     fun deleteAll(context: Context){
         val db = PlaylistDatabase.getInstance(context)

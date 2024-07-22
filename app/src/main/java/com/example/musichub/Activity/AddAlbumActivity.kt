@@ -13,7 +13,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.Window
 import android.widget.Button
-import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Switch
@@ -36,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
+@SuppressLint("UseSwitchCompatOrMaterialCode")
 class AddAlbumActivity : AppCompatActivity() {
 
     var set_mode: String = "private"
@@ -129,7 +129,7 @@ class AddAlbumActivity : AppCompatActivity() {
     }
 
     private fun uploadImageToServer(image: ByteArray, fileName: String, desc: String){
-        val uploadTask = FirebaseStorage.getInstance().getReference().child("PlayLists_Thumbnails").child("$email/${fileName}_${Command().getTime()}").putBytes(image)
+        val uploadTask = FirebaseStorage.getInstance().getReference().child("PlayLists_Thumbnails").child("$email/${fileName}_${Command().getTime3()}").putBytes(image)
         uploadTask.addOnSuccessListener { p0 ->
             val task: Task<Uri> = p0!!.storage.downloadUrl
             while (!task.isComplete);

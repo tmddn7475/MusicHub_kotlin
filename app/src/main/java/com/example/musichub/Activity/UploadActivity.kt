@@ -193,7 +193,7 @@ class UploadActivity : AppCompatActivity() {
     }
 
     private fun uploadImageToServer(byteArray: ByteArray, fileName:String){
-        val uploadTask = storageReference.child("Song_Thumbnails").child("$email/${fileName}_${Command().getTime()}").putBytes(byteArray)
+        val uploadTask = storageReference.child("Song_Thumbnails").child("$email/${fileName}_${Command().getTime3()}").putBytes(byteArray)
         uploadTask.addOnSuccessListener { p0 ->
             val task: Task<Uri> = p0!!.storage.downloadUrl
             while (!task.isComplete);
@@ -207,7 +207,7 @@ class UploadActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun uploadFileToServer(uri: Uri, songName:String, description:String, duration:String, category:String){
-        val filePath = storageReference.child("Audios").child("$email/${songName}_${Command().getTime()}")
+        val filePath = storageReference.child("Audios").child("$email/${songName}_${Command().getTime3()}")
         filePath.putFile(uri).addOnSuccessListener { p0 ->
             val task: Task<Uri> = p0!!.storage.downloadUrl
             while (!task.isComplete);

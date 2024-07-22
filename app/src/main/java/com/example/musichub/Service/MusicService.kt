@@ -7,19 +7,32 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
 import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
+import androidx.media3.common.Player.COMMAND_SEEK_TO_NEXT
+import androidx.media3.common.Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM
+import androidx.media3.common.Player.COMMAND_SEEK_TO_PREVIOUS
+import androidx.media3.common.Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.session.CommandButton
 import androidx.media3.session.MediaSession
+import androidx.media3.session.MediaSession.ConnectionResult.AcceptedResultBuilder
 import androidx.media3.session.MediaSessionService
+import androidx.media3.session.SessionCommand
+import androidx.media3.session.SessionResult
 import com.example.musichub.Data.MusicData
 import com.example.musichub.MainActivity
+import com.example.musichub.R
 import com.example.musichub.RoomDB.PlaylistDatabase
+import com.google.common.collect.ImmutableList
+import com.google.common.util.concurrent.Futures
+import com.google.common.util.concurrent.ListenableFuture
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -32,9 +45,24 @@ class MusicService : MediaSessionService() {
     lateinit var editor: Editor
     lateinit var player: ExoPlayer
 
+    val PREV_MUSIC: String = "prev_music"
+    val NEXT_MUSIC: String = "next_music"
+    val STOP_MUSIC: String = "stop_music"
+
+    val customCommandNext = SessionCommand(NEXT_MUSIC, Bundle.EMPTY)
+    val customCommandPrev = SessionCommand(PREV_MUSIC, Bundle.EMPTY)
+    val customCommandStop = SessionCommand(STOP_MUSIC, Bundle.EMPTY)
+
     @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
+
+        val stopBtn = CommandButton.Builder().setDisplayName("Stop").setIconResId(R.drawable.baseline_clear_24)
+            .setSessionCommand(SessionCommand(STOP_MUSIC, Bundle())).build()
+        val prevBtn = CommandButton.Builder().setDisplayName("Stop").setIconResId(R.drawable.ic_previous_white)
+            .setSessionCommand(SessionCommand(PREV_MUSIC, Bundle())).build()
+        val nextBtn = CommandButton.Builder().setDisplayName("Next").setIconResId(R.drawable.ic_next_white)
+            .setSessionCommand(SessionCommand(NEXT_MUSIC, Bundle())).build()
 
         preferences = getSharedPreferences("pref", Activity.MODE_PRIVATE)
         editor = preferences.edit()
@@ -43,7 +71,10 @@ class MusicService : MediaSessionService() {
             .setAudioAttributes(AudioAttributes.DEFAULT, true)
             .setHandleAudioBecomingNoisy(true)
             .build()
+
         mediaSession = MediaSession.Builder(this, player)
+            .setCallback(CustomMediaSessionCallback())
+            .setCustomLayout(ImmutableList.of(prevBtn, nextBtn, stopBtn))
             .setSessionActivity(openMainActivityPendingIntent()).build()
 
         player.addListener(
@@ -99,7 +130,6 @@ class MusicService : MediaSessionService() {
             try {
                 val playlistData = db?.musicDAO()?.getPlaylist()!!
                 var num = 0
-
                 for(i in playlistData.indices){
                     if(playlistData[i].songUrl == preferences.getString("url", null)){
                         num = i
@@ -116,6 +146,40 @@ class MusicService : MediaSessionService() {
                         editor.putString("url", playlistData[0].songUrl)
                         editor.apply()
                         playMusic(playlistData[0].songUrl)
+                    }
+                } else {
+                    player.pause()
+                }
+            } catch (e: Exception) {
+                Log.d("tag", "Error - $e")
+            }
+        }
+        val thread = Thread(run)
+        thread.start()
+    }
+
+    fun prevSong(){
+        val db = PlaylistDatabase.getInstance(this)
+        val run = Runnable {
+            try {
+                val playlistData = db?.musicDAO()?.getPlaylist()!!
+                var num = 0
+                for(i in playlistData.indices){
+                    if(playlistData[i].songUrl == preferences.getString("url", null)){
+                        num = i
+                        break
+                    }
+                }
+
+                if(playlistData.isNotEmpty()){
+                    if(num > 0){
+                        editor.putString("url", playlistData[num - 1].songUrl)
+                        editor.apply()
+                        playMusic(playlistData[num - 1].songUrl)
+                    } else {
+                        editor.putString("url", playlistData[playlistData.size - 1].songUrl)
+                        editor.apply()
+                        playMusic(playlistData[playlistData.size - 1].songUrl)
                     }
                 } else {
                     player.pause()
@@ -155,5 +219,52 @@ class MusicService : MediaSessionService() {
                     stopSelf()
                 }
             })
+    }
+
+    private inner class CustomMediaSessionCallback: MediaSession.Callback {
+        // Configure commands available to the controller in onConnect()
+        @OptIn(UnstableApi::class)
+        override fun onConnect(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo
+        ): MediaSession.ConnectionResult {
+            return AcceptedResultBuilder(session)
+                .setAvailablePlayerCommands(
+                    MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS.buildUpon()
+                        .remove(COMMAND_SEEK_TO_NEXT)
+                        .remove(COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
+                        .remove(COMMAND_SEEK_TO_PREVIOUS)
+                        .remove(COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
+                        .build()
+                )
+                .setAvailableSessionCommands(
+                    MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS.buildUpon()
+                        .add(customCommandStop)
+                        .add(customCommandNext)
+                        .add(customCommandPrev)
+                        .build()
+                )
+                .build()
+        }
+
+        override fun onCustomCommand(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo,
+            customCommand: SessionCommand,
+            args: Bundle
+        ): ListenableFuture<SessionResult> {
+            if (customCommand.customAction == NEXT_MUSIC) {
+                nextSong()
+                return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+            } else if (customCommand.customAction == STOP_MUSIC){
+                player.stop()
+                stopSelf()
+                return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+            } else if (customCommand.customAction == PREV_MUSIC){
+                prevSong()
+                return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+            }
+            return super.onCustomCommand(session, controller, customCommand, args)
+        }
     }
 }

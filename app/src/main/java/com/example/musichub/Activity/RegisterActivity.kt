@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -34,7 +35,7 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var register_image: CircleImageView
     lateinit var register_image_btn: Button
     lateinit var register_btn: Button
-    lateinit var register_back_btn: Button
+    lateinit var register_back_btn: ImageView
     lateinit var register_email: TextView
     lateinit var register_pwd: TextView
     lateinit var register_pwd_check: TextView

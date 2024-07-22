@@ -236,7 +236,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
                         val data = ds.getValue<AccountData>()
                         if (data != null) {
                             media_email = data.email
-                            if(data.imageUrl != ""){
+                            if(data.imageUrl != "" && isAdded){
                                 Glide.with(requireContext()).load(data.imageUrl).into(media_account)
                             } else {
                                 media_account.setImageResource(R.drawable.baseline_account_circle_24)

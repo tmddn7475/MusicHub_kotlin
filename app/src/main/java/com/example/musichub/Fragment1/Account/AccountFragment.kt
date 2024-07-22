@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.example.musichub.AccountEditActivity
 import com.example.musichub.Activity.UploadActivity
 import com.example.musichub.Data.AccountData
 import com.example.musichub.R
@@ -109,6 +110,12 @@ class AccountFragment : Fragment() {
         // 업로드
         account_upload.setOnClickListener{
             val intent = Intent(requireContext(), UploadActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 계정 정보 수정
+        account_edit.setOnClickListener{
+            val intent = Intent(requireContext(), AccountEditActivity::class.java)
             startActivity(intent)
         }
 
