@@ -79,7 +79,7 @@
                 android:background="@null"
                 android:scaleType="center"
                 android:layout_marginTop="4dp"
-                android:src="@drawable/baseline_clear_24"
+                android:src="@drawable/baseline_clear_48"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
