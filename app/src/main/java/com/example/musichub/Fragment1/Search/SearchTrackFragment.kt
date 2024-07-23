@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
 import com.example.musichub.Adapter.Base.MusicListAdapter
-import com.example.musichub.Data.AlbumData
 import com.example.musichub.Data.MusicData
 import com.example.musichub.Interface.MusicListListener
 import com.example.musichub.Interface.MusicListener

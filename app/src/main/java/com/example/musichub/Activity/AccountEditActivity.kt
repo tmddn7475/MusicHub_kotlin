@@ -3,7 +3,6 @@ package com.example.musichub.Activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -35,7 +34,6 @@ import com.google.firebase.database.getValue
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
-import java.io.IOException
 
 class AccountEditActivity : AppCompatActivity() {
 

@@ -23,9 +23,5 @@ abstract class PlaylistDatabase : RoomDatabase(){
             }
             return INSTANCE
         }
-
-        fun destroyInstance() {
-            INSTANCE = null
-        }
     }
 }
