@@ -2,9 +2,12 @@ package com.example.musichub.Activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.ImageDecoder
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -110,6 +113,7 @@ class AccountEditActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
+        // 저장
         account_edit_save_btn.setOnClickListener{
             if(account_nickname_edit.text.toString().isEmpty()){
                 Toast.makeText(this@AccountEditActivity, "닉네임을 입력해주세요", Toast.LENGTH_SHORT).show()
@@ -125,6 +129,21 @@ class AccountEditActivity : AppCompatActivity() {
                 dialog.show()
                 uploadImageToServer(byteArray!!, myEmail)
             }
+        }
+
+        password_edit_btn.setOnClickListener{
+            val alertEx: AlertDialog.Builder = AlertDialog.Builder(this@AccountEditActivity)
+            alertEx.setMessage("비밀번호를 변경하시겠습니까?\n비밀번호를 재설정하는 메일을 보냅니다")
+            alertEx.setNegativeButton("네") { _, _ ->
+                Toast.makeText(this@AccountEditActivity, "해당 이메일로 비밀번호를 재설정하는 메일을 보냈습니다", Toast.LENGTH_SHORT).show()
+                FirebaseAuth.getInstance().sendPasswordResetEmail(myEmail)
+            }
+            alertEx.setPositiveButton("아니요") { dialog, _ ->
+                dialog.dismiss()
+            }
+            val alert = alertEx.create()
+            alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
+            alert.show()
         }
     }
 
