@@ -70,7 +70,7 @@ class MusicListAdapter(val list: MutableList<MusicData>, var musicListListener: 
 
     fun sort(){
         val comparator: Comparator<MusicData> =
-            Comparator<MusicData> { prod1: MusicData, prod2: MusicData ->
+            Comparator { prod1: MusicData, prod2: MusicData ->
                 prod1.time.compareTo(prod2.time)
             }
         list.sortWith(comparator.reversed())

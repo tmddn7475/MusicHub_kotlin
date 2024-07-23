@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.media3.session.MediaController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -157,7 +158,9 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
                     playListAdapter.getNumber(mainActivity.current_url)
                     playlistRecyclerView.adapter = playListAdapter
                 }
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                }
             })
     }
 

@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
 import android.util.Log
 import com.example.musichub.Data.AlbumToSongData
 import com.example.musichub.Data.FollowData
@@ -102,5 +105,17 @@ class Command {
 
     fun unfollow(key: String){
         FirebaseDatabase.getInstance().getReference("Follow").child(key).removeValue()
+    }
+
+    fun getInternet(context: Context): Int{
+        var state = 0
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network: Network? = cm.activeNetwork
+        val activeNetwork = cm.getNetworkCapabilities(network) ?: return 0
+        if (activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+            state = 1
+        }
+        return state
     }
 }

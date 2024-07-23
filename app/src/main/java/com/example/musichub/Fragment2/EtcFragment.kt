@@ -209,7 +209,9 @@ class EtcFragment : BottomSheetDialogFragment() {
                         etc_like_img.setImageResource(R.drawable.baseline_favorite_border_24)
                     }
                 }
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                }
             })
     }
 

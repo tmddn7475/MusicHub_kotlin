@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.musichub.Activity.SongEditActivity
 import com.example.musichub.Data.MusicData
@@ -95,7 +96,10 @@ class SongInfoFragment : Fragment() {
                     }
                     info_song_play.text = num.toString()
                 }
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
             })
         // 좋아요
         FirebaseDatabase.getInstance().getReference("Like").orderByChild("songUrl").equalTo(url)
@@ -107,7 +111,10 @@ class SongInfoFragment : Fragment() {
                     }
                     info_song_like.text = num.toString()
                 }
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
             })
         // 음악 데이터
         FirebaseDatabase.getInstance().getReference("Songs").orderByChild("songUrl").equalTo(url).limitToFirst(1)
@@ -134,7 +141,10 @@ class SongInfoFragment : Fragment() {
                     }
                     dialog.dismiss()
                 }
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
             })
     }
 

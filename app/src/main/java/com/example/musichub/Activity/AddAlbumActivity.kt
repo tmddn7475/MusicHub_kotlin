@@ -87,6 +87,7 @@ class AddAlbumActivity : AppCompatActivity() {
             }
         }
 
+        list_selectImage.clipToOutline = true
         list_selectImage.setOnClickListener{
             ImagePicker.with(this@AddAlbumActivity)
                 .crop(1f, 1f).compress(1024)
@@ -164,7 +165,9 @@ class AddAlbumActivity : AppCompatActivity() {
                         }
                     }
                 }
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@AddAlbumActivity, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                }
             })
     }
 

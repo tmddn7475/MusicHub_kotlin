@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.musichub.Data.AlbumData
 import com.example.musichub.Adapter.Base.MyAlbumAdapter
 import com.example.musichub.Activity.AddAlbumActivity
@@ -50,7 +51,7 @@ class MyAlbumFragment : Fragment() {
             startActivity(intent)
         }
 
-        my_list_view.setOnItemClickListener{ parent, view, position, id ->
+        my_list_view.setOnItemClickListener{ _, _, position, _ ->
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val albumFragment = AlbumFragment()
@@ -67,7 +68,7 @@ class MyAlbumFragment : Fragment() {
     private fun getList(){
         val email = FirebaseAuth.getInstance().currentUser?.email
         FirebaseDatabase.getInstance().getReference("PlayLists").orderByChild("email").equalTo(email)
-            .addListenerForSingleValueEvent(object : ValueEventListener{
+            .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     list.clear()
                     keyList.clear()
@@ -88,7 +89,9 @@ class MyAlbumFragment : Fragment() {
                     }
                 }
 
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                }
             })
     }
 }

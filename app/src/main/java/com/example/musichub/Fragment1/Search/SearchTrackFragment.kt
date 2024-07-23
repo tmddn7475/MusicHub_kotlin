@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.musichub.Adapter.Base.MusicListAdapter
 import com.example.musichub.Data.MusicData
 import com.example.musichub.Interface.MusicListListener
@@ -71,7 +72,9 @@ class SearchTrackFragment : Fragment(), MusicListListener {
                     none.visibility = View.GONE
                 }
             }
-            override fun onCancelled(error: DatabaseError) {}
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+            }
         })
 
         search_track_list.setOnItemClickListener{ _, _, position, _ ->

@@ -21,6 +21,9 @@
         android:theme="@style/Theme.Musichub"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.AlbumEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.Setting.SettingActivity"
             android:exported="false" />
         <activity

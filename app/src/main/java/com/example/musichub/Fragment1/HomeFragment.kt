@@ -3,18 +3,17 @@ package com.example.musichub.Fragment1
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
 import android.widget.ListView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -106,8 +105,8 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
                 songsList.adapter = musicListAdapter
             }
             override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
-                Log.w(TAG, "Failed to read value.", error.toException())
             }
         })
 
@@ -171,7 +170,9 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
                         }
                     }
                 }
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                }
             })
     }
 
