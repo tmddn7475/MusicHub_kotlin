@@ -42,6 +42,7 @@
                     android:layout_height="32dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:visibility="gone"
                     android:src="@drawable/baseline_edit_24"/>
 
             </RelativeLayout>
@@ -79,12 +80,12 @@
                 <TextView
                     android:id="@+id/list_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:layout_height="0dp"
+                    android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text=""
                     android:textColor="@color/white"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -95,7 +96,7 @@
                     android:gravity="center"
                     android:text=""
                     android:textColor="#B5B5B5"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/list_track_num"
@@ -104,7 +105,7 @@
                     android:layout_marginTop="10dp"
                     android:text=""
                     android:textColor="#B5B5B5"
-                    android:textSize="18dp"/>
+                    android:textSize="18sp"/>
             </LinearLayout>
 
             <ImageView
@@ -131,7 +132,7 @@
             <TextView
                 android:id="@+id/list_description"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:ellipsize="end"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,7 +145,7 @@
                 android:id="@+id/list_show_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:text="더 보기"
                 android:textColor="@color/blue_dark"/>
 

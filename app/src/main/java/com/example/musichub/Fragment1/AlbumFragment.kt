@@ -28,6 +28,7 @@ import com.example.musichub.MainActivity
 import com.example.musichub.R
 import com.example.musichub.RoomDB.PlaylistDatabase
 import com.example.musichub.RoomDB.PlaylistEntity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -52,6 +53,7 @@ class AlbumFragment : Fragment(), MusicListListener {
     var track_num: Int = 0
     var list = mutableListOf<MusicData>()
     private var db: PlaylistDatabase? = null
+    private val myEmail: String = FirebaseAuth.getInstance().currentUser?.email.toString()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -94,6 +96,7 @@ class AlbumFragment : Fragment(), MusicListListener {
             back()
         }
 
+        // 앨범 수정
         list_edit_btn.setOnClickListener{
             val intent = Intent(requireContext(), AlbumEditActivity::class.java)
             intent.putExtra("key", key)
@@ -104,6 +107,7 @@ class AlbumFragment : Fragment(), MusicListListener {
             showMore()
         }
 
+        // 앨범 재생
         list_play_btn.setOnClickListener{
             playAlbum()
             musicListener.playMusic(list[0].songUrl)
@@ -125,10 +129,13 @@ class AlbumFragment : Fragment(), MusicListListener {
                             if(data.description == ""){
                                 list_description.visibility = View.GONE
                             }
+                            if(data.email == myEmail){
+                                list_edit_btn.visibility = View.VISIBLE
+                            }
                         }
                     }
 
-                    if(list_description.lineCount < 2){
+                    if(list_description.lineCount < 2) {
                         list_show_more.visibility = View.GONE
                     } else {
                         list_show_more.visibility = View.VISIBLE

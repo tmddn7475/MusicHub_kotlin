@@ -21,6 +21,8 @@ import com.example.musichub.Data.AccountData
 import com.example.musichub.R
 import com.example.musichub.Adapter.ViewPagerAdapter
 import com.example.musichub.Command
+import com.example.musichub.Fragment1.FollowerFragment
+import com.example.musichub.Fragment1.FollowingFragment
 import com.example.musichub.MainActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -96,6 +98,28 @@ class AccountFragment : Fragment() {
             tab.setText(viewPagerAdapter.getTitle(position))
         }
         tm.attach()
+
+        account_followers.setOnClickListener{
+            val mainActivity = (activity as MainActivity)
+            val fragmentManager = mainActivity.supportFragmentManager
+            val followerFragment = FollowerFragment()
+
+            val b = Bundle()
+            b.putString("email", getEmail)
+            followerFragment.arguments = b
+            fragmentManager.beginTransaction().replace(R.id.container, followerFragment).addToBackStack(null).commit()
+        }
+
+        account_following.setOnClickListener{
+            val mainActivity = (activity as MainActivity)
+            val fragmentManager = mainActivity.supportFragmentManager
+            val followingFragment = FollowingFragment()
+
+            val b = Bundle()
+            b.putString("email", getEmail)
+            followingFragment.arguments = b
+            fragmentManager.beginTransaction().replace(R.id.container, followingFragment).addToBackStack(null).commit()
+        }
 
         // 계정 info
         account_show_more.setOnClickListener{
