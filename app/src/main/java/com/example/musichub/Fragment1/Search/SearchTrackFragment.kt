@@ -75,7 +75,7 @@ class SearchTrackFragment : Fragment(), MusicListListener {
             override fun onCancelled(error: DatabaseError) {}
         })
 
-        search_track_list.setOnItemClickListener{ parent, view, position, id ->
+        search_track_list.setOnItemClickListener{ _, _, position, _ ->
             val data = list[position]
             musicListener.playMusic(data.songUrl)
         }

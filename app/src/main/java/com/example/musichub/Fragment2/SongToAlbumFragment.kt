@@ -44,7 +44,7 @@ class SongToAlbumFragment : BottomSheetDialogFragment() {
 
         getList()
 
-        song_to_list_view.setOnItemClickListener{ parent, view, position, id ->
+        song_to_list_view.setOnItemClickListener{ _, _, position, _ ->
             val key = keyList[position]
             Command().putTrack(key, url)
             Toast.makeText(requireContext(), "곡이 앨범에 추가되었습니다\n" + "중복이 있을 경우 추가되지 않습니다", Toast.LENGTH_SHORT).show()

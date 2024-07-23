@@ -31,7 +31,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
-import kotlinx.coroutines.delay
 
 class AlbumFragment : Fragment(), MusicListListener {
 
@@ -130,6 +129,7 @@ class AlbumFragment : Fragment(), MusicListListener {
         // 앨범 수록곡
         FirebaseDatabase.getInstance().getReference("PlayLists_song").orderByChild("key").equalTo(key)
             .addListenerForSingleValueEvent(object : ValueEventListener{
+                @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     list.clear()
                     if(snapshot.children.iterator().hasNext()){
@@ -172,6 +172,7 @@ class AlbumFragment : Fragment(), MusicListListener {
             })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showMore(){
         if(list_description.maxLines == 1){
             list_description.maxLines = Int.MAX_VALUE

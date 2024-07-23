@@ -1,6 +1,7 @@
-package com.example.musichub
+package com.example.musichub.Activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
@@ -17,9 +18,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.musichub.Data.AccountData
+import com.example.musichub.R
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -35,10 +39,6 @@ import java.io.IOException
 
 class AccountEditActivity : AppCompatActivity() {
 
-    var key: String = ""
-    var image: Uri? = null
-    var byteArray: ByteArray? = null
-
     lateinit var account_edit_back_btn: ImageView
     lateinit var account_edit_image: CircleImageView
     lateinit var account_edit_image_btn: Button
@@ -49,7 +49,10 @@ class AccountEditActivity : AppCompatActivity() {
     lateinit var password_edit_btn: Button
     lateinit var dialog: Dialog
 
-    val myEmail: String = FirebaseAuth.getInstance().currentUser?.email.toString()
+    var key: String = ""
+    private var image: Uri? = null
+    private var byteArray: ByteArray? = null
+    private val myEmail: String = FirebaseAuth.getInstance().currentUser?.email.toString()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +82,8 @@ class AccountEditActivity : AppCompatActivity() {
         account_edit_image_btn.setOnClickListener{
             ImagePicker.with(this@AccountEditActivity)
                 .crop(1f, 1f).compress(1024)
-                .maxResultSize(640, 640).start()
+                .maxResultSize(640, 640)
+                .createIntent { intent -> imageLauncher.launch(intent) }
         }
 
         // 곡 설명 터치시 editText가 스크롤 되도록 설정
@@ -135,10 +139,15 @@ class AccountEditActivity : AppCompatActivity() {
                         val data = ds.getValue<AccountData>()
                         if(data != null){
                             key = ds.key.toString()
-                            Glide.with(this@AccountEditActivity).load(data.imageUrl).into(account_edit_image)
                             account_nickname_edit.setText(data.nickname)
                             account_info_edit.setText(data.info)
                             account_info_length.text = data.info.length.toString() + " / 2000"
+
+                            if(data.imageUrl == ""){
+                                account_edit_image.setImageResource(R.drawable.baseline_account_circle_24)
+                            } else {
+                                Glide.with(this@AccountEditActivity).load(data.imageUrl).into(account_edit_image)
+                            }
                         }
                     }
                 }
@@ -213,20 +222,18 @@ class AccountEditActivity : AppCompatActivity() {
             })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            try {
-                image = data?.data
-                // Uri를 활용하여 ImageView에 가져온 이미지 표시
-                val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, image!!))
-                account_edit_image.setImageBitmap(bitmap)
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-                byteArray = byteArrayOutputStream.toByteArray()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+    private val imageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result: ActivityResult ->
+        val resultCode = result.resultCode
+        val data = result.data
+
+        if (resultCode == Activity.RESULT_OK) {
+            image = data?.data
+            // Uri를 활용하여 ImageView에 가져온 이미지 표시
+            val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, image!!))
+            account_edit_image.setImageBitmap(bitmap)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            byteArray = byteArrayOutputStream.toByteArray()
         } else {
             image = null
             byteArray = null

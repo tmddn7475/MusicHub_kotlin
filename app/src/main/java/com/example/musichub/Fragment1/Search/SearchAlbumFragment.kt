@@ -42,7 +42,7 @@ class SearchAlbumFragment : Fragment() {
         none = v.findViewById(R.id.none)
         gridViewAdapter = GridViewAdapter(requireContext(), items)
 
-        search_gridview.setOnItemClickListener{ parent, view, position, id ->
+        search_gridview.setOnItemClickListener{ _, _, position, _ ->
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val albumFragment = AlbumFragment()
@@ -74,8 +74,6 @@ class SearchAlbumFragment : Fragment() {
             }
             override fun onCancelled(error: DatabaseError) {}
         })
-
-        //search_gridview.setOnItemClickListener()
 
         return v
     }

@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         val controllerFuture = MediaController.Builder(this@MainActivity, sessionToken).buildAsync()
         controllerFuture.addListener({
             mediaController = controllerFuture.get()
-            if(!sharedUrl.equals("") and (mediaController?.isPlaying == false)){
+            if((sharedUrl != "") and (mediaController?.isPlaying == false)){
                 readyMusic(sharedUrl)
             }
             updateProgressIndicator()
@@ -131,12 +131,12 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
         // media controller
         val frameLayout:FrameLayout = findViewById(R.id.media_player_bar_bg)
-        frameLayout.setOnClickListener(View.OnClickListener {
+        frameLayout.setOnClickListener{
             if(bar_song.text != ""){
                 mediaFragment.show(supportFragmentManager, mediaFragment.tag)
                 mediaFragment.setController(mediaController)
             }
-        })
+        }
 
         // 플레이리스트
         bar_playlist_btn.setOnClickListener{
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         }
 
         // 음악 재생
-        bar_play_btn.setOnClickListener(View.OnClickListener {
+        bar_play_btn.setOnClickListener{
             if(bar_song.text != ""){
                 if(mediaController?.isPlaying == true){
                     mediaController?.pause()
@@ -157,8 +157,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
                     bar_play_btn.setImageResource(R.drawable.pause)
                 }
             }
-        })
-
+        }
         // 듣고 있던 곡 저장
         preference = getSharedPreferences("pref", Activity.MODE_PRIVATE)
         editor = preference.edit()
@@ -204,14 +203,14 @@ class MainActivity : AppCompatActivity(), MusicListener {
     @SuppressLint("SetTextI18n")
     private fun updatePlayingTime(){
         val millis = mediaController?.currentPosition!!
-        val total_secs = TimeUnit.SECONDS.convert(millis, TimeUnit.MILLISECONDS)
-        val mins = TimeUnit.MINUTES.convert(total_secs, TimeUnit.SECONDS)
-        val secs = total_secs - (mins * 60)
+        val totalSecs = TimeUnit.SECONDS.convert(millis, TimeUnit.MILLISECONDS)
+        val minute = TimeUnit.MINUTES.convert(totalSecs, TimeUnit.SECONDS)
+        val secs = totalSecs - (minute * 60)
 
         if(secs < 10){
-            mediaFragment.media_song_current.text = mins.toString() + ":0" + secs
+            mediaFragment.media_song_current.text = "$minute:0$secs"
         } else {
-            mediaFragment.media_song_current.text = mins.toString() + ":" + secs
+            mediaFragment.media_song_current.text = "$minute:$secs"
         }
     }
 

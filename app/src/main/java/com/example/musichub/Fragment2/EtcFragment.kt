@@ -129,10 +129,10 @@ class EtcFragment : BottomSheetDialogFragment() {
                     val data = PlaylistEntity(songUrl = getUrl, time = Command().getTime2())
                     db?.musicDAO()?.saveSong(data)!!
                 }
-                Toast.makeText(requireContext(), "재생목록에 추가되었습니다\n" + "중복이 있을 경우 추가되지 않습니다", Toast.LENGTH_SHORT).show()
             }
             val thread = Thread(r)
             thread.start()
+            Toast.makeText(requireContext(), "재생목록에 추가되었습니다\n" + "중복이 있을 경우 추가되지 않습니다", Toast.LENGTH_SHORT).show()
             dismiss()
         }
 
@@ -157,7 +157,7 @@ class EtcFragment : BottomSheetDialogFragment() {
             val bundle = Bundle()
             bundle.putString("url", getUrl)
             commentFragment.arguments = bundle
-            commentFragment.show(fragmentManager, commentFragment.getTag())
+            commentFragment.show(fragmentManager, commentFragment.tag)
         }
 
         // 곡 정보 수정

@@ -18,7 +18,6 @@ import com.example.musichub.Data.AccountData
 import com.example.musichub.Data.CommentData
 import com.example.musichub.Data.MusicData
 import com.example.musichub.Fragment1.Account.AccountFragment
-import com.example.musichub.Fragment1.SongInfoFragment
 import com.example.musichub.Interface.CommentListener
 import com.example.musichub.MainActivity
 import com.example.musichub.R

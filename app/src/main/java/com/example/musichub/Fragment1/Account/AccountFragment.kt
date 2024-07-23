@@ -15,7 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.example.musichub.AccountEditActivity
+import com.example.musichub.Activity.AccountEditActivity
 import com.example.musichub.Activity.UploadActivity
 import com.example.musichub.Data.AccountData
 import com.example.musichub.R

@@ -156,15 +156,17 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
             alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
             alert.show()
         }
-
+        // 내 계정 사진
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<AccountData>()
                         if(data != null){
-                            if(isAdded){
+                            if(isAdded && data.imageUrl != ""){
                                 Glide.with(requireContext()).load(data.imageUrl).into(account)
+                            } else {
+                                account.setImageResource(R.drawable.baseline_account_circle_24)
                             }
                         }
                     }

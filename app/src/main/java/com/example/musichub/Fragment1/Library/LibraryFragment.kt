@@ -1,11 +1,14 @@
 package com.example.musichub.Fragment1.Library
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.musichub.Activity.Setting.SettingActivity
 import com.example.musichub.Adapter.ViewPagerAdapter
 import com.example.musichub.R
 import com.google.android.material.tabs.TabLayout
@@ -35,7 +38,13 @@ class LibraryFragment : Fragment() {
             tab.setText(viewPagerAdapter.getTitle(position))
         }
         tm.attach()
-        
+
+        val setting: ImageView = v.findViewById(R.id.setting)
+        setting.setOnClickListener{
+            val intent = Intent(requireContext(), SettingActivity::class.java)
+            startActivity(intent)
+        }
+
         return v
     }
 }

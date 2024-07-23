@@ -41,8 +41,8 @@ import com.google.firebase.database.getValue
 
 class MusicService : MediaSessionService() {
     private var mediaSession: MediaSession? = null
-    lateinit var preferences: SharedPreferences
-    lateinit var editor: Editor
+    private lateinit var preferences: SharedPreferences
+    private lateinit var editor: Editor
     lateinit var player: ExoPlayer
 
     val PREV_MUSIC: String = "prev_music"
@@ -73,7 +73,7 @@ class MusicService : MediaSessionService() {
             .build()
 
         mediaSession = MediaSession.Builder(this, player)
-            .setCallback(CustomMediaSessionCallback())
+            .setCallback(MediaSessionCallBack())
             .setCustomLayout(ImmutableList.of(prevBtn, nextBtn, stopBtn))
             .setSessionActivity(openMainActivityPendingIntent()).build()
 
@@ -124,6 +124,7 @@ class MusicService : MediaSessionService() {
         return PendingIntent.getActivity(this, 0, notifyIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
+    // 다음 곡
     fun nextSong(){
         val db = PlaylistDatabase.getInstance(this)
         val run = Runnable {
@@ -158,6 +159,7 @@ class MusicService : MediaSessionService() {
         thread.start()
     }
 
+    // 전 곡
     fun prevSong(){
         val db = PlaylistDatabase.getInstance(this)
         val run = Runnable {
@@ -221,8 +223,7 @@ class MusicService : MediaSessionService() {
             })
     }
 
-    private inner class CustomMediaSessionCallback: MediaSession.Callback {
-        // Configure commands available to the controller in onConnect()
+    private inner class MediaSessionCallBack: MediaSession.Callback {
         @OptIn(UnstableApi::class)
         override fun onConnect(
             session: MediaSession,

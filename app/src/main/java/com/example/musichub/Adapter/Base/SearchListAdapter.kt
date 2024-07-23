@@ -29,7 +29,7 @@ class SearchListAdapter(val list: MutableList<String>, val db: PlaylistDatabase?
 
             search_text.text = list[position]
 
-            search_delete.setOnClickListener{
+            search_delete.setOnClickListener {
                 delete(list[position])
                 list.removeAt(position)
                 notifyDataSetChanged()

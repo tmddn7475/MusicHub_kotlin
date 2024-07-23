@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="일반">
+        <Preference
+            android:key="upload"
+            android:title="음악 업로드"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="계정 정보">
+        <Preference
+            android:key="account_edit"
+            android:title="계정 정보 수정"/>
+
+        <Preference
+            android:key="account_logout"
+            android:title="로그아웃"/>
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

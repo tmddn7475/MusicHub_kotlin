@@ -83,8 +83,6 @@ class FeedFragment : Fragment() {
         feed_upload = v.findViewById(R.id.feed_upload)
         feed_account = v.findViewById(R.id.feed_account)
 
-        click()
-
         accountList = mutableListOf()
         songList = mutableListOf()
         feed_account_recycler = v.findViewById(R.id.feed_account_recycler)
@@ -105,6 +103,8 @@ class FeedFragment : Fragment() {
             songInfoFragment.arguments = bundle
             fragmentManager.beginTransaction().replace(R.id.container, songInfoFragment).addToBackStack(null).commit()
         }
+
+        click()
 
         return v
     }
@@ -130,7 +130,7 @@ class FeedFragment : Fragment() {
         feed_logout.setOnClickListener{
             val alert_ex: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             alert_ex.setMessage("로그아웃하시겠습니까?")
-            alert_ex.setNegativeButton("네") { dialog, which ->
+            alert_ex.setNegativeButton("네") { _, _ ->
                 Command().deleteAll(requireContext())
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(requireContext(), LoginActivity::class.java)
@@ -138,7 +138,7 @@ class FeedFragment : Fragment() {
                 startActivity(intent)
                 ActivityCompat.finishAffinity(requireActivity())
             }
-            alert_ex.setPositiveButton("아니요") { dialog, which ->
+            alert_ex.setPositiveButton("아니요") { dialog, _ ->
                 dialog.dismiss()
             }
             val alert = alert_ex.create()
@@ -152,8 +152,10 @@ class FeedFragment : Fragment() {
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<AccountData>()
                         if(data != null){
-                            if(isAdded){
+                            if(isAdded && data.imageUrl != ""){
                                 Glide.with(requireContext()).load(data.imageUrl).into(feed_account)
+                            } else {
+                                feed_account.setImageResource(R.drawable.baseline_account_circle_24)
                             }
                         }
                     }
@@ -206,7 +208,7 @@ class FeedFragment : Fragment() {
                     for(ds: DataSnapshot in snapshot.children) {
                         val data = ds.getValue<MusicData>()
                         if(data != null){
-                            songList.add(data)
+                            songList.add(0, data)
                         }
                     }
                     feedListAdapter.sort()

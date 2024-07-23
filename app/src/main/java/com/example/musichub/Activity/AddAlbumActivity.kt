@@ -1,6 +1,7 @@
 package com.example.musichub.Activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
@@ -18,6 +19,8 @@ import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musichub.Command
 import com.example.musichub.Data.AccountData
@@ -89,7 +92,8 @@ class AddAlbumActivity : AppCompatActivity() {
         list_selectImage.setOnClickListener{
             ImagePicker.with(this@AddAlbumActivity)
                 .crop(1f, 1f).compress(1024)
-                .maxResultSize(640, 640).start()
+                .maxResultSize(640, 640)
+                .createIntent { intent -> imageLauncher.launch(intent) }
         }
 
         list_description.setOnTouchListener(object : View.OnTouchListener {
@@ -111,7 +115,7 @@ class AddAlbumActivity : AppCompatActivity() {
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val length: Int = list_description.text.length
-                list_description_length.setText("$length / 2000")
+                list_description_length.text = "$length / 2000"
             }
             override fun afterTextChanged(s: Editable?) {}
         })
@@ -166,20 +170,18 @@ class AddAlbumActivity : AppCompatActivity() {
             })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            try {
-                image = data?.data
-                // Uri를 활용하여 ImageView에 가져온 이미지 표시
-                val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, image!!))
-                list_selectImage.setImageBitmap(bitmap)
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-                byteArray = byteArrayOutputStream.toByteArray()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+    private val imageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result: ActivityResult ->
+        val resultCode = result.resultCode
+        val data = result.data
+
+        if (resultCode == Activity.RESULT_OK) {
+            image = data?.data
+            // Uri를 활용하여 ImageView에 가져온 이미지 표시
+            val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, image!!))
+            list_selectImage.setImageBitmap(bitmap)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            byteArray = byteArrayOutputStream.toByteArray()
         } else {
             image = null
             byteArray = null

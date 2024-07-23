@@ -17,7 +17,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 import java.util.Calendar
 
 class FeedListAdapter(val list: MutableList<MusicData>, val musicListener: MusicListener): BaseAdapter() {
-    val ONE_DAY:Int = 24 * 60 * 60 * 1000
+    private val ONE_DAY:Int = 24 * 60 * 60 * 1000
 
     override fun getCount(): Int {
         return list.size

@@ -1,7 +1,7 @@
 package com.example.musichub.Activity
 
+import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -11,6 +11,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musichub.Data.AccountData
 import com.example.musichub.R
@@ -23,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
-import java.io.IOException
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -66,33 +67,33 @@ class RegisterActivity : AppCompatActivity() {
         register_image_btn.setOnClickListener{
             ImagePicker.with(this)
                 .crop(1f, 1f).compress(1024)
-                .maxResultSize(640, 640).start()
+                .maxResultSize(640, 640)
+                .createIntent { intent -> imageLauncher.launch(intent) }
         }
 
         register_btn.setOnClickListener{
             val email:String = register_email.text.toString()
             val password:String = register_pwd.text.toString()
-            val password_correct:String = register_pwd_check.text.toString()
+            val passwordCorrect:String = register_pwd_check.text.toString()
             val nickname:String = register_nickname.text.toString()
 
-            if(email.isEmpty() or password.isEmpty() or password_correct.isEmpty() or nickname.isEmpty()){
+            if(email.isEmpty() or password.isEmpty() or passwordCorrect.isEmpty() or nickname.isEmpty()){
                 Toast.makeText(this, "전부 입력해주세요", Toast.LENGTH_SHORT).show()
             } else if(password.length < 6) {
                 Toast.makeText(this, "비밀번호를 6자리 이상 입력해주세요", Toast.LENGTH_SHORT).show()
-            } else if(password != password_correct) {
+            } else if(password != passwordCorrect) {
                 Toast.makeText(this, "비밀번호가 다릅니다", Toast.LENGTH_SHORT).show()
             } else {
                 dialog.show()
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(object : OnCompleteListener<AuthResult>{
-                        override fun onComplete(p0: Task<AuthResult>) {
-                            if(p0.isComplete){
-                                uploadImageToServer(byteArray, email, password, nickname)
-                            } else {
-                                Toast.makeText(this@RegisterActivity, "다시 시도해주세요", Toast.LENGTH_SHORT).show()
-                            }
+                    .addOnCompleteListener { p0 ->
+                        if (p0.isComplete) {
+                            uploadImageToServer(byteArray, email, password, nickname)
+                        } else {
+                            Toast.makeText(this@RegisterActivity, "다시 시도해주세요", Toast.LENGTH_SHORT)
+                                .show()
                         }
-                    })
+                    }
             }
         }
 
@@ -128,20 +129,18 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            try {
-                image = data?.data
-                // Uri를 활용하여 ImageView에 가져온 이미지 표시
-                val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, image!!))
-                register_image.setImageBitmap(bitmap)
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-                byteArray = byteArrayOutputStream.toByteArray()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+    private val imageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result: ActivityResult ->
+        val resultCode = result.resultCode
+        val data = result.data
+
+        if (resultCode == Activity.RESULT_OK) {
+            image = data?.data
+            // Uri를 활용하여 ImageView에 가져온 이미지 표시
+            val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, image!!))
+            register_image.setImageBitmap(bitmap)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            byteArray = byteArrayOutputStream.toByteArray()
         } else {
             image = null
             byteArray = null
