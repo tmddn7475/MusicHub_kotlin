@@ -228,7 +228,6 @@ class AlbumEditActivity : AppCompatActivity() {
         for(i in list.indices){
             str += list[i].songUrl + "/"
         }
-
         return str
     }
 }
