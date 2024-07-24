@@ -223,6 +223,7 @@ class MusicService : MediaSessionService() {
             })
     }
 
+    // 커스텀 레이아웃
     private inner class MediaSessionCallBack: MediaSession.Callback {
         @OptIn(UnstableApi::class)
         override fun onConnect(
