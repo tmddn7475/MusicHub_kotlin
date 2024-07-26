@@ -11,13 +11,13 @@ kotlin을 공부 할 겸 자바로 개발했던 앱을 kotlin으로 변경하였
 
 SQLite -> RoomDB로 변경
 
-Package 경로 변경
+Package 경로 일부 변경
 
 mediaSessionService 개선
 
 많은 코드들을 개선 및 변경
 
-파이어베이스 데이터 경로 변경
+파이어베이스 데이터 경로 일부 변경
 
 ***********************************
 
