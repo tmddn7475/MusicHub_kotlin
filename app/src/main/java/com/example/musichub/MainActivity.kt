@@ -2,9 +2,11 @@ package com.example.musichub
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ComponentName
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -158,6 +160,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
                 }
             }
         }
+
         // 듣고 있던 곡 저장
         preference = getSharedPreferences("pref", Activity.MODE_PRIVATE)
         editor = preference.edit()
@@ -196,7 +199,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
             }
         }
         checkPlayState()
-        handler.postDelayed({ this.updateProgressIndicator() }, 330)
+        checkInternet()
     }
 
     // MediaFragment 플레이 시간 업데이트
@@ -220,6 +223,24 @@ class MainActivity : AppCompatActivity(), MusicListener {
             bar_play_btn.setImageResource(R.drawable.pause)
         } else if (mediaController?.isPlaying() == false) {
             bar_play_btn.setImageResource(R.drawable.play_arrow)
+        }
+    }
+
+    // 인터넷 연결 확인
+    private fun checkInternet(){
+        val internet = Command().getInternet(this)
+        if(internet == 0){
+            val alertEx: AlertDialog.Builder = AlertDialog.Builder(this)
+            alertEx.setMessage("네트워크 연결을 해주시길 바랍니다")
+            alertEx.setNegativeButton("확인") { _, _ ->
+                finishAffinity()
+                onDestroy()
+            }.setCancelable(false)
+            val alert = alertEx.create()
+            alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
+            alert.show()
+        } else {
+            handler.postDelayed({ this.updateProgressIndicator() }, 330)
         }
     }
 
@@ -307,6 +328,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         prevSong()
     }
 
+    // 다음 곡
     private fun nextSong(){
          val run = Runnable {
             try {
@@ -342,6 +364,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         thread.start()
     }
 
+    // 전 곡
     private fun prevSong(){
         val run = Runnable {
             try {
@@ -387,7 +410,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         FirebaseDatabase.getInstance().getReference("History").child(descendingKey.toString()).setValue(historyData)
     }
 
-    private var backPressedTime:Long = 0
+    private var backPressedTime: Long = 0
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             val fragment = supportFragmentManager.findFragmentById(R.id.container)
