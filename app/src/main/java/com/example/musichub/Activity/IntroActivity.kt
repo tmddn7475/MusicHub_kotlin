@@ -19,12 +19,12 @@ class IntroActivity : AppCompatActivity() {
         val internet = Command().getInternet(this)
 
         if(internet == 0){
-            val alert_ex: AlertDialog.Builder = AlertDialog.Builder(this)
-            alert_ex.setMessage("네트워크 연결을 해주시길 바랍니다")
-            alert_ex.setNegativeButton("확인") { _, _ ->
+            val alertEx: AlertDialog.Builder = AlertDialog.Builder(this)
+            alertEx.setMessage("네트워크 연결을 해주시길 바랍니다")
+            alertEx.setNegativeButton("확인") { _, _ ->
                 finishAffinity()
             }.setCancelable(false)
-            val alert = alert_ex.create()
+            val alert = alertEx.create()
             alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
             alert.show()
         } else {
