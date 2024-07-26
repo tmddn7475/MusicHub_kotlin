@@ -1,4 +1,4 @@
-## MusicHub (kotlin version)
+# MusicHub (kotlin)
 
 원본 - https://github.com/tmddn7475/MusicHub/tree/master
 
