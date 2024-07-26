@@ -48,7 +48,6 @@ class Command {
         return mFormat.format(mDate)
     }
 
-
     // 검색, 플레이리스트 기록 삭제
     fun deleteAll(context: Context){
         val db = PlaylistDatabase.getInstance(context)
@@ -63,20 +62,8 @@ class Command {
 
         val preference:SharedPreferences = context.getSharedPreferences("pref", Activity.MODE_PRIVATE)
         val editor = preference.edit()
-
         editor.putString("url", "")
         editor.apply()
-    }
-
-    // 좋아요
-    fun checkLike(url: String){
-        val email: String = FirebaseAuth.getInstance().currentUser?.email.toString()
-        val data = LikeData(songUrl = url, email = email)
-        FirebaseDatabase.getInstance().getReference("Like").push().setValue(data)
-    }
-
-    fun uncheckLike(key: String){
-        FirebaseDatabase.getInstance().getReference("Like").child(key).removeValue()
     }
 
     // 앨범에 곡 추가
@@ -97,6 +84,18 @@ class Command {
             })
     }
 
+    // 좋아요
+    fun checkLike(url: String){
+        val email: String = FirebaseAuth.getInstance().currentUser?.email.toString()
+        val data = LikeData(songUrl = url, email = email)
+        FirebaseDatabase.getInstance().getReference("Like").push().setValue(data)
+    }
+
+    fun uncheckLike(key: String){
+        FirebaseDatabase.getInstance().getReference("Like").child(key).removeValue()
+    }
+
+    // 계정 팔로우
     fun follow(email: String){
         val myEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
         val followData = FollowData(email = myEmail, follow = email)
@@ -106,7 +105,8 @@ class Command {
     fun unfollow(key: String){
         FirebaseDatabase.getInstance().getReference("Follow").child(key).removeValue()
     }
-
+    
+    // 인터넷 연결 확인
     fun getInternet(context: Context): Int{
         var state = 0
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
