@@ -21,8 +21,8 @@ import com.example.musichub.Data.AccountData
 import com.example.musichub.R
 import com.example.musichub.Adapter.ViewPagerAdapter
 import com.example.musichub.Command
-import com.example.musichub.Fragment1.FollowerFragment
-import com.example.musichub.Fragment1.FollowingFragment
+import com.example.musichub.Fragment1.Follow.FollowerFragment
+import com.example.musichub.Fragment1.Follow.FollowingFragment
 import com.example.musichub.MainActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator

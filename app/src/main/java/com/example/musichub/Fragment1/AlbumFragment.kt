@@ -151,6 +151,7 @@ class AlbumFragment : Fragment(), MusicListListener {
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     list.clear()
+                    track_num = 0
                     if(snapshot.children.iterator().hasNext()){
                         for(ds: DataSnapshot in snapshot.children){
                             val data = ds.getValue<AlbumToSongData>()

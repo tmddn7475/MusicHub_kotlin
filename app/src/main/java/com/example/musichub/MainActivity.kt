@@ -24,6 +24,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.musichub.Data.HistoryData
 import com.example.musichub.Data.MusicData
@@ -113,6 +114,17 @@ class MainActivity : AppCompatActivity(), MusicListener {
         bar_song = findViewById(R.id.bar_song_name)
         bar_artist = findViewById(R.id.bar_song_artist)
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
+
+        // 새로고침
+        val swipe: SwipeRefreshLayout = findViewById(R.id.refreshLayout)
+        swipe.setOnRefreshListener {
+            val fragment = supportFragmentManager.findFragmentById(R.id.container)
+            if (fragment != null) {
+                supportFragmentManager.beginTransaction().detach(fragment).commit()
+                supportFragmentManager.beginTransaction().attach(fragment).commit()
+            }
+            swipe.isRefreshing = false
+        }
 
         // bottomNavigationView
         supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment(this)).commit()

@@ -39,11 +39,13 @@ android {
 }
 
 dependencies {
-    implementation ("androidx.room:room-runtime:2.6.1")
-    annotationProcessor ("androidx.room:room-compiler:2.6.1")
+    implementation (libs.androidx.swiperefreshlayout)
+
+    implementation (libs.androidx.room.runtime)
+    annotationProcessor (libs.androidx.room.room.compiler)
     // To use Kotlin annotation processing tool (kapt)
-    implementation("androidx.room:room-ktx:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.room.compiler)
 
     implementation (libs.androidx.media3.session)
     implementation(libs.androidx.media3.exoplayer)
