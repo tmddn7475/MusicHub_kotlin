@@ -11,6 +11,8 @@ kotlin을 공부 할 겸 자바로 개발했던 앱을 kotlin으로 개발하였
 
 ### 변경점
 
+새로고침 기능 추가
+
 SQLite -> RoomDB로 변경
 
 Package 경로 일부 변경
