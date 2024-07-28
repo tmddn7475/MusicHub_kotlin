@@ -14,7 +14,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.musichub.Activity.SongEditActivity
 import com.example.musichub.Fragment1.Account.AccountFragment
-import com.example.musichub.Command
+import com.example.musichub.Object.Command
 import com.example.musichub.Data.MusicData
 import com.example.musichub.Fragment1.SongInfoFragment
 import com.example.musichub.MainActivity
@@ -126,7 +126,7 @@ class EtcFragment : BottomSheetDialogFragment() {
         etc_add_playlist.setOnClickListener{
             val r = Runnable {
                 if(db?.musicDAO()?.getCount(getUrl)!! < 1){
-                    val data = PlaylistEntity(songUrl = getUrl, time = Command().getTime2())
+                    val data = PlaylistEntity(songUrl = getUrl, time = Command.getTime2())
                     db?.musicDAO()?.saveSong(data)!!
                 }
             }
@@ -139,12 +139,12 @@ class EtcFragment : BottomSheetDialogFragment() {
         // 좋아요
         etc_like.setOnClickListener{
             if(like_check){
-                Command().uncheckLike(like_key)
+                Command.uncheckLike(like_key)
                 etc_like_img.setImageResource(R.drawable.baseline_favorite_border_24)
                 like_check = false
                 Toast.makeText(requireContext(), "해당 곡이 좋아요에 삭제되었습니다", Toast.LENGTH_SHORT).show()
             } else {
-                Command().checkLike(getUrl)
+                Command.checkLike(getUrl)
                 etc_like_img.setImageResource(R.drawable.baseline_favorite_24)
                 like_check = true
                 Toast.makeText(requireContext(), "해당 곡이 좋아요에 추가되었습니다", Toast.LENGTH_SHORT).show()
@@ -209,9 +209,7 @@ class EtcFragment : BottomSheetDialogFragment() {
                         etc_like_img.setImageResource(R.drawable.baseline_favorite_border_24)
                     }
                 }
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
-                }
+                override fun onCancelled(error: DatabaseError) {}
             })
     }
 

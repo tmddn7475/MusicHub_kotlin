@@ -1,4 +1,4 @@
-package com.example.musichub
+package com.example.musichub.Object
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class Command {
+object Command {
      @SuppressLint("SimpleDateFormat")
      fun getTime(): String {
          val mFormat = SimpleDateFormat("yyyy/MM/dd")
@@ -76,7 +76,7 @@ class Command {
                         Log.i("album_exist", "already exist")
                     } else {
                         // not exist
-                        val data = AlbumToSongData(key = key, songUrl = url, time = Command().getTime2())
+                        val data = AlbumToSongData(key = key, songUrl = url, time = getTime2())
                         FirebaseDatabase.getInstance().getReference("PlayLists_song").push().setValue(data)
                     }
                 }

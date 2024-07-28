@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import com.example.musichub.Command
+import com.example.musichub.Object.Command
 import com.example.musichub.R
 
 class IntroActivity : AppCompatActivity() {
@@ -16,7 +16,7 @@ class IntroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
 
-        val internet = Command().getInternet(this)
+        val internet = Command.getInternet(this)
 
         if(internet == 0){
             val alertEx: AlertDialog.Builder = AlertDialog.Builder(this)

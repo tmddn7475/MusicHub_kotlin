@@ -7,64 +7,63 @@
     android:background="@color/black"
     tools:context=".Fragment1.HomeFragment">
 
-    <RelativeLayout
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="6dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:text="MusicHub"
-            android:textStyle="bold"
-            android:layout_marginLeft="6dp"
-            android:layout_centerVertical="true"
-            android:textColor="@color/white"
-            android:textSize="24dp" />
-
-        <ImageView
-            android:id="@+id/home_logout"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="12dp"
-            android:src="@drawable/baseline_logout_24"
-            android:layout_toStartOf="@id/home_upload"
-            android:layout_centerVertical="true" />
-
-        <ImageView
-            android:id="@+id/home_upload"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_toStartOf="@id/home_account"
-            android:layout_marginEnd="12dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/baseline_file_upload_24" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/home_account"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="6dp"
-            android:src="@drawable/baseline_account_circle_24"
-            app:civ_border_width="1dp"
-            app:civ_border_color="@color/blue_dark"/>
-
-    </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="50dp">
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="MusicHub"
+                android:textStyle="bold"
+                android:layout_marginStart="6dp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/home_logout"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/baseline_logout_24"
+                android:layout_toStartOf="@id/home_upload"
+                android:layout_centerVertical="true" />
+
+            <ImageView
+                android:id="@+id/home_upload"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_toStartOf="@id/home_account"
+                android:layout_marginEnd="12dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/baseline_file_upload_24" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/home_account"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/baseline_account_circle_24"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/blue_dark"/>
+
+        </RelativeLayout>
 
         <TextView
             android:text="카테고리"
             android:textColor="@color/white"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginStart="12dp"
             android:layout_width="wrap_content"
@@ -83,15 +82,15 @@
             android:text="최신 곡"
             android:textColor="@color/white"
             android:layout_marginStart="12dp"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="6dp"/>
 
         <ListView
+            android:nestedScrollingEnabled="true"
             android:id="@+id/songsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:choiceMode="singleChoice"
             android:dividerHeight="0px"
             android:divider="@color/black"/>
     </LinearLayout>

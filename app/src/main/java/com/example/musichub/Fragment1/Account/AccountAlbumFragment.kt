@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.musichub.Data.AlbumData
 import com.example.musichub.Adapter.Base.GridViewAdapter
@@ -77,9 +76,7 @@ class AccountAlbumFragment : Fragment() {
                     }
                 }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
-                }
+                override fun onCancelled(error: DatabaseError) {}
             })
     }
 }

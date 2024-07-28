@@ -27,7 +27,7 @@ import com.example.musichub.Data.AccountData
 import com.example.musichub.Data.FollowData
 import com.example.musichub.Data.MusicData
 import com.example.musichub.Adapter.Base.FeedListAdapter
-import com.example.musichub.Command
+import com.example.musichub.Object.Command
 import com.example.musichub.Fragment1.Account.AccountFragment
 import com.example.musichub.Interface.MusicListener
 import com.example.musichub.MainActivity
@@ -132,7 +132,7 @@ class FeedFragment : Fragment() {
             val alert_ex: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             alert_ex.setMessage("로그아웃하시겠습니까?")
             alert_ex.setNegativeButton("네") { _, _ ->
-                Command().deleteAll(requireContext())
+                Command.deleteAll(requireContext())
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(requireContext(), LoginActivity::class.java)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

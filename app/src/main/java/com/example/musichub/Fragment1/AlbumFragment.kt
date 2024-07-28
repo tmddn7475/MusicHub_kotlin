@@ -18,7 +18,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.musichub.Adapter.Base.MusicListAdapter
 import com.example.musichub.Activity.AlbumEditActivity
-import com.example.musichub.Command
+import com.example.musichub.Object.Command
 import com.example.musichub.Data.AlbumData
 import com.example.musichub.Data.AlbumToSongData
 import com.example.musichub.Data.MusicData
@@ -208,7 +208,7 @@ class AlbumFragment : Fragment(), MusicListListener {
     private fun playAlbum(){
         val r = Runnable {
             for(i in list.indices){
-                val data = PlaylistEntity(songUrl = list[i].songUrl, time = Command().getTime2())
+                val data = PlaylistEntity(songUrl = list[i].songUrl, time = Command.getTime2())
                 db?.musicDAO()?.saveSong(data)!!
                 Thread.sleep(1000)
             }

@@ -11,7 +11,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.example.musichub.Activity.AccountEditActivity
 import com.example.musichub.Activity.LoginActivity
 import com.example.musichub.Activity.UploadActivity
-import com.example.musichub.Command
+import com.example.musichub.Object.Command
 import com.example.musichub.R
 import com.google.firebase.auth.FirebaseAuth
 
@@ -41,7 +41,7 @@ class SettingFragment: PreferenceFragmentCompat() {
         val alert_ex: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         alert_ex.setMessage("로그아웃하시겠습니까?")
         alert_ex.setNegativeButton("네") { _, _ ->
-            Command().deleteAll(requireContext())
+            Command.deleteAll(requireContext())
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(requireContext(), LoginActivity::class.java)
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

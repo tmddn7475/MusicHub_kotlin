@@ -73,9 +73,7 @@ class HistoryFragment : Fragment(), MusicListListener {
                         history_text.visibility = View.GONE
                     }
                 }
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
-                }
+                override fun onCancelled(error: DatabaseError) {}
             })
 
         history_list.setOnItemClickListener{ parent, view, position, id ->

@@ -25,7 +25,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musichub.Data.AccountData
-import com.example.musichub.Command
+import com.example.musichub.Object.Command
 import com.example.musichub.Data.MusicData
 import com.example.musichub.R
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -38,7 +38,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class UploadActivity : AppCompatActivity() {
@@ -194,7 +193,7 @@ class UploadActivity : AppCompatActivity() {
     }
 
     private fun uploadImageToServer(byteArray: ByteArray, fileName:String){
-        val uploadTask = storageReference.child("Song_Thumbnails").child("$email/${fileName}_${Command().getTime3()}").putBytes(byteArray)
+        val uploadTask = storageReference.child("Song_Thumbnails").child("$email/${fileName}_${Command.getTime3()}").putBytes(byteArray)
         uploadTask.addOnSuccessListener { p0 ->
             val task: Task<Uri> = p0!!.storage.downloadUrl
             while (!task.isComplete);
@@ -208,7 +207,7 @@ class UploadActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun uploadFileToServer(uri: Uri, songName:String, description:String, duration:String, category:String){
-        val filePath = storageReference.child("Audios").child("$email/${songName}_${Command().getTime3()}")
+        val filePath = storageReference.child("Audios").child("$email/${songName}_${Command.getTime3()}")
         filePath.putFile(uri).addOnSuccessListener { p0 ->
             val task: Task<Uri> = p0!!.storage.downloadUrl
             while (!task.isComplete);
@@ -228,7 +227,7 @@ class UploadActivity : AppCompatActivity() {
 
     private fun uploadDetailsToDatabase(songName:String, songUri: String, imageUri:String, description:String, songDuration:String, songCategory:String){
         val musicData = MusicData(songName = songName, songUrl = songUri, imageUrl = imageUri, songArtist = nickName, email = email,
-            songInfo = description, songDuration = songDuration, songCategory = songCategory, time = Command().getTime())
+            songInfo = description, songDuration = songDuration, songCategory = songCategory, time = Command.getTime())
 
         FirebaseDatabase.getInstance().getReference("Songs").push().setValue(musicData)
             .addOnCompleteListener {

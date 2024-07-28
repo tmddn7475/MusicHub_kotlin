@@ -20,7 +20,7 @@ import com.example.musichub.Activity.UploadActivity
 import com.example.musichub.Data.AccountData
 import com.example.musichub.R
 import com.example.musichub.Adapter.ViewPagerAdapter
-import com.example.musichub.Command
+import com.example.musichub.Object.Command
 import com.example.musichub.Fragment1.Follow.FollowerFragment
 import com.example.musichub.Fragment1.Follow.FollowingFragment
 import com.example.musichub.MainActivity
@@ -146,12 +146,12 @@ class AccountFragment : Fragment() {
         // 팔로우
         account_follow.setOnClickListener{
             if(follow_check){
-                Command().unfollow(follow_key)
+                Command.unfollow(follow_key)
                 account_follow.setImageResource(R.drawable.baseline_person_add_24)
                 Toast.makeText(requireContext(), "해당 계정을 언팔로우했습니다", Toast.LENGTH_SHORT).show()
                 follow_check = false
             } else {
-                Command().follow(getEmail)
+                Command.follow(getEmail)
                 account_follow.setImageResource(R.drawable.baseline_person_add_disabled_24)
                 Toast.makeText(requireContext(), "해당 계정을 팔로우했습니다", Toast.LENGTH_SHORT).show()
                 follow_check = true

@@ -21,7 +21,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.example.musichub.Command
+import com.example.musichub.Object.Command
 import com.example.musichub.Data.AccountData
 import com.example.musichub.Data.AlbumData
 import com.example.musichub.R
@@ -132,7 +132,7 @@ class AddAlbumActivity : AppCompatActivity() {
     }
 
     private fun uploadImageToServer(image: ByteArray, fileName: String, desc: String){
-        val uploadTask = FirebaseStorage.getInstance().getReference().child("PlayLists_Thumbnails").child("$email/${fileName}_${Command().getTime3()}").putBytes(image)
+        val uploadTask = FirebaseStorage.getInstance().getReference().child("PlayLists_Thumbnails").child("$email/${fileName}_${Command.getTime3()}").putBytes(image)
         uploadTask.addOnSuccessListener { p0 ->
             val task: Task<Uri> = p0!!.storage.downloadUrl
             while (!task.isComplete);

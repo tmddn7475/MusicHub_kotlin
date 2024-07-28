@@ -9,7 +9,7 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.musichub.Adapter.Base.MyAlbumAdapter
-import com.example.musichub.Command
+import com.example.musichub.Object.Command
 import com.example.musichub.Data.AlbumData
 import com.example.musichub.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -46,7 +46,7 @@ class SongToAlbumFragment : BottomSheetDialogFragment() {
 
         song_to_list_view.setOnItemClickListener{ _, _, position, _ ->
             val key = keyList[position]
-            Command().putTrack(key, url)
+            Command.putTrack(key, url)
             Toast.makeText(requireContext(), "곡이 앨범에 추가되었습니다\n" + "중복이 있을 경우 추가되지 않습니다", Toast.LENGTH_SHORT).show()
             dismiss()
         }

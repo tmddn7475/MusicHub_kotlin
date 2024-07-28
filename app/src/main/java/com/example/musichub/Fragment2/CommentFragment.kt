@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.musichub.Adapter.Recycler.CommentAdapter
-import com.example.musichub.Command
+import com.example.musichub.Object.Command
 import com.example.musichub.Data.AccountData
 import com.example.musichub.Data.CommentData
 import com.example.musichub.Data.MusicData
@@ -87,7 +87,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentListener {
 
     // 댓글 등록
     private fun uploadComment(email:String, name:String, imageUrl:String, comment:String, songUrl: String){
-        val data = CommentData(email = email, nickname = name, imageUrl = imageUrl, comment = comment, time = Command().getTime2(), songUrl = songUrl)
+        val data = CommentData(email = email, nickname = name, imageUrl = imageUrl, comment = comment, time = Command.getTime2(), songUrl = songUrl)
         FirebaseDatabase.getInstance().getReference("Comments").push().setValue(data)
             .addOnCompleteListener {
                 Toast.makeText(context, "등록 완료 되었습니다", Toast.LENGTH_SHORT).show()

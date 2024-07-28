@@ -30,7 +30,7 @@ import com.example.musichub.Interface.MusicListener
 import com.example.musichub.MainActivity
 import com.example.musichub.R
 import com.example.musichub.Activity.UploadActivity
-import com.example.musichub.Command
+import com.example.musichub.Object.Command
 import com.example.musichub.Data.AccountData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -103,6 +103,7 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
                 }
                 dialog.dismiss()
                 songsList.adapter = musicListAdapter
+
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
@@ -110,7 +111,7 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
             }
         })
 
-        songsList.setOnItemClickListener { parent, view, position, id ->
+        songsList.setOnItemClickListener { _, _, position, _ ->
             val data = list_item[position]
             val url:String = data.songUrl
             musicListener.playMusic(url)
@@ -140,15 +141,15 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
         logout.setOnClickListener{
             val alert_ex:AlertDialog.Builder = AlertDialog.Builder(requireContext())
             alert_ex.setMessage("로그아웃하시겠습니까?")
-            alert_ex.setNegativeButton("네") { dialog, which ->
-                Command().deleteAll(requireContext())
+            alert_ex.setNegativeButton("네") { _, _ ->
+                Command.deleteAll(requireContext())
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(requireContext(), LoginActivity::class.java)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
                 ActivityCompat.finishAffinity(requireActivity())
             }
-            alert_ex.setPositiveButton("아니요") { dialog, which ->
+            alert_ex.setPositiveButton("아니요") { dialog, _ ->
                 dialog.dismiss()
             }
             val alert = alert_ex.create()

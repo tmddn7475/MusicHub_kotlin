@@ -24,7 +24,6 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.musichub.Data.HistoryData
 import com.example.musichub.Data.MusicData
@@ -36,6 +35,7 @@ import com.example.musichub.Fragment2.EtcFragment
 import com.example.musichub.Fragment2.MediaFragment
 import com.example.musichub.Fragment2.PlaylistFragment
 import com.example.musichub.Interface.MusicListener
+import com.example.musichub.Object.Command
 import com.example.musichub.RoomDB.PlaylistDatabase
 import com.example.musichub.RoomDB.PlaylistEntity
 import com.example.musichub.Service.MusicService
@@ -114,18 +114,6 @@ class MainActivity : AppCompatActivity(), MusicListener {
         bar_song = findViewById(R.id.bar_song_name)
         bar_artist = findViewById(R.id.bar_song_artist)
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
-
-        // 새로고침
-        val swipe: SwipeRefreshLayout = findViewById(R.id.refreshLayout)
-        swipe.setDistanceToTriggerSync(600)
-        swipe.setOnRefreshListener {
-            val fragment = supportFragmentManager.findFragmentById(R.id.container)
-            if (fragment != null) {
-                supportFragmentManager.beginTransaction().detach(fragment).commit()
-                supportFragmentManager.beginTransaction().attach(fragment).commit()
-            }
-            swipe.isRefreshing = false
-        }
 
         // bottomNavigationView
         supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment(this)).commit()
@@ -241,7 +229,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
     // 인터넷 연결 확인
     private fun checkInternet(){
-        val internet = Command().getInternet(this)
+        val internet = Command.getInternet(this)
         if(internet == 0){
             val alertEx: AlertDialog.Builder = AlertDialog.Builder(this)
             alertEx.setMessage("네트워크 연결을 해주시길 바랍니다")
@@ -316,7 +304,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
     fun saveSong(url: String){
         val r = Runnable {
             if(db?.musicDAO()?.getCount(url)!! < 1){
-                val data = PlaylistEntity(songUrl = url, time = Command().getTime2())
+                val data = PlaylistEntity(songUrl = url, time = Command.getTime2())
                 db?.musicDAO()?.saveSong(data)!!
             }
         }
@@ -419,7 +407,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         // 최대 타임스탬프 값에서 현재 타임스탬프를 뺀 값을 키로 사용, 데이터를 내림차순으로 저장
         val descendingKey = Long.MAX_VALUE - timestamp
 
-        val historyData = HistoryData(songUrl = str, email = email, time = Command().getTime2())
+        val historyData = HistoryData(songUrl = str, email = email, time = Command.getTime2())
         FirebaseDatabase.getInstance().getReference("History").child(descendingKey.toString()).setValue(historyData)
     }
 
