@@ -117,6 +117,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
         // 새로고침
         val swipe: SwipeRefreshLayout = findViewById(R.id.refreshLayout)
+        swipe.setDistanceToTriggerSync(600)
         swipe.setOnRefreshListener {
             val fragment = supportFragmentManager.findFragmentById(R.id.container)
             if (fragment != null) {
@@ -431,7 +432,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
                 if (System.currentTimeMillis() > backPressedTime + 2000) {
                     backPressedTime = System.currentTimeMillis()
                     Snackbar.make(
-                        findViewById(R.id.main),
+                        findViewById(R.id.refreshLayout),
                         "뒤로 버튼을 한번 더 누르면 종료됩니다",
                         Snackbar.LENGTH_SHORT
                     ).setAnchorView(R.id.include)
