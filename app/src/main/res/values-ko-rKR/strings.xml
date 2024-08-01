@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MusicHub_kotlin</string>
+    <string name="home">홈</string>
+    <string name="feed">팔로우</string>
+    <string name="search">검색</string>
+    <string name="library">보관함</string>
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="remember">" 자동 로그인"</string>
+</resources>

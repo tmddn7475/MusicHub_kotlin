@@ -5,24 +5,24 @@
         android:id="@+id/bottom_home"
         android:enabled="true"
         android:icon="@drawable/baseline_home_filled_24"
-        android:title="홈"
-        app:showAsAction="always"/>
+        android:title="@string/home"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/bottom_feed"
         android:enabled="true"
         android:icon="@drawable/baseline_favorite_border_24"
-        android:title="팔로우"
-        app:showAsAction="always"/>
+        android:title="@string/feed"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/bottom_search"
         android:enabled="true"
         android:icon="@drawable/baseline_search_24"
-        android:title="검색"
-        app:showAsAction="always"/>
+        android:title="@string/search"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/bottom_library"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_library_music_24"
-        android:title="보관함"
-        app:showAsAction="always"/>
+        android:title="@string/library"
+        app:showAsAction="ifRoom"/>
 </menu>

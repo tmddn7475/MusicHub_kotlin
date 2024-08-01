@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">MusicHub_kotlin</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">home</string>
+    <string name="feed">Feed</string>
+    <string name="search">Search</string>
+    <string name="library">Library</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="remember">" remember-me"</string>
 </resources>

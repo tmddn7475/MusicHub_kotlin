@@ -46,6 +46,7 @@ class FollowingFragment : Fragment() {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.children.iterator().hasNext()){
+                        list.clear()
                         for(ds: DataSnapshot in snapshot.children){
                             val data = ds.getValue<FollowData>()
                             if(data != null){
@@ -83,7 +84,6 @@ class FollowingFragment : Fragment() {
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    list.clear()
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<AccountData>()
                         if(data != null){
