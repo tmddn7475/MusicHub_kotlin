@@ -68,4 +68,6 @@
     <string name="show_less">닫기</string>
     <string name="history">음악 기록</string>
     <string name="song_to_playlist">재생목록에 추가되었습니다\n중복이 있을 경우 추가되지 않습니다\\</string>
+    <string name="general">일반</string>
+    <string name="account">계정 정보</string>
 </resources>
