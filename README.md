@@ -1,6 +1,6 @@
 # MusicHub (kotlin)
 
-Supported Language - English (70%), Korean
+Supported Language - English (60%), Korean
 
 원본 - https://github.com/tmddn7475/MusicHub/tree/master
 
