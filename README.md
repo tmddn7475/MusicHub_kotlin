@@ -27,7 +27,12 @@ mediaSessionService 개선
 ### 중요
 
 1. 어플을 실행하기 위해선 먼저 파이어베이스를 연동해주시길 바랍니다
-2. Realtime Database, Authentication, Storage을 만들어주세요
+
+   To run the app, please connect Firebase first.
+   
+3. Realtime Database, Authentication, Storage을 만들어주세요
+
+   Please create Realtime Database, Authentication, and Storage
    
 <img width="250" alt="1" src="https://github.com/user-attachments/assets/dde87610-c257-439c-8817-16a6852de2f4">
 <img width="250" alt="2" src="https://github.com/user-attachments/assets/20406ed2-65fb-483d-970a-d0166c429d32">
