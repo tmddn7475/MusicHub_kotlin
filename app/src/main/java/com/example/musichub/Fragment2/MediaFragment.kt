@@ -137,12 +137,10 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
                 Command.uncheckLike(like_key)
                 media_like_btn.setImageResource(R.drawable.baseline_favorite_border_24)
                 like_check = false
-                Toast.makeText(requireContext(), "해당 곡이 좋아요에 삭제되었습니다", Toast.LENGTH_SHORT).show()
             } else {
                 Command.checkLike(mainActivity.current_url)
                 media_like_btn.setImageResource(R.drawable.baseline_favorite_24)
                 like_check = true
-                Toast.makeText(requireContext(), "해당 곡이 좋아요에 추가되었습니다", Toast.LENGTH_SHORT).show()
             }
         }
 

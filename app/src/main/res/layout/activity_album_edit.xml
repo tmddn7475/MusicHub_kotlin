@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="앨범 편집하기"
+            android:text="@string/edit_album"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:text="저장"
+            android:text="@string/save_change"
             android:textSize="22sp"
             android:layout_marginEnd="3dp"
             android:textStyle="bold"
@@ -61,7 +61,7 @@
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="내 앨범 제목"
+            android:text="@string/title"
             android:textColor="@color/white"
             android:layout_marginTop="16dp"
             android:layout_marginStart="20dp"
@@ -88,7 +88,7 @@
             android:layout_marginTop="16dp"
             android:textSize="18sp"
             android:textColor="@color/white"
-            android:text="내 앨범 설명"
+            android:text="@string/description"
             android:layout_marginStart="20dp" />
 
         <EditText
@@ -134,7 +134,7 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
-                android:text="공개설정"
+                android:text="@string/privacy"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -165,7 +165,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/blue_dark"
         android:gravity="center"
-        android:text="삭제"
+        android:text="@string/remove_track"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold" />

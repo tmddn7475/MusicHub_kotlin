@@ -132,7 +132,7 @@ class EtcFragment : BottomSheetDialogFragment() {
             }
             val thread = Thread(r)
             thread.start()
-            Toast.makeText(requireContext(), "재생목록에 추가되었습니다\n" + "중복이 있을 경우 추가되지 않습니다", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.song_to_playlist), Toast.LENGTH_SHORT).show()
             dismiss()
         }
 
@@ -142,12 +142,10 @@ class EtcFragment : BottomSheetDialogFragment() {
                 Command.uncheckLike(like_key)
                 etc_like_img.setImageResource(R.drawable.baseline_favorite_border_24)
                 like_check = false
-                Toast.makeText(requireContext(), "해당 곡이 좋아요에 삭제되었습니다", Toast.LENGTH_SHORT).show()
             } else {
                 Command.checkLike(getUrl)
                 etc_like_img.setImageResource(R.drawable.baseline_favorite_24)
                 like_check = true
-                Toast.makeText(requireContext(), "해당 곡이 좋아요에 추가되었습니다", Toast.LENGTH_SHORT).show()
             }
         }
 

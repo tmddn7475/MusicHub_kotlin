@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/add_my_list"
-        android:text="앨범 추가"
+        android:text="@string/add_album"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         android:id="@+id/my_list_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="앨범이 존재하지 않습니다"
+        android:text="@string/not_exist"
         android:visibility="gone"
         android:gravity="center"
         android:textColor="@color/white"/>

@@ -100,8 +100,8 @@ class AlbumEditActivity : AppCompatActivity() {
         // 리스트에서 체크 된 걸 제거
         album_edit_delete.setOnClickListener{
             val alertEx: AlertDialog.Builder = AlertDialog.Builder(this@AlbumEditActivity)
-            alertEx.setMessage("선택된 곡들이 삭제됩니다")
-            alertEx.setNegativeButton("확인"){ _, _ ->
+            alertEx.setMessage(getString(R.string.delete_selected_track))
+            alertEx.setNegativeButton(getString(R.string.yes)){ _, _ ->
                 val checkItems: SparseBooleanArray = album_edit_list.checkedItemPositions
                 for(i in list.indices){
                     if(checkItems.get(i)){
@@ -111,7 +111,7 @@ class AlbumEditActivity : AppCompatActivity() {
                 album_edit_list.clearChoices()
                 albumEditAdapter.notifyDataSetChanged()
             }
-            alertEx.setPositiveButton("취소") { dialog, _ ->
+            alertEx.setPositiveButton(getString(R.string.no)) { dialog, _ ->
                 dialog.dismiss()
             }
             val alert = alertEx.create()
@@ -121,17 +121,7 @@ class AlbumEditActivity : AppCompatActivity() {
 
         // 저장
         album_edit_save.setOnClickListener{
-            val alertEx2: AlertDialog.Builder = AlertDialog.Builder(this@AlbumEditActivity)
-            alertEx2.setMessage("저장하시겠습니까?")
-            alertEx2.setNegativeButton("네") { _, _ ->
-                albumEdit()
-            }
-            alertEx2.setPositiveButton("아니요") { dialog, _ ->
-                dialog.dismiss()
-            }
-            val alert = alertEx2.create()
-            alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
-            alert.show()
+            albumEdit()
         }
 
         back_btn.setOnClickListener{
@@ -164,7 +154,7 @@ class AlbumEditActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    Toast.makeText(this@AlbumEditActivity, "정보가 수정되었습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AlbumEditActivity, "error", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                     finish()
                 }

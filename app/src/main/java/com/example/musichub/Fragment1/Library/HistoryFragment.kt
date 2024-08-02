@@ -100,7 +100,7 @@ class HistoryFragment : Fragment(), MusicListListener {
                     history_list.adapter = musicListAdapter
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
                 }
             })
     }

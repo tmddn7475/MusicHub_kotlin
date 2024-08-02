@@ -76,7 +76,7 @@ class RegisterActivity : AppCompatActivity() {
             val nickname:String = register_nickname.text.toString()
 
             if(email.isEmpty() or password.isEmpty() or passwordCorrect.isEmpty() or nickname.isEmpty()){
-                Toast.makeText(this, "전부 입력해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.enter_all), Toast.LENGTH_SHORT).show()
             } else if(password.length < 6) {
                 Toast.makeText(this, "비밀번호를 6자리 이상 입력해주세요", Toast.LENGTH_SHORT).show()
             } else if(password != passwordCorrect) {
@@ -88,8 +88,7 @@ class RegisterActivity : AppCompatActivity() {
                         if (p0.isComplete) {
                             uploadImageToServer(byteArray, email, password, nickname)
                         } else {
-                            Toast.makeText(this@RegisterActivity, "다시 시도해주세요", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(this@RegisterActivity, getString(R.string.try_again), Toast.LENGTH_SHORT).show()
                         }
                     }
             }
@@ -111,7 +110,7 @@ class RegisterActivity : AppCompatActivity() {
                 val urlSong = task.result
                 addAccount(email, pwd, name, urlSong.toString())
             }.addOnFailureListener {
-                Toast.makeText(this, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
         }

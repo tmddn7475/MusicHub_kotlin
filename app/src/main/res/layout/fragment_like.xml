@@ -19,7 +19,7 @@
         android:id="@+id/like_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="곡이 존재하지 않습니다"
+        android:text="@string/not_exist"
         android:visibility="gone"
         android:gravity="center"
         android:textColor="@color/white"/>

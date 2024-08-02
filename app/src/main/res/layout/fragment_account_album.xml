@@ -19,6 +19,6 @@
         android:gravity="center"
         android:visibility="invisible"
         android:textColor="@color/white"
-        android:text="앨범이 존재하지 않습니다" />
+        android:text="@string/not_exist" />
 
 </FrameLayout>

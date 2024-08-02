@@ -232,8 +232,8 @@ class MainActivity : AppCompatActivity(), MusicListener {
         val internet = Command.getInternet(this)
         if(internet == 0){
             val alertEx: AlertDialog.Builder = AlertDialog.Builder(this)
-            alertEx.setMessage("네트워크 연결을 해주시길 바랍니다")
-            alertEx.setNegativeButton("확인") { _, _ ->
+            alertEx.setMessage(getString(R.string.check_network))
+            alertEx.setNegativeButton(getString(R.string.ok)) { _, _ ->
                 finishAffinity()
                 onDestroy()
             }.setCancelable(false)
@@ -270,7 +270,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@MainActivity, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, getString(R.string.try_again), Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -421,7 +421,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
                     backPressedTime = System.currentTimeMillis()
                     Snackbar.make(
                         findViewById(R.id.refreshLayout),
-                        "뒤로 버튼을 한번 더 누르면 종료됩니다",
+                        getString(R.string.tap_back_again),
                         Snackbar.LENGTH_SHORT
                     ).setAnchorView(R.id.include)
                         .setTextColor(Color.WHITE).setBackgroundTint(Color.parseColor("#323232"))

@@ -45,7 +45,7 @@
 
         <TextView
             android:id="@+id/textView1"
-            android:text="존재하지 않습니다"
+            android:text="@string/not_exist"
             android:textColor="@color/white"
             android:gravity="center"
             android:visibility="gone"

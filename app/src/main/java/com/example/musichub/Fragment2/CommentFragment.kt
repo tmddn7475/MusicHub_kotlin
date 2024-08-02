@@ -75,7 +75,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentListener {
         comment_send.setOnClickListener{
             val comment = comment_edit.text.toString()
             if(comment.isEmpty()){
-                Toast.makeText(context, "내용을 적어주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.enter_all), Toast.LENGTH_SHORT).show()
             } else {
                 uploadComment(email, nickname, imageUrl, comment, songUrl)
                 comment_edit.text.clear()
@@ -89,9 +89,6 @@ class CommentFragment : BottomSheetDialogFragment(), CommentListener {
     private fun uploadComment(email:String, name:String, imageUrl:String, comment:String, songUrl: String){
         val data = CommentData(email = email, nickname = name, imageUrl = imageUrl, comment = comment, time = Command.getTime2(), songUrl = songUrl)
         FirebaseDatabase.getInstance().getReference("Comments").push().setValue(data)
-            .addOnCompleteListener {
-                Toast.makeText(context, "등록 완료 되었습니다", Toast.LENGTH_SHORT).show()
-            }
     }
 
     // 내 계정 정보

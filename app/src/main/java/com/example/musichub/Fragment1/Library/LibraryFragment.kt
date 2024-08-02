@@ -29,9 +29,9 @@ class LibraryFragment : Fragment() {
         val likeFragment = LikeFragment()
         val historyFragment = HistoryFragment()
 
-        viewPagerAdapter.addFragment(myAlbumFragment, "내 앨범")
-        viewPagerAdapter.addFragment(likeFragment, "좋아요")
-        viewPagerAdapter.addFragment(historyFragment, "음악 기록")
+        viewPagerAdapter.addFragment(myAlbumFragment, getString(R.string.album))
+        viewPagerAdapter.addFragment(likeFragment, getString(R.string.like))
+        viewPagerAdapter.addFragment(historyFragment,  getString(R.string.history))
 
         viewPager.adapter = viewPagerAdapter
         val tm = TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, position: Int ->

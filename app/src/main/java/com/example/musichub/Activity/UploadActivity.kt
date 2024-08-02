@@ -140,11 +140,11 @@ class UploadActivity : AppCompatActivity() {
 
         uploadBtn.setOnClickListener{
             if(uriSong == null){
-                Toast.makeText(this@UploadActivity, "곡 파일을 가져와주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@UploadActivity, getString(R.string.select_track), Toast.LENGTH_SHORT).show()
             } else if(songNameEdit.text.equals("") and songCategoryEdit.text.equals("") and songDescriptionEdit.text.equals("")) {
-                Toast.makeText(this@UploadActivity, "적어주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@UploadActivity, getString(R.string.enter_all), Toast.LENGTH_SHORT).show()
             } else if (image == null) {
-                Toast.makeText(this@UploadActivity, "이미지를 선택해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@UploadActivity, getString(R.string.select_image), Toast.LENGTH_SHORT).show()
             } else {
                 dialog.show()
                 fileName = songNameEdit.text.toString()
@@ -200,7 +200,7 @@ class UploadActivity : AppCompatActivity() {
             val urlSong = task.result
             imageUrl = urlSong.toString()
         }.addOnFailureListener {
-            Toast.makeText(this@UploadActivity, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@UploadActivity, getString(R.string.try_again), Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
     }
@@ -220,7 +220,7 @@ class UploadActivity : AppCompatActivity() {
             val currentProgress: Int = progress.toInt()
             percent.text = "$currentProgress%"
         }.addOnFailureListener{
-            Toast.makeText(this@UploadActivity, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@UploadActivity, getString(R.string.try_again), Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
     }
@@ -231,11 +231,11 @@ class UploadActivity : AppCompatActivity() {
 
         FirebaseDatabase.getInstance().getReference("Songs").push().setValue(musicData)
             .addOnCompleteListener {
-                Toast.makeText(this@UploadActivity, "음악이 업로드되었습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@UploadActivity, getString(R.string.upload_complete), Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
                 finish()
             }.addOnFailureListener {
-                Toast.makeText(this@UploadActivity, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@UploadActivity, getString(R.string.try_again), Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
     }

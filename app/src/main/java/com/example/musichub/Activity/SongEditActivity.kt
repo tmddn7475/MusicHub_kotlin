@@ -38,7 +38,7 @@ class SongEditActivity : AppCompatActivity() {
 
     var songKey: String = ""
     var imageUrl: String = ""
-    val category_arr:Array<String> = arrayOf("None", "Ambient", "Classical", "Dance & EDM",
+    private val category_arr:Array<String> = arrayOf("None", "Ambient", "Classical", "Dance & EDM",
         "Disco", "Hip hop", "Jazz", "R&B", "Reggae", "Rock")
 
     @SuppressLint("ClickableViewAccessibility")
@@ -99,28 +99,18 @@ class SongEditActivity : AppCompatActivity() {
         }
 
         edit_save_btn.setOnClickListener{
-            val alert_ex:AlertDialog.Builder = AlertDialog.Builder(this@SongEditActivity)
-            alert_ex.setMessage("저장하시겠습니까?")
-            alert_ex.setNegativeButton("네") { dialog, which ->
-                progressDialog.show()
-                saveEdit()
-            }
-            alert_ex.setPositiveButton("아니요") { dialog, which ->
-                dialog.dismiss()
-            }
-            val alert = alert_ex.create()
-            alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
-            alert.show()
+            progressDialog.show()
+            saveEdit()
         }
 
         song_delete.setOnClickListener{
             val alert_ex:AlertDialog.Builder = AlertDialog.Builder(this@SongEditActivity)
-            alert_ex.setMessage("해당 곡을 삭제하시겠습니까?")
-            alert_ex.setNegativeButton("네") { dialog, which ->
+            alert_ex.setMessage(getString(R.string.track_delete_alert))
+            alert_ex.setNegativeButton(getString(R.string.yes)) { _, _ ->
                 progressDialog.show()
                 deleteSong(songKey, songUrl, imageUrl)
             }
-            alert_ex.setPositiveButton("아니요") { dialog, which ->
+            alert_ex.setPositiveButton(getString(R.string.no)) { dialog, _ ->
                 dialog.dismiss()
             }
             val alert = alert_ex.create()
@@ -140,7 +130,7 @@ class SongEditActivity : AppCompatActivity() {
         hashMap["songInfo"] = song_edit_description.text.toString()
 
         FirebaseDatabase.getInstance().getReference("Songs").child(songKey).updateChildren(hashMap)
-        Toast.makeText(this, "저장되었습니다", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.update_track), Toast.LENGTH_SHORT).show()
         progressDialog.dismiss()
         finish()
     }
@@ -160,7 +150,7 @@ class SongEditActivity : AppCompatActivity() {
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@SongEditActivity, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SongEditActivity, "error", Toast.LENGTH_SHORT).show()
                     progressDialog.dismiss()
                 }
             })
@@ -175,7 +165,7 @@ class SongEditActivity : AppCompatActivity() {
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@SongEditActivity, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SongEditActivity, "error", Toast.LENGTH_SHORT).show()
                     progressDialog.dismiss()
                 }
             })
@@ -188,12 +178,12 @@ class SongEditActivity : AppCompatActivity() {
                         val key = ds.key.toString()
                         FirebaseDatabase.getInstance().getReference("PlayLists_song").child(key).removeValue()
                     }
-                    Toast.makeText(this@SongEditActivity, "음악이 삭제되었습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SongEditActivity, getString(R.string.delete_track), Toast.LENGTH_SHORT).show()
                     progressDialog.dismiss()
                     finish()
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@SongEditActivity, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SongEditActivity, getString(R.string.try_again), Toast.LENGTH_SHORT).show()
                     progressDialog.dismiss()
                 }
             })

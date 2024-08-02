@@ -111,7 +111,7 @@ class AlbumFragment : Fragment(), MusicListListener {
         list_play_btn.setOnClickListener{
             playAlbum()
             musicListener.playMusic(list[0].songUrl)
-            Toast.makeText(requireContext(), "곡이 리스트에 추가되었습니다\n" + "중복이 있을 경우 추가되지 않습니다", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.song_to_list), Toast.LENGTH_SHORT).show()
         }
 
         // 앨범 정보
@@ -161,7 +161,7 @@ class AlbumFragment : Fragment(), MusicListListener {
                         }
                         dialog.dismiss()
                     } else {
-                        list_track_num.text = "0곡"
+                        list_track_num.text = "0 track"
                         dialog.dismiss()
                     }
                 }
@@ -184,7 +184,11 @@ class AlbumFragment : Fragment(), MusicListListener {
                             track_num++
                         }
                     }
-                    list_track_num.text = "${track_num}곡"
+                    if(track_num < 2) {
+                        list_track_num.text = "${track_num} track"
+                    } else {
+                        list_track_num.text = "${track_num} tracks"
+                    }
                     musicListAdapter.sort()
                     list_track.adapter = musicListAdapter
                 }
@@ -197,11 +201,11 @@ class AlbumFragment : Fragment(), MusicListListener {
         if(list_description.maxLines == 1){
             list_description.maxLines = Int.MAX_VALUE
             list_description.ellipsize = null
-            list_show_more.text = "닫기"
+            list_show_more.text = getString(R.string.show_less)
         } else {
             list_description.maxLines = 1
             list_description.ellipsize = TextUtils.TruncateAt.END
-            list_show_more.text = "더 보기"
+            list_show_more.text = getString(R.string.show_more)
         }
     }
 

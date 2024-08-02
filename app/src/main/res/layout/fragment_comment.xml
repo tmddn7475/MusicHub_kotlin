@@ -24,10 +24,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="댓글"
+                android:text="@string/comment"
                 android:layout_alignParentStart="true"
                 android:textColor="@color/white"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:layout_centerVertical="true"
                 android:textStyle="bold" />
 
@@ -77,17 +77,17 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/comment_song_artist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:gravity="start"
                 android:text=""
                 android:textColor="#B5B5B5"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -114,7 +114,7 @@
 
             <EditText
                 android:id="@+id/comment_edit"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="8dp"
@@ -123,7 +123,7 @@
                 android:maxLength="500"
                 android:padding="8dp"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/comment_send"
                 app:layout_constraintStart_toStartOf="parent" />

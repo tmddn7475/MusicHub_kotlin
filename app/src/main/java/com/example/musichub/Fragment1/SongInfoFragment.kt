@@ -97,7 +97,7 @@ class SongInfoFragment : Fragment() {
                     info_song_play.text = num.toString()
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                 }
             })
@@ -112,7 +112,7 @@ class SongInfoFragment : Fragment() {
                     info_song_like.text = num.toString()
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                 }
             })
@@ -142,7 +142,7 @@ class SongInfoFragment : Fragment() {
                     dialog.dismiss()
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(requireContext(), "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                 }
             })

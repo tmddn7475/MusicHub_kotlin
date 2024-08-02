@@ -14,7 +14,6 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
-            app:queryHint="검색어를 입력하세요"
             app:iconifiedByDefault="false"
             app:searchIcon="@drawable/baseline_search_24"
             app:queryBackground="@null"
@@ -28,16 +27,16 @@
             android:layout_marginStart="22dp"
             android:layout_marginVertical="8dp"
             android:gravity="center"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:text="최근 검색어" />
+            android:text="@string/recent" />
 
         <TextView
             android:id="@+id/none"
             android:textColor="@color/white"
-            android:textSize="16dp"
-            android:text="최근 검색어가 없습니다"
+            android:textSize="16sp"
+            android:text="@string/not_exist"
             android:visibility="gone"
             android:gravity="center"
             android:layout_width="match_parent"

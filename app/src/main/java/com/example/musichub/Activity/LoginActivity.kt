@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     // If sign in fails, display a message to the user.
                     dialog.dismiss()
-                    Toast.makeText(this, "다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.try_again), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -98,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
         override fun handleOnBackPressed() {
             if (System.currentTimeMillis() > backPressedTime + 2000){
                 backPressedTime = System.currentTimeMillis()
-                Snackbar.make(findViewById(R.id.login_activity), "뒤로 버튼을 한번 더 누르면 종료됩니다", Snackbar.LENGTH_SHORT)
+                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.tap_back_again), Snackbar.LENGTH_SHORT)
                     .setTextColor(Color.WHITE).setBackgroundTint(Color.parseColor("#323232")).show()
             } else if (System.currentTimeMillis() <= backPressedTime + 2000){
                 finishAffinity()

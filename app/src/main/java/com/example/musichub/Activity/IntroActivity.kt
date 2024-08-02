@@ -20,8 +20,8 @@ class IntroActivity : AppCompatActivity() {
 
         if(internet == 0){
             val alertEx: AlertDialog.Builder = AlertDialog.Builder(this)
-            alertEx.setMessage("네트워크 연결을 해주시길 바랍니다")
-            alertEx.setNegativeButton("확인") { _, _ ->
+            alertEx.setMessage(getString(R.string.check_network))
+            alertEx.setNegativeButton(getString(R.string.ok)) { _, _ ->
                 finishAffinity()
             }.setCancelable(false)
             val alert = alertEx.create()
@@ -33,7 +33,7 @@ class IntroActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, LoginActivity::class.java)
                 startActivity(intent)
                 finishAffinity()
-            }, 1500) //1.5초 후 로그인 액티비티로 넘어감
+            }, 1500)
         }
     }
 }

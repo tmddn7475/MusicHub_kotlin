@@ -24,11 +24,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
-                android:gravity="left"
-                android:text="검색결과"
+                android:text="@string/result"
                 android:layout_centerInParent="true"
                 android:textColor="@color/white"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <ImageView

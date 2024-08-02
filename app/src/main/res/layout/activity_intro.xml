@@ -21,9 +21,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MusicHub"
+        android:text="@string/app_name"
         android:textColor="@color/white"
-        android:textSize="28dp"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -39,9 +39,9 @@ import java.io.ByteArrayOutputStream
 @SuppressLint("UseSwitchCompatOrMaterialCode")
 class AddAlbumActivity : AppCompatActivity() {
 
-    var set_mode: String = "private"
-    var image: Uri? = null
-    var byteArray: ByteArray? = null
+    private var set_mode: String = "private"
+    private var image: Uri? = null
+    private var byteArray: ByteArray? = null
     var nickname: String = ""
 
     lateinit var list_back_btn: ImageView
@@ -79,11 +79,11 @@ class AddAlbumActivity : AppCompatActivity() {
             finish()
         }
 
-        my_list_set.setOnCheckedChangeListener{ buttonView, isChecked ->
-            if(isChecked){
-                set_mode = "public"
+        my_list_set.setOnCheckedChangeListener{ _, isChecked ->
+            set_mode = if(isChecked){
+                "public"
             } else {
-                set_mode = "private"
+                "private"
             }
         }
 
@@ -121,9 +121,9 @@ class AddAlbumActivity : AppCompatActivity() {
         // 업로드
         list_upload_btn.setOnClickListener{
             if(image == null) {
-                Toast.makeText(this@AddAlbumActivity, "이미지를 선택해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddAlbumActivity, getString(R.string.select_image), Toast.LENGTH_SHORT).show()
             } else if (list_name.text.equals("")){
-                Toast.makeText(this@AddAlbumActivity, "앨범 이름을 적어주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddAlbumActivity, getString(R.string.enter_album_title), Toast.LENGTH_SHORT).show()
             } else {
                 dialog.show()
                 uploadImageToServer(byteArray!!, list_name.text.toString(), list_description.text.toString())
@@ -140,7 +140,7 @@ class AddAlbumActivity : AppCompatActivity() {
             val imageUrl = urlSong.toString()
             createPlayList(fileName, set_mode, desc, imageUrl)
         }.addOnFailureListener {
-            Toast.makeText(this@AddAlbumActivity, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@AddAlbumActivity, "error", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
     }
@@ -166,7 +166,7 @@ class AddAlbumActivity : AppCompatActivity() {
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@AddAlbumActivity, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddAlbumActivity, "error", Toast.LENGTH_SHORT).show()
                 }
             })
     }

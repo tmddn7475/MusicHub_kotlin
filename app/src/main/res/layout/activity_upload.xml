@@ -20,12 +20,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:gravity="left"
-            android:text="업로드"
+            android:text="@string/upload_track"
             android:textColor="@color/white"
             android:layout_centerInParent="true"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <ImageView
@@ -46,7 +44,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
@@ -65,9 +63,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:textColor="@color/white"
-                android:textSize="18dp"
-                android:text="노래 제목"
-                android:layout_marginLeft="36dp" />
+                android:textSize="18sp"
+                android:text="@string/title"
+                android:layout_marginStart="36dp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -94,7 +92,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/foler_open"/>
+                    android:src="@drawable/folder_open"/>
 
             </RelativeLayout>
 
@@ -103,10 +101,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textColor="@color/white"
-                android:text="장르"
-                android:layout_marginLeft="36dp" />
+                android:text="@string/genre"
+                android:layout_marginStart="36dp" />
 
             <EditText
                 android:id="@+id/upload_song_category"
@@ -128,10 +126,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textSize="18dp"
-                android:text="설명"
+                android:textSize="18sp"
+                android:text="@string/description"
                 android:textColor="@color/white"
-                android:layout_marginLeft="36dp" />
+                android:layout_marginStart="36dp" />
 
             <EditText
                 android:id="@+id/upload_song_description"
@@ -141,7 +139,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/edit_text_layout"
-                android:gravity="left"
+                android:gravity="start"
                 android:inputType="textMultiLine"
                 android:maxLength="2000"
                 android:paddingStart="10dp"
@@ -156,9 +154,9 @@
             <TextView
                 android:id="@+id/upload_length"
                 android:textColor="@color/gray3"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:text="0 / 2000"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:layout_marginTop="3dp"
                 android:layout_marginEnd="36dp"
                 android:layout_width="wrap_content"
@@ -174,8 +172,8 @@
                 android:layout_marginBottom="32dp"
                 android:backgroundTint="@color/blue_dark"
                 android:textColor="@color/white"
-                android:text="업로드"
-                android:textSize="20dp"
+                android:text="@string/upload_track"
+                android:textSize="20sp"
                 app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.MediumComponent" />
 
         </LinearLayout>

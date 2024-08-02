@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:textSize="16sp"
-                android:text="더 보기"
+                android:text="@string/show_more"
                 android:textColor="@color/blue_dark"/>
 
         </LinearLayout>

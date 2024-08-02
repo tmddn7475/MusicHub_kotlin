@@ -21,11 +21,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:gravity="left"
             android:textColor="@color/white"
-            android:text="회원가입"
+            android:text="@string/sign_up"
             android:layout_centerInParent="true"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <ImageView
@@ -63,7 +62,7 @@
                 android:id="@+id/register_image_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="프로필 사진 설정"
+                android:text="@string/select_image"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
                 app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.MediumComponent"
@@ -77,10 +76,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:textSize="18dp"
-                android:text="이메일"
+                android:textSize="18sp"
+                android:text="@string/email"
                 android:textColor="@color/white"
-                android:layout_marginLeft="36dp"
+                android:layout_marginStart="36dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/register_image_btn" />
 
@@ -106,10 +105,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="비밀번호 (6자리 이상)"
+                android:text="@string/password"
                 android:textColor="@color/white"
-                android:textSize="18dp"
-                android:layout_marginLeft="36dp"
+                android:textSize="18sp"
+                android:layout_marginStart="36dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_email" />
 
@@ -136,10 +135,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textSize="18dp"
-                android:text="비밀번호 확인"
+                android:textSize="18sp"
+                android:text="@string/repeat_password"
                 android:textColor="@color/white"
-                android:layout_marginLeft="36dp"
+                android:layout_marginStart="36dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_pwd" />
 
@@ -166,10 +165,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textSize="18dp"
-                android:text="닉네임"
+                android:textSize="18sp"
+                android:text="@string/nickname"
                 android:textColor="@color/white"
-                android:layout_marginLeft="36dp"
+                android:layout_marginStart="36dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_pwd_check" />
 
@@ -202,9 +201,9 @@
                 android:elevation="5dp"
                 app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.MediumComponent"
                 android:backgroundTint="@color/blue_dark"
-                android:text="회원가입"
+                android:text="@string/sign_up"
                 android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

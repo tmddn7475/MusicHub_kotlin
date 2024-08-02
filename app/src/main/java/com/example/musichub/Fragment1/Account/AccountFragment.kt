@@ -90,8 +90,8 @@ class AccountFragment : Fragment() {
         trackFragment.arguments = bundle
         albumFragment.arguments = bundle
 
-        viewPagerAdapter.addFragment(trackFragment, "곡")
-        viewPagerAdapter.addFragment(albumFragment, "앨범")
+        viewPagerAdapter.addFragment(trackFragment, getString(R.string.track))
+        viewPagerAdapter.addFragment(albumFragment, getString(R.string.album))
 
         viewPager.adapter = viewPagerAdapter
         val tm = TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, position: Int ->
@@ -148,12 +148,12 @@ class AccountFragment : Fragment() {
             if(follow_check){
                 Command.unfollow(follow_key)
                 account_follow.setImageResource(R.drawable.baseline_person_add_24)
-                Toast.makeText(requireContext(), "해당 계정을 언팔로우했습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.unfollow), Toast.LENGTH_SHORT).show()
                 follow_check = false
             } else {
                 Command.follow(getEmail)
                 account_follow.setImageResource(R.drawable.baseline_person_add_disabled_24)
-                Toast.makeText(requireContext(), "해당 계정을 팔로우했습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.follow), Toast.LENGTH_SHORT).show()
                 follow_check = true
             }
         }
@@ -266,11 +266,11 @@ class AccountFragment : Fragment() {
         if(account_info.maxLines == 1){
             account_info.maxLines = Int.MAX_VALUE
             account_info.ellipsize = null
-            account_show_more.text = "닫기"
+            account_show_more.text = getString(R.string.show_less)
         } else {
             account_info.maxLines = 1
             account_info.ellipsize = TextUtils.TruncateAt.END
-            account_show_more.text = "더 보기"
+            account_show_more.text = getString(R.string.show_more)
         }
     }
 

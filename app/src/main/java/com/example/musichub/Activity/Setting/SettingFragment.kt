@@ -39,8 +39,8 @@ class SettingFragment: PreferenceFragmentCompat() {
 
     private fun logOut(){
         val alert_ex: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        alert_ex.setMessage("로그아웃하시겠습니까?")
-        alert_ex.setNegativeButton("네") { _, _ ->
+        alert_ex.setMessage(getString(R.string.sign_out_alert))
+        alert_ex.setNegativeButton(getString(R.string.yes)) { _, _ ->
             Command.deleteAll(requireContext())
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(requireContext(), LoginActivity::class.java)
@@ -48,7 +48,7 @@ class SettingFragment: PreferenceFragmentCompat() {
             startActivity(intent)
             ActivityCompat.finishAffinity(requireActivity())
         }
-        alert_ex.setPositiveButton("아니요") { dialog, _ ->
+        alert_ex.setPositiveButton(getString(R.string.no)) { dialog, _ ->
             dialog.dismiss()
         }
         val alert = alert_ex.create()

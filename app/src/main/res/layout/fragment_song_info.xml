@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black"
     tools:context=".Fragment1.SongInfoFragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/black">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -87,13 +87,13 @@
 
                         <TextView
                             android:id="@+id/info_song_name"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="left"
+                            android:layout_gravity="start"
                             android:layout_weight="1"
                             android:text=""
                             android:textColor="@color/white"
-                            android:textSize="24dp"
+                            android:textSize="24sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -106,7 +106,7 @@
                         android:gravity="center"
                         android:text=""
                         android:textColor="#B5B5B5"
-                        android:textSize="18dp" />
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_marginTop="10dp"
@@ -126,7 +126,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="3dp"
                             android:textColor="@color/white"
-                            android:textSize="18dp" />
+                            android:textSize="18sp" />
 
                         <ImageView
                             android:layout_marginStart="6dp"
@@ -140,14 +140,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="18dp" />
+                            android:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/info_song_duration"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="18dp" />
+                            android:textSize="18sp" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -160,12 +160,12 @@
                 android:layout_margin="12dp"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/info_song_desc"
                 android:textColor="@color/white"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:text=""
                 android:paddingHorizontal="12dp"
                 android:paddingBottom="12dp"

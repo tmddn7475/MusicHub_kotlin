@@ -116,7 +116,7 @@ class AccountEditActivity : AppCompatActivity() {
         // 저장
         account_edit_save_btn.setOnClickListener{
             if(account_nickname_edit.text.toString().isEmpty()){
-                Toast.makeText(this@AccountEditActivity, "닉네임을 입력해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AccountEditActivity, getString(R.string.enter_nickname), Toast.LENGTH_SHORT).show()
             } else if(byteArray == null){
                 dialog.show()
                 val hashMap = HashMap<String, Any>()
@@ -133,12 +133,12 @@ class AccountEditActivity : AppCompatActivity() {
 
         password_edit_btn.setOnClickListener{
             val alertEx: AlertDialog.Builder = AlertDialog.Builder(this@AccountEditActivity)
-            alertEx.setMessage("비밀번호를 변경하시겠습니까?\n비밀번호를 재설정하는 메일을 보냅니다")
-            alertEx.setNegativeButton("네") { _, _ ->
-                Toast.makeText(this@AccountEditActivity, "해당 이메일로 비밀번호를 재설정하는 메일을 보냈습니다", Toast.LENGTH_SHORT).show()
+            alertEx.setMessage(getString(R.string.reset_password2))
+            alertEx.setNegativeButton(getString(R.string.yes)) { _, _ ->
+                Toast.makeText(this@AccountEditActivity, getString(R.string.reset_password), Toast.LENGTH_SHORT).show()
                 FirebaseAuth.getInstance().sendPasswordResetEmail(myEmail)
             }
-            alertEx.setPositiveButton("아니요") { dialog, _ ->
+            alertEx.setPositiveButton(getString(R.string.no)) { dialog, _ ->
                 dialog.dismiss()
             }
             val alert = alertEx.create()
@@ -187,7 +187,7 @@ class AccountEditActivity : AppCompatActivity() {
                 FirebaseDatabase.getInstance().getReference("accounts").child(key).updateChildren(hashMap)
                 editNickName(myEmail, account_nickname_edit.text.toString())
             }.addOnFailureListener {
-                Toast.makeText(this, "오류가 발생했습니다! 다시 시도해주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
     }
@@ -232,7 +232,7 @@ class AccountEditActivity : AppCompatActivity() {
                         FirebaseDatabase.getInstance().getReference("PlayLists").child(getKey).updateChildren(hashMap)
                     }
                     dialog.dismiss()
-                    Toast.makeText(this@AccountEditActivity, "정보가 수정되었습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AccountEditActivity, getString(R.string.update_profile), Toast.LENGTH_SHORT).show()
                     finish()
                 }
                 override fun onCancelled(error: DatabaseError) {}
