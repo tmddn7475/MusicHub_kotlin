@@ -189,7 +189,7 @@
                 android:drawablePadding="12dp"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
-                android:text="@string/comment"
+                android:text="@string/comments"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:drawableLeftCompat="@drawable/baseline_comment_24" />

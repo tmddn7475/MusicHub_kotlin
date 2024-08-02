@@ -29,7 +29,7 @@
     <string name="show_more">Show more</string>
     <string name="not_exist">Doesn\'t exist</string>
     <string name="song_to_list">Song has been added to the list\nIf there is a duplicate, it will not be added</string>
-    <string name="comment">Comment</string>
+    <string name="comments">Comments</string>
     <string name="song_info">Song info</string>
     <string name="artist_info">Artist info</string>
     <string name="add_to_my_album">Add to my album</string>

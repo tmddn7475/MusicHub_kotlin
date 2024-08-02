@@ -37,9 +37,9 @@ class SearchResultFragment : Fragment() {
         searchAlbumFragment.arguments = bundle
 
         val viewPagerAdapter = ViewPagerAdapter(requireActivity())
-        viewPagerAdapter.addFragment(searchTrackFragment, "곡")
-        viewPagerAdapter.addFragment(searchAccountFragment, "계정")
-        viewPagerAdapter.addFragment(searchAlbumFragment, "앨범")
+        viewPagerAdapter.addFragment(searchTrackFragment, getString(R.string.track))
+        viewPagerAdapter.addFragment(searchAccountFragment, getString(R.string.account))
+        viewPagerAdapter.addFragment(searchAlbumFragment,  getString(R.string.album))
 
         viewPager.adapter = viewPagerAdapter
         val tm = TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, position: Int ->

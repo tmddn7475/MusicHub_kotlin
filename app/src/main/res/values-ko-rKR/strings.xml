@@ -29,7 +29,7 @@
     <string name="show_more">더 보기</string>
     <string name="not_exist">정보가 존재하지 않습니다</string>
     <string name="song_to_list">곡이 리스트에 추가되었습니다\n중복이 있을 경우 추가되지 않습니다</string>
-    <string name="comment">댓글</string>
+    <string name="comments">댓글</string>
     <string name="song_info">곡 정보</string>
     <string name="artist_info">아티스트 정보</string>
     <string name="add_to_my_album">내 앨범에 추가</string>
