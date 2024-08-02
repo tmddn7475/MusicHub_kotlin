@@ -1,5 +1,7 @@
 # MusicHub (kotlin)
 
+Supported Language - English (70%), Korean
+
 원본 - https://github.com/tmddn7475/MusicHub/tree/master
 
 개발기간 = 2024.06.30 ~ 2024.07.24
