@@ -30,7 +30,7 @@ mediaSessionService 개선
 
 1. 어플을 실행하기 위해선 먼저 파이어베이스를 연동해주시길 바랍니다
 
-   To run the app, please connect Firebase first.
+   To run the app, please connect Firebase first
    
 3. Realtime Database, Authentication, Storage을 만들어주세요
 
