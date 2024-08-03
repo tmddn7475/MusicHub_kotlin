@@ -42,7 +42,7 @@
     <string name="sign_out">Sign out</string>
     <string name="sign_out_alert">Are you sure you want to sign out?</string>
     <string name="yes">Yes</string>
-    <string name="no">no</string>
+    <string name="no">No</string>
     <string name="enter_nickname">Please enter your nickname</string>
     <string name="reset_password">An email has been sent to your email address to reset your password</string>
     <string name="reset_password2">Would you like to change your password?\nSend an email to reset your password</string>
@@ -50,7 +50,7 @@
     <string name="select_image">Please select an image</string>
     <string name="enter_album_title">Please enter the album title</string>
     <string name="delete_selected_track">Selected tracks will be deleted</string>
-    <string name="ok">ok</string>
+    <string name="ok">OK</string>
     <string name="check_network">Please connect to the network</string>
     <string name="tap_back_again">Tap back again to exit</string>
     <string name="try_again">Please try again</string>
@@ -70,4 +70,6 @@
     <string name="song_to_playlist">Song has been added to your playlist\nIf there is a duplicate, it will not be added</string>
     <string name="general">General</string>
     <string name="account">Account</string>
+    <string name="update_album">Your album has been updated successfully</string>
+    <string name="album_delete_alert">Are you sure you want to delete this album?</string>
 </resources>

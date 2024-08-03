@@ -70,4 +70,6 @@
     <string name="song_to_playlist">재생목록에 추가되었습니다\n중복이 있을 경우 추가되지 않습니다\\</string>
     <string name="general">일반</string>
     <string name="account">계정 정보</string>
+    <string name="update_album">정보가 수정되었습니다</string>
+    <string name="album_delete_alert">해당 앨범을 삭제하시겠습니까?</string>
 </resources>

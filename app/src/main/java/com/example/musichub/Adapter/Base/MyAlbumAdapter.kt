@@ -48,14 +48,14 @@ class MyAlbumAdapter(val list: MutableList<AlbumData>, val keyList: MutableList<
 
             album_delete.setOnClickListener {
                 val alert_ex: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
-                alert_ex.setMessage("해당 앨범을 삭제하시겠습니까?")
-                alert_ex.setNegativeButton("네") { _, _ ->
+                alert_ex.setMessage(context.getString(R.string.album_delete_alert))
+                alert_ex.setNegativeButton(context.getString(R.string.yes)) { _, _ ->
                     deleteAlbum(list[position].imageUrl, keyList[position])
                     list.removeAt(position)
                     keyList.removeAt(position)
                     notifyDataSetChanged()
                 }
-                alert_ex.setPositiveButton("아니요") { dialog, _ ->
+                alert_ex.setPositiveButton(context.getString(R.string.no)) { dialog, _ ->
                     dialog.dismiss()
                 }
                 val alert = alert_ex.create()

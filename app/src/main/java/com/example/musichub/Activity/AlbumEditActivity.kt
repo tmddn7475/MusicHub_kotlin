@@ -154,7 +154,7 @@ class AlbumEditActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    Toast.makeText(this@AlbumEditActivity, "error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AlbumEditActivity, getString(R.string.update_album), Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                     finish()
                 }
