@@ -172,7 +172,7 @@
                         android:id="@+id/media_song_current"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:text="0:00"
                         android:textColor="@color/blue_dark"
                         android:layout_gravity="start"
                         android:textSize="16sp"/>
