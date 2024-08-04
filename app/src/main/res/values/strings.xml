@@ -27,7 +27,7 @@
     <string name="delete_track">Delete track</string>
     <string name="upload_track">Upload track</string>
     <string name="show_more">Show more</string>
-    <string name="not_exist">Doesn\'t exist</string>
+    <string name="not_exist">Data doesn\'t exist</string>
     <string name="song_to_list">Song has been added to the list\nIf there is a duplicate, it will not be added</string>
     <string name="comments">Comments</string>
     <string name="song_info">Song info</string>
