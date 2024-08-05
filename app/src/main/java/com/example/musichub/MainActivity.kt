@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
             current_url = sharedUrl
         }
 
+        // mediaSessionService와 mediaController 연결
         val sessionToken = SessionToken(this@MainActivity, ComponentName(this@MainActivity, MusicService::class.java))
         val controllerFuture = MediaController.Builder(this@MainActivity, sessionToken).buildAsync()
         controllerFuture.addListener({
@@ -190,11 +191,11 @@ class MainActivity : AppCompatActivity(), MusicListener {
             }
 
             if(playlistFragment.isAdded){
-                playlistFragment.playlist_progress.setProgress(mediaController?.currentPosition!!.toInt())
+                playlistFragment.playlist_progress.progress = mediaController?.currentPosition!!.toInt()
                 playlistFragment.playlist_progress.max = mediaController?.duration!!.toInt()
             }
             if(mediaFragment.isAdded){
-                mediaFragment.media_seekbar.setProgress(mediaController?.currentPosition!!.toInt())
+                mediaFragment.media_seekbar.progress = mediaController?.currentPosition!!.toInt()
                 mediaFragment.media_seekbar.max = mediaController?.duration!!.toInt()
                 updatePlayingTime()
             }
@@ -218,7 +219,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         }
     }
 
-    // 상태 확인
+    // 재생 상태 확인
     private fun checkPlayState() {
         if (mediaController?.isPlaying() == true) {
             bar_play_btn.setImageResource(R.drawable.pause)

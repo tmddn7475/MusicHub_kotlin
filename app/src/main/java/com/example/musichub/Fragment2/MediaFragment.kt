@@ -1,5 +1,6 @@
 package com.example.musichub.Fragment2
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -9,7 +10,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.media3.session.MediaController
 import com.bumptech.glide.Glide
 import com.example.musichub.Object.Command
@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import de.hdodenhof.circleimageview.CircleImageView
+import java.util.concurrent.TimeUnit
 
 class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() {
 
@@ -186,6 +187,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
         return v
     }
 
+    @SuppressLint("SetTextI18n")
     fun setUpCurrent(url:String){
         val email = FirebaseAuth.getInstance().currentUser?.email
 
@@ -224,6 +226,21 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
+
+        // 음악 재생시간 설정
+        media_seekbar.progress = mediaController.currentPosition.toInt()
+        media_seekbar.max = mediaController.duration.toInt()
+
+        val millis = mediaController.currentPosition
+        val totalSecs = TimeUnit.SECONDS.convert(millis, TimeUnit.MILLISECONDS)
+        val minute = TimeUnit.MINUTES.convert(totalSecs, TimeUnit.SECONDS)
+        val secs = totalSecs - (minute * 60)
+
+        if(secs < 10){
+            media_song_current.text = "$minute:0$secs"
+        } else {
+            media_song_current.text = "$minute:$secs"
+        }
     }
 
     fun setAccount(email:String){

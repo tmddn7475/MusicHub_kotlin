@@ -59,7 +59,7 @@ class MusicService : MediaSessionService() {
 
         val stopBtn = CommandButton.Builder().setDisplayName("Stop").setIconResId(R.drawable.baseline_clear_24)
             .setSessionCommand(SessionCommand(STOP_MUSIC, Bundle())).build()
-        val prevBtn = CommandButton.Builder().setDisplayName("Stop").setIconResId(R.drawable.ic_previous_white)
+        val prevBtn = CommandButton.Builder().setDisplayName("Prev").setIconResId(R.drawable.ic_previous_white)
             .setSessionCommand(SessionCommand(PREV_MUSIC, Bundle())).build()
         val nextBtn = CommandButton.Builder().setDisplayName("Next").setIconResId(R.drawable.ic_next_white)
             .setSessionCommand(SessionCommand(NEXT_MUSIC, Bundle())).build()
