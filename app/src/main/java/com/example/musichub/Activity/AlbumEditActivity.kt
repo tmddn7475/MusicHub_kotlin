@@ -53,6 +53,7 @@ class AlbumEditActivity : AppCompatActivity() {
 
         albumKey = intent.getStringExtra("key").toString()
 
+        // dialog
         dialog = Dialog(this@AlbumEditActivity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.progress_layout2)
