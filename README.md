@@ -4,7 +4,7 @@ Supported Language - English (99%), Korean
 
 원본 - https://github.com/tmddn7475/MusicHub/tree/master
 
-개발기간 = 2024.06.30 ~ 2024.07.24
+개발기간 = 2024.06.30 ~ 2024.07.29
 
 안드로이드 어플 개발이 kotlin 언어로 이루어지는 경우가 많기에 
 
