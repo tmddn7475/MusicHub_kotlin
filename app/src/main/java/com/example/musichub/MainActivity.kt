@@ -343,6 +343,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
                         break
                     }
                 }
+
                 if(playlistData.isNotEmpty()){
                     if(num < playlistData.size - 1){
                         editor.putString("url", playlistData[num + 1].songUrl)

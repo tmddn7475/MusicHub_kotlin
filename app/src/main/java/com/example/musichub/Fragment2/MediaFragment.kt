@@ -166,12 +166,20 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
         media_next_btn.setOnClickListener{
             musicListener.nextMusic()
             media_seekbar.progress = 0
+            mediaController.play()
+            if(isAdded){
+                media_play_btn.setImageResource(R.drawable.pause)
+            }
         }
 
         // 전 곡
         media_previous_btn.setOnClickListener{
             musicListener.prevMusic()
             media_seekbar.progress = 0
+            mediaController.play()
+            if(isAdded){
+                media_play_btn.setImageResource(R.drawable.pause)
+            }
         }
 
         // playlist

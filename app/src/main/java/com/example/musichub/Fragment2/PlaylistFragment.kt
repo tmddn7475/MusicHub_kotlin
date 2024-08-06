@@ -30,11 +30,15 @@ import com.google.firebase.database.getValue
 class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
 
     var db:PlaylistDatabase? = null
+
     lateinit var playlistRecyclerView: RecyclerView
     lateinit var mediaController: MediaController
     lateinit var playListAdapter: PlayListAdapter
     lateinit var playlist_progress: SeekBar
     lateinit var playlist_media_btn: ImageView
+    lateinit var playlist_play_btn: ImageView
+    lateinit var playlist_skip_previous_btn: ImageView
+    lateinit var playlist_skip_next_btn: ImageView
 
     var list = ArrayList<MusicData>()
     private lateinit var musicListener: MusicListener
@@ -60,6 +64,9 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_playlist, container, false)
 
+        playlist_play_btn = v.findViewById(R.id.playlist_play_btn)
+        playlist_skip_next_btn = v.findViewById(R.id.playlist_skip_next_btn)
+        playlist_skip_previous_btn = v.findViewById(R.id.playlist_skip_previous_btn)
         playlist_media_btn = v.findViewById(R.id.playlist_media_btn)
         playlist_progress = v.findViewById(R.id.playlist_progress)
         playlistRecyclerView = v.findViewById(R.id.playlist_recycler)
@@ -86,6 +93,9 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
         helper.attachToRecyclerView(playlistRecyclerView)
 
         // seekbar
+        playlist_progress.progress = mediaController.currentPosition.toInt()
+        playlist_progress.max = mediaController.duration.toInt()
+
         playlist_progress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {}
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -97,7 +107,6 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
         })
 
         // 재생 버튼
-        val playlist_play_btn:ImageView = v.findViewById(R.id.playlist_play_btn)
         if(mediaController.isPlaying){
             playlist_play_btn.setImageResource(R.drawable.pause)
         } else {
@@ -110,6 +119,24 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
                 playlist_play_btn.setImageResource(R.drawable.play_arrow)
             } else {
                 mediaController.play()
+                playlist_play_btn.setImageResource(R.drawable.pause)
+            }
+        }
+
+        // 다음 곡
+        playlist_skip_next_btn.setOnClickListener{
+            musicListener.nextMusic()
+            mediaController.play()
+            if(isAdded){
+                playlist_play_btn.setImageResource(R.drawable.pause)
+            }
+        }
+
+        // 전 곡
+        playlist_skip_previous_btn.setOnClickListener{
+            musicListener.prevMusic()
+            mediaController.play()
+            if(isAdded){
                 playlist_play_btn.setImageResource(R.drawable.pause)
             }
         }
@@ -167,6 +194,9 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
 
     override fun sendMusic(message: String) {
         musicListener.playMusic(message)
+        if(isAdded){
+            playlist_play_btn.setImageResource(R.drawable.pause)
+        }
     }
 
     override fun sendEtc(message: String) {
