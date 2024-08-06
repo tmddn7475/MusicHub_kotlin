@@ -28,7 +28,7 @@ class CommentAdapter(val list: MutableList<CommentData>, val keyList: MutableLis
         return ViewHolder(view)
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (list[position].imageUrl == "") {
             holder.comment_user_image.setImageResource(R.drawable.baseline_account_circle_24)
@@ -51,11 +51,13 @@ class CommentAdapter(val list: MutableList<CommentData>, val keyList: MutableLis
 
         holder.comment_delete.setOnClickListener {
             val alert_ex: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
-            alert_ex.setMessage("해당 댓글을 삭제하시겠습니까?")
-            alert_ex.setNegativeButton("네") { dialog, which ->
+            alert_ex.setMessage(holder.itemView.context.getString(R.string.comment_delete))
+            alert_ex.setNegativeButton(holder.itemView.context.getString(R.string.yes)) { _, _ ->
+                list.removeAt(position)
                 deleteComment(keyList[position])
+                notifyDataSetChanged()
             }
-            alert_ex.setPositiveButton("아니요") { dialog, which ->
+            alert_ex.setPositiveButton(holder.itemView.context.getString(R.string.no)) { dialog, _ ->
                 dialog.dismiss()
             }
             val alert = alert_ex.create()

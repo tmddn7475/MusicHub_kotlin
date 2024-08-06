@@ -3,6 +3,7 @@ package com.example.musichub.Fragment2
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,11 +22,14 @@ import com.example.musichub.Fragment1.Account.AccountFragment
 import com.example.musichub.Interface.CommentListener
 import com.example.musichub.MainActivity
 import com.example.musichub.R
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
@@ -86,9 +90,19 @@ class CommentFragment : BottomSheetDialogFragment(), CommentListener {
     }
 
     // 댓글 등록
+    @SuppressLint("NotifyDataSetChanged")
     private fun uploadComment(email:String, name:String, imageUrl:String, comment:String, songUrl: String){
         val data = CommentData(email = email, nickname = name, imageUrl = imageUrl, comment = comment, time = Command.getTime2(), songUrl = songUrl)
-        FirebaseDatabase.getInstance().getReference("Comments").push().setValue(data)
+
+        val reference = FirebaseDatabase.getInstance().getReference("Comments").push()
+        reference.setValue(data).addOnCompleteListener { p0 ->
+            if (p0.isSuccessful) {
+                list.add(data)
+                keyList.add(reference.key.toString())
+                Log.i("key", reference.key.toString())
+                commentAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     // 내 계정 정보
@@ -126,7 +140,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentListener {
 
         // 댓글들 가져오기
         FirebaseDatabase.getInstance().getReference("Comments").orderByChild("songUrl").equalTo(url)
-            .addValueEventListener(object : ValueEventListener{
+            .addListenerForSingleValueEvent(object : ValueEventListener{
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     list.clear()

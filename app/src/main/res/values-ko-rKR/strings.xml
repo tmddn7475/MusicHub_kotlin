@@ -72,4 +72,5 @@
     <string name="account">계정 정보</string>
     <string name="update_album">정보가 수정되었습니다</string>
     <string name="album_delete_alert">해당 앨범을 삭제하시겠습니까?</string>
+    <string name="comment_delete">해당 댓글을 삭제하시겠습니까?</string>
 </resources>
