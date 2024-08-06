@@ -8,8 +8,9 @@ Supported Language - English (99%), Korean
 
 안드로이드 어플 개발이 kotlin 언어로 이루어지는 경우가 많기에 
 
-kotlin을 공부 할 겸 자바로 개발했던 앱을 kotlin으로 개발하였습니다. 
+kotlin을 공부 할 겸 자바로 개발했던 앱을 다시 kotlin으로 개발하였습니다. 
 
+의도치 않게 버그나 에러가 발생할 수 있습니다.
 
 ### 변경점
 
