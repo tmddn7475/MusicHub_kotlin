@@ -23,7 +23,7 @@ interface MusicDAO {
     fun deleteSong(url: String)
 
     @Query("select * from search")
-    fun getSearch():List<SearchEntity>
+    fun getSearch() : List<SearchEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveSearch(searchText: SearchEntity)
