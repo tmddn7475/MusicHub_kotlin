@@ -255,17 +255,22 @@ class MusicService : MediaSessionService() {
             customCommand: SessionCommand,
             args: Bundle
         ): ListenableFuture<SessionResult> {
-            if (customCommand.customAction == NEXT_MUSIC) {
-                nextSong()
-                return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
-            } else if (customCommand.customAction == STOP_MUSIC){
-                player.stop()
-                stopSelf()
-                return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
-            } else if (customCommand.customAction == PREV_MUSIC){
-                prevSong()
-                return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+            when (customCommand.customAction) {
+                NEXT_MUSIC -> {
+                    nextSong()
+                    return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+                }
+                PREV_MUSIC -> {
+                    prevSong()
+                    return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+                }
+                STOP_MUSIC -> {
+                    player.stop()
+                    stopSelf()
+                    return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+                }
             }
+
             return super.onCustomCommand(session, controller, customCommand, args)
         }
     }
