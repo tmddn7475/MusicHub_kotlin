@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
             }
         }
 
-        // 플레이리스트
+        // 플레이 리스트
         bar_playlist_btn.setOnClickListener{
             if(bar_song.text != ""){
                 playlistFragment.show(supportFragmentManager, playlistFragment.tag)
@@ -426,8 +426,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
                         getString(R.string.tap_back_again),
                         Snackbar.LENGTH_SHORT
                     ).setAnchorView(R.id.include)
-                        .setTextColor(Color.WHITE).setBackgroundTint(Color.parseColor("#323232"))
-                        .show()
+                        .setTextColor(Color.WHITE).setBackgroundTint(Color.parseColor("#323232")).show()
                 } else if (System.currentTimeMillis() <= backPressedTime + 2000) {
                     finishAffinity()
                 }

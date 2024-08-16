@@ -48,7 +48,7 @@ class FeedListAdapter(val list: MutableList<MusicData>, val musicListener: Music
             feed_post.text = getDday(data.time, data.songArtist)
 
             Glide.with(this).load(data.imageUrl).into(feed_song_image)
-            Glide.with(this).load(data.imageUrl) // 이미지 블러처리
+            Glide.with(this).load(data.imageUrl) // 이미지 블러 처리
                 .apply(RequestOptions.bitmapTransform(BlurTransformation(10, 3))).into(feed_blur_image)
 
             feed_play_btn.setOnClickListener{
