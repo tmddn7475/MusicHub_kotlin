@@ -42,7 +42,7 @@ class IntroActivity : AppCompatActivity() {
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            // intro 화면 동안 종료가 되지 않도록 설정
+            // intro 화면 동안 뒤로 버튼을 눌러도 종료가 되지 않도록 설정
         }
     }
 }
