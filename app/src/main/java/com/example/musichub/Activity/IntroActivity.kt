@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musichub.Object.Command
 import com.example.musichub.R
@@ -34,6 +35,14 @@ class IntroActivity : AppCompatActivity() {
                 startActivity(intent)
                 finishAffinity()
             }, 1500)
+        }
+
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            // intro 화면 동안 종료가 되지 않도록 설정
         }
     }
 }
