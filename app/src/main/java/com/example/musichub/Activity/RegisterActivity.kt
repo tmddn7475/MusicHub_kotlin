@@ -37,7 +37,6 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var register_back_btn: ImageView
     lateinit var register_email: TextView
     lateinit var register_pwd: TextView
-    lateinit var register_pwd_check: TextView
     lateinit var register_nickname: TextView
 
     lateinit var dialog: Dialog
@@ -54,7 +53,6 @@ class RegisterActivity : AppCompatActivity() {
         register_back_btn = findViewById(R.id.register_back_btn)
         register_email = findViewById(R.id.register_email)
         register_pwd = findViewById(R.id.register_pwd)
-        register_pwd_check = findViewById(R.id.register_pwd_check)
         register_nickname = findViewById(R.id.register_nickname)
 
         dialog = Dialog(this)
@@ -72,15 +70,12 @@ class RegisterActivity : AppCompatActivity() {
         register_btn.setOnClickListener{
             val email:String = register_email.text.toString()
             val password:String = register_pwd.text.toString()
-            val passwordCorrect:String = register_pwd_check.text.toString()
             val nickname:String = register_nickname.text.toString()
 
-            if(email.isEmpty() or password.isEmpty() or passwordCorrect.isEmpty() or nickname.isEmpty()){
+            if(email.isEmpty() or password.isEmpty() or nickname.isEmpty()){
                 Toast.makeText(this, getString(R.string.enter_all), Toast.LENGTH_SHORT).show()
             } else if(password.length < 6) {
-                Toast.makeText(this, "비밀번호를 6자리 이상 입력해주세요", Toast.LENGTH_SHORT).show()
-            } else if(password != passwordCorrect) {
-                Toast.makeText(this, "비밀번호가 다릅니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.password_6), Toast.LENGTH_SHORT).show()
             } else {
                 dialog.show()
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
@@ -120,7 +115,7 @@ class RegisterActivity : AppCompatActivity() {
         val accountData = AccountData(email = email, password = password, nickname = nickname, imageUrl = imageUrl, info = "")
         FirebaseDatabase.getInstance().getReference("accounts").push().setValue(accountData)
             .addOnCompleteListener {
-                Toast.makeText(this@RegisterActivity, "회원가입이 완료되었습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@RegisterActivity, getString(R.string.sign_up_complete), Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
                 finish()
             }
