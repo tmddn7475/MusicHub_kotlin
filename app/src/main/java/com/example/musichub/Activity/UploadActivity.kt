@@ -64,8 +64,8 @@ class UploadActivity : AppCompatActivity() {
     lateinit var dialog: Dialog
 
     val email:String = FirebaseAuth.getInstance().currentUser?.email.toString()
-    val storageReference = FirebaseStorage.getInstance().getReference()
-    val category_arr:Array<String> = arrayOf("None", "Ambient", "Classical", "Dance & EDM",
+    private val storageReference = FirebaseStorage.getInstance().getReference()
+    private val category_arr:Array<String> = arrayOf("None", "Ambient", "Classical", "Dance & EDM",
         "Disco", "Hip hop", "Jazz", "R&B", "Reggae", "Rock")
 
     @SuppressLint("ClickableViewAccessibility")
