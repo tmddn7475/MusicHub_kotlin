@@ -181,7 +181,7 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
                         }
                     }
                     playListAdapter.sort()
-                    playListAdapter.getNumber(mainActivity.current_url)
+                    playListAdapter.getNumber(mainActivity.currentUrl)
                     playlistRecyclerView.adapter = playListAdapter
                 }
                 override fun onCancelled(error: DatabaseError) {}

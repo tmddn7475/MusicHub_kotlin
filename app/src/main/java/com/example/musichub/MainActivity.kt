@@ -73,13 +73,13 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
     private var mediaController: MediaController? = null
     private var db: PlaylistDatabase? = null
-    var current_url:String = ""
+    var currentUrl:String = ""
 
     override fun onStart() {
         val sharedUrl: String = preference.getString("url", null).toString()
         if (!sharedUrl.equals("")) {
             getMusic(sharedUrl)
-            current_url = sharedUrl
+            currentUrl = sharedUrl
         }
 
         // mediaSessionService와 mediaController 연결
@@ -179,14 +179,14 @@ class MainActivity : AppCompatActivity(), MusicListener {
             bar_progress.setMax(mediaController?.duration!!.toInt())
             bar_progress.setProgress(mediaController?.currentPosition!!.toInt())
 
-            if (current_url != preference.getString("url", null)) {
-                current_url = preference.getString("url", null).toString()
-                getMusic(current_url)
+            if (currentUrl != preference.getString("url", null)) {
+                currentUrl = preference.getString("url", null).toString()
+                getMusic(currentUrl)
                 if(playlistFragment.isAdded){
-                    playlistFragment.setUpCurrent(current_url)
+                    playlistFragment.setUpCurrent(currentUrl)
                 }
                 if(mediaFragment.isAdded){
-                    mediaFragment.setUpCurrent(current_url)
+                    mediaFragment.setUpCurrent(currentUrl)
                 }
             }
 

@@ -112,6 +112,7 @@ object Command {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network: Network? = cm.activeNetwork
         val activeNetwork = cm.getNetworkCapabilities(network) ?: return 0
+
         if (activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
             activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
             state = 1

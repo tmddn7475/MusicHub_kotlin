@@ -84,7 +84,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
         media_song_name.ellipsize = TextUtils.TruncateAt.MARQUEE // 흐르게 만들기
         media_song_name.isSelected = true
 
-        setUpCurrent(mainActivity.current_url)
+        setUpCurrent(mainActivity.currentUrl)
 
         media_seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {}
@@ -102,7 +102,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
 
             if (!etcFragment.isAdded) {
                 val bundle = Bundle()
-                bundle.putString("url", mainActivity.current_url)
+                bundle.putString("url", mainActivity.currentUrl)
                 etcFragment.setArguments(bundle)
                 etcFragment.show(fragmentManager, etcFragment.getTag())
             }
@@ -115,7 +115,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
 
             if (!commentFragment.isAdded) {
                 val bundle = Bundle()
-                bundle.putString("url", mainActivity.current_url)
+                bundle.putString("url", mainActivity.currentUrl)
                 commentFragment.setArguments(bundle)
                 commentFragment.show(fragmentManager, commentFragment.getTag())
             }
@@ -139,7 +139,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
                 media_like_btn.setImageResource(R.drawable.baseline_favorite_border_24)
                 like_check = false
             } else {
-                Command.checkLike(mainActivity.current_url)
+                Command.checkLike(mainActivity.currentUrl)
                 media_like_btn.setImageResource(R.drawable.baseline_favorite_24)
                 like_check = true
             }
