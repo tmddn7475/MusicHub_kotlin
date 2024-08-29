@@ -27,13 +27,24 @@
                 android:layout_centerVertical="true"
                 android:textSize="24sp"/>
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/libraryAccount"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/baseline_account_circle_24"
+                app:civ_border_color="@color/blue_dark"
+                app:civ_border_width="1dp" />
+
             <ImageView
                 android:id="@+id/setting"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginEnd="6dp"
-                android:layout_alignParentEnd="true"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="12dp"
+                android:layout_toStartOf="@+id/libraryAccount"
                 android:src="@drawable/baseline_settings_24" />
 
         </RelativeLayout>

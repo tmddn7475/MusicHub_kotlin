@@ -156,7 +156,7 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
             alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
             alert.show()
         }
-        // 내 계정 사진
+        // 내 계정 사진 가져오기
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {

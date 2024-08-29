@@ -26,8 +26,8 @@ import java.io.ByteArrayOutputStream
 
 class RegisterActivity : AppCompatActivity() {
 
-    var image: Uri? = null
-    var byteArray: ByteArray? = null
+    private var image: Uri? = null
+    private var byteArray: ByteArray? = null
     var imageUrl: String = ""
     var email: String = ""
 
