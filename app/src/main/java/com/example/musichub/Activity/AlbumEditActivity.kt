@@ -12,11 +12,6 @@ import android.util.SparseBooleanArray
 import android.view.MotionEvent
 import android.view.View
 import android.view.Window
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.Switch
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musichub.Adapter.Base.AlbumEditAdapter
@@ -24,6 +19,7 @@ import com.example.musichub.Data.AlbumData
 import com.example.musichub.Data.AlbumToSongData
 import com.example.musichub.Data.MusicData
 import com.example.musichub.R
+import com.example.musichub.databinding.ActivityAlbumEditBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -33,25 +29,16 @@ import com.google.firebase.database.getValue
 @SuppressLint("UseSwitchCompatOrMaterialCode", "ClickableViewAccessibility")
 class AlbumEditActivity : AppCompatActivity() {
 
-    lateinit var back_btn: ImageView
-    lateinit var album_edit_save: TextView
-    lateinit var edit_list_name: EditText
-    lateinit var edit_list_description: EditText
-    lateinit var description_length: TextView
-    lateinit var album_edit_set: Switch
-    lateinit var album_edit_list: ListView
-    lateinit var album_edit_delete: TextView
+    lateinit var binding: ActivityAlbumEditBinding
     lateinit var albumEditAdapter: AlbumEditAdapter
     lateinit var dialog: Dialog
-
-    var albumKey: String = ""
+    private var albumKey: String = ""
     val list: MutableList<MusicData> = mutableListOf<MusicData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_album_edit)
-
-        albumKey = intent.getStringExtra("key").toString()
+        binding = ActivityAlbumEditBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // dialog
         dialog = Dialog(this@AlbumEditActivity)
@@ -59,23 +46,14 @@ class AlbumEditActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.progress_layout2)
         dialog.setCancelable(false)
 
-        back_btn = findViewById(R.id.back_btn)
-        album_edit_save = findViewById(R.id.album_edit_save)
-        edit_list_name = findViewById(R.id.edit_list_name)
-        edit_list_description = findViewById(R.id.edit_list_description)
-        description_length = findViewById(R.id.description_length)
-        album_edit_set = findViewById(R.id.edit_set)
-        album_edit_list = findViewById(R.id.album_edit_list)
-        album_edit_delete = findViewById(R.id.album_edit_delete)
-
+        albumKey = intent.getStringExtra("key").toString()
         albumEditAdapter = AlbumEditAdapter(list)
-
         getData(albumKey)
 
         // 설명 터치시 editText가 스크롤 되도록 설정
-        edit_list_description.setOnTouchListener(object : View.OnTouchListener {
+        binding.editListDescription.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                if (edit_list_description.hasFocus()) {
+                if (binding.editListDescription.hasFocus()) {
                     v!!.parent.requestDisallowInterceptTouchEvent(true)
                     when (event!!.action and MotionEvent.ACTION_MASK) {
                         MotionEvent.ACTION_SCROLL -> {
@@ -88,28 +66,28 @@ class AlbumEditActivity : AppCompatActivity() {
             }
         })
 
-        edit_list_description.addTextChangedListener(object : TextWatcher {
+        binding.editListDescription.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val length: Int = edit_list_description.text.length
-                description_length.text = "$length / 2000"
+                val length: Int = binding.editListDescription.text.length
+                binding.descriptionLength.text = "$length / 2000"
             }
             override fun afterTextChanged(s: Editable?) {}
         })
 
         // 리스트에서 체크 된 걸 제거
-        album_edit_delete.setOnClickListener{
+        binding.albumEditDelete.setOnClickListener{
             val alertEx: AlertDialog.Builder = AlertDialog.Builder(this@AlbumEditActivity)
             alertEx.setMessage(getString(R.string.delete_selected_track))
             alertEx.setNegativeButton(getString(R.string.yes)){ _, _ ->
-                val checkItems: SparseBooleanArray = album_edit_list.checkedItemPositions
+                val checkItems: SparseBooleanArray = binding.albumEditList.checkedItemPositions
                 for(i in list.indices){
                     if(checkItems.get(i)){
                         list.removeAt(i)
                     }
                 }
-                album_edit_list.clearChoices()
+                binding.albumEditList.clearChoices()
                 albumEditAdapter.notifyDataSetChanged()
             }
             alertEx.setPositiveButton(getString(R.string.no)) { dialog, _ ->
@@ -121,11 +99,11 @@ class AlbumEditActivity : AppCompatActivity() {
         }
 
         // 저장
-        album_edit_save.setOnClickListener{
+        binding.albumEditSave.setOnClickListener{
             albumEdit()
         }
 
-        back_btn.setOnClickListener{
+        binding.backBtn.setOnClickListener{
             finish()
         }
     }
@@ -134,9 +112,9 @@ class AlbumEditActivity : AppCompatActivity() {
         dialog.show()
 
         val hashMap = HashMap<String, Any>()
-        hashMap["listName"] = edit_list_name.text.toString()
-        hashMap["description"] = edit_list_description.text.toString()
-        if(album_edit_set.isChecked){
+        hashMap["listName"] = binding.editListName.text.toString()
+        hashMap["description"] = binding.editListDescription.text.toString()
+        if(binding.editSet.isChecked){
             hashMap["list_mode"] = "public"
         } else {
             hashMap["list_mode"] = "private"
@@ -170,11 +148,11 @@ class AlbumEditActivity : AppCompatActivity() {
                     for(ds: DataSnapshot in snapshot.children) {
                         val data = ds.getValue<AlbumData>()
                         if (data != null) {
-                            edit_list_name.setText(data.listName)
-                            edit_list_description.setText(data.description)
+                            binding.editListName.setText(data.listName)
+                            binding.editListDescription.setText(data.description)
 
                             if(data.list_mode == "public"){
-                                album_edit_set.isChecked = true
+                                binding.editSet.isChecked = true
                             }
                         }
                     }
@@ -207,7 +185,7 @@ class AlbumEditActivity : AppCompatActivity() {
                             list.add(data)
                         }
                         albumEditAdapter.sort()
-                        album_edit_list.adapter = albumEditAdapter
+                        binding.albumEditList.adapter = albumEditAdapter
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}

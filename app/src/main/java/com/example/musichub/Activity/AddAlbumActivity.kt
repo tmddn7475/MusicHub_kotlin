@@ -12,11 +12,6 @@ import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Switch
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,6 +20,7 @@ import com.example.musichub.Object.Command
 import com.example.musichub.Data.AccountData
 import com.example.musichub.Data.AlbumData
 import com.example.musichub.R
+import com.example.musichub.databinding.ActivityAddAlbumBinding
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -39,34 +35,19 @@ import java.io.ByteArrayOutputStream
 @SuppressLint("UseSwitchCompatOrMaterialCode")
 class AddAlbumActivity : AppCompatActivity() {
 
-    private var set_mode: String = "private"
+    lateinit var dialog: Dialog
+    private var setMode: String = "private"
     private var image: Uri? = null
     private var byteArray: ByteArray? = null
     var nickname: String = ""
-
-    lateinit var list_back_btn: ImageView
-    lateinit var list_selectImage: ImageView
-    lateinit var list_name: EditText
-    lateinit var list_description: EditText
-    lateinit var list_description_length: TextView
-    lateinit var my_list_set: Switch
-    lateinit var list_upload_btn: Button
-    lateinit var dialog: Dialog
-
     val email:String = FirebaseAuth.getInstance().currentUser?.email.toString()
+    lateinit var binding: ActivityAddAlbumBinding
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_album)
-
-        list_back_btn = findViewById(R.id.list_back_btn)
-        list_selectImage = findViewById(R.id.list_selectImage)
-        list_name = findViewById(R.id.list_name)
-        list_description = findViewById(R.id.list_description)
-        list_description_length = findViewById(R.id.list_description_length)
-        my_list_set = findViewById(R.id.my_list_set)
-        list_upload_btn = findViewById(R.id.list_upload_btn)
+        binding = ActivityAddAlbumBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         dialog = Dialog(this@AddAlbumActivity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -75,29 +56,29 @@ class AddAlbumActivity : AppCompatActivity() {
 
         getAccount()
 
-        list_back_btn.setOnClickListener{
+        binding.listBackBtn.setOnClickListener{
             finish()
         }
 
-        my_list_set.setOnCheckedChangeListener{ _, isChecked ->
-            set_mode = if(isChecked){
+        binding.myListSet.setOnCheckedChangeListener{ _, isChecked ->
+            setMode = if(isChecked){
                 "public"
             } else {
                 "private"
             }
         }
 
-        list_selectImage.clipToOutline = true
-        list_selectImage.setOnClickListener{
+        binding.listSelectImage.clipToOutline = true
+        binding.listSelectImage.setOnClickListener{
             ImagePicker.with(this@AddAlbumActivity)
                 .crop(1f, 1f).compress(1024)
                 .maxResultSize(640, 640)
                 .createIntent { intent -> imageLauncher.launch(intent) }
         }
 
-        list_description.setOnTouchListener(object : View.OnTouchListener {
+        binding.listDescription.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                if (list_description.hasFocus()) {
+                if (binding.listDescription.hasFocus()) {
                     v!!.parent.requestDisallowInterceptTouchEvent(true)
                     when (event!!.action and MotionEvent.ACTION_MASK) {
                         MotionEvent.ACTION_SCROLL -> {
@@ -109,24 +90,25 @@ class AddAlbumActivity : AppCompatActivity() {
                 return false
             }
         })
-        list_description.addTextChangedListener(object : TextWatcher {
+        binding.listDescription.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val length: Int = list_description.text.length
-                list_description_length.text = "$length / 2000"
+                val length: Int = binding.listDescription.text.length
+                binding.listDescriptionLength.text = "$length / 2000"
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
         // 업로드
-        list_upload_btn.setOnClickListener{
+        binding.listUploadBtn.setOnClickListener{
             if(image == null) {
                 Toast.makeText(this@AddAlbumActivity, getString(R.string.select_image), Toast.LENGTH_SHORT).show()
-            } else if (list_name.text.equals("")){
+            } else if (binding.listName.text.equals("")){
                 Toast.makeText(this@AddAlbumActivity, getString(R.string.enter_album_title), Toast.LENGTH_SHORT).show()
             } else {
                 dialog.show()
-                uploadImageToServer(byteArray!!, list_name.text.toString(), list_description.text.toString())
+                uploadImageToServer(byteArray!!, binding.listName.text.toString(), binding.listDescription.text.toString())
             }
         }
     }
@@ -138,7 +120,7 @@ class AddAlbumActivity : AppCompatActivity() {
             while (!task.isComplete);
             val urlSong = task.result
             val imageUrl = urlSong.toString()
-            createPlayList(fileName, set_mode, desc, imageUrl)
+            createPlayList(fileName, setMode, desc, imageUrl)
         }.addOnFailureListener {
             Toast.makeText(this@AddAlbumActivity, "error", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
@@ -179,7 +161,7 @@ class AddAlbumActivity : AppCompatActivity() {
             image = data?.data
             // Uri를 활용하여 ImageView에 가져온 이미지 표시
             val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, image!!))
-            list_selectImage.setImageBitmap(bitmap)
+            binding.listSelectImage.setImageBitmap(bitmap)
             val byteArrayOutputStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
             byteArray = byteArrayOutputStream.toByteArray()

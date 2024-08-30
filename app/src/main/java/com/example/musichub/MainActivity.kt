@@ -14,8 +14,6 @@ import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
 import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -39,8 +37,7 @@ import com.example.musichub.Object.Command
 import com.example.musichub.RoomDB.PlaylistDatabase
 import com.example.musichub.RoomDB.PlaylistEntity
 import com.example.musichub.Service.MusicService
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.example.musichub.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.common.util.concurrent.MoreExecutors
 import com.google.firebase.auth.FirebaseAuth
@@ -54,30 +51,23 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(), MusicListener {
 
-    lateinit var bar_thumnail:ImageView
-    lateinit var bar_playlist_btn:ImageView
-    lateinit var bar_song:TextView
-    lateinit var bar_artist:TextView
-    lateinit var bottomNavigationView:BottomNavigationView
-    lateinit var bar_progress:LinearProgressIndicator
-    lateinit var bar_play_btn:ImageView
-    lateinit var handler:Handler
-    lateinit var preference:SharedPreferences
-    lateinit var editor: SharedPreferences.Editor
-
+    private lateinit var handler:Handler
+    private lateinit var preference:SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
     lateinit var mediaFragment:MediaFragment
     lateinit var playlistFragment: PlaylistFragment
     lateinit var etcFragment: EtcFragment
 
-    lateinit var email: String
-
     private var mediaController: MediaController? = null
     private var db: PlaylistDatabase? = null
     var currentUrl:String = ""
+    var email: String = ""
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onStart() {
         val sharedUrl: String = preference.getString("url", null).toString()
-        if (!sharedUrl.equals("")) {
+        if (sharedUrl != "") {
             getMusic(sharedUrl)
             currentUrl = sharedUrl
         }
@@ -98,7 +88,8 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         handler = Handler(Looper.getMainLooper())
         email = FirebaseAuth.getInstance().currentUser?.email.toString()
@@ -108,17 +99,9 @@ class MainActivity : AppCompatActivity(), MusicListener {
         playlistFragment = PlaylistFragment()
         etcFragment = EtcFragment()
 
-        bar_progress = findViewById(R.id.media_bar_progress)
-        bar_play_btn = findViewById(R.id.bar_play_pause_btn)
-        bar_thumnail = findViewById(R.id.bar_song_thumnail)
-        bar_playlist_btn = findViewById(R.id.bar_playlist_btn)
-        bar_song = findViewById(R.id.bar_song_name)
-        bar_artist = findViewById(R.id.bar_song_artist)
-        bottomNavigationView = findViewById(R.id.bottomNavigationView)
-
         // bottomNavigationView
         supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment(this)).commit()
-        bottomNavigationView.setOnItemSelectedListener {
+        binding.bottomNavigationView.setOnItemSelectedListener {
             replaceFragment(
                 when (it.itemId) {
                     R.id.bottom_home -> HomeFragment(this)
@@ -129,36 +112,36 @@ class MainActivity : AppCompatActivity(), MusicListener {
             )
             true
         }
-        bar_song.setSingleLine(true)
-        bar_song.ellipsize = TextUtils.TruncateAt.MARQUEE // 흐르게 만들기
-        bar_song.isSelected = true
+        binding.include.barSongName.setSingleLine(true)
+        binding.include.barSongName.ellipsize = TextUtils.TruncateAt.MARQUEE // 흐르게 만들기
+        binding.include.barSongName.isSelected = true
 
         // media controller
         val frameLayout:FrameLayout = findViewById(R.id.media_player_bar_bg)
         frameLayout.setOnClickListener{
-            if(bar_song.text != ""){
+            if(binding.include.barSongName.text != ""){
                 mediaFragment.show(supportFragmentManager, mediaFragment.tag)
                 mediaFragment.setController(mediaController)
             }
         }
 
         // 플레이 리스트
-        bar_playlist_btn.setOnClickListener{
-            if(bar_song.text != ""){
+        binding.include.barPlaylistBtn.setOnClickListener{
+            if(binding.include.barSongName.text != ""){
                 playlistFragment.show(supportFragmentManager, playlistFragment.tag)
                 playlistFragment.setController(mediaController)
             }
         }
 
         // 음악 재생
-        bar_play_btn.setOnClickListener{
-            if(bar_song.text != ""){
+        binding.include.barPlayPauseBtn.setOnClickListener{
+            if(binding.include.barSongName.text != ""){
                 if(mediaController?.isPlaying == true){
                     mediaController?.pause()
-                    bar_play_btn.setImageResource(R.drawable.play_arrow)
+                    binding.include.barPlayPauseBtn.setImageResource(R.drawable.play_arrow)
                 } else {
                     mediaController?.play()
-                    bar_play_btn.setImageResource(R.drawable.pause)
+                    binding.include.barPlayPauseBtn.setImageResource(R.drawable.pause)
                 }
             }
         }
@@ -176,8 +159,8 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
     private fun updateProgressIndicator(){
         if (mediaController?.isPlaying() == true) {
-            bar_progress.setMax(mediaController?.duration!!.toInt())
-            bar_progress.setProgress(mediaController?.currentPosition!!.toInt())
+            binding.include.mediaBarProgress.setMax(mediaController?.duration!!.toInt())
+            binding.include.mediaBarProgress.setProgress(mediaController?.currentPosition!!.toInt())
 
             if (currentUrl != preference.getString("url", null)) {
                 currentUrl = preference.getString("url", null).toString()
@@ -222,9 +205,9 @@ class MainActivity : AppCompatActivity(), MusicListener {
     // 재생 상태 확인
     private fun checkPlayState() {
         if (mediaController?.isPlaying() == true) {
-            bar_play_btn.setImageResource(R.drawable.pause)
+            binding.include.barPlayPauseBtn.setImageResource(R.drawable.pause)
         } else if (mediaController?.isPlaying() == false) {
-            bar_play_btn.setImageResource(R.drawable.play_arrow)
+            binding.include.barPlayPauseBtn.setImageResource(R.drawable.play_arrow)
         }
     }
 
@@ -262,10 +245,10 @@ class MainActivity : AppCompatActivity(), MusicListener {
                         val mld = ds.getValue<MusicData>()
                         if (mld != null) {
                             if(!this@MainActivity.isFinishing){
-                                Glide.with(this@MainActivity).load(mld.imageUrl).into(bar_thumnail)
+                                Glide.with(this@MainActivity).load(mld.imageUrl).into(binding.include.barSongThumnail)
                             }
-                            bar_song.text = mld.songName
-                            bar_artist.text = mld.songArtist
+                            binding.include.barSongName.text = mld.songName
+                            binding.include.barSongArtist.text = mld.songArtist
                             saveSong(mld.songUrl)
                         }
                     }
@@ -432,7 +415,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
                 }
             } else if (fragment is FeedFragment || fragment is SearchFragment || fragment is LibraryFragment) {
                 supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment(MainActivity())).commit()
-                bottomNavigationView.selectedItemId = R.id.bottom_home
+                binding.bottomNavigationView.selectedItemId = R.id.bottom_home
             } else {
                 if (fragment != null) {
                     supportFragmentManager.beginTransaction().remove(fragment).commit()

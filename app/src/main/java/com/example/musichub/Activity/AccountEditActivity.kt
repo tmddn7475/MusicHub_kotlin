@@ -15,10 +15,6 @@ import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.musichub.Data.AccountData
 import com.example.musichub.R
+import com.example.musichub.databinding.ActivityAccountEditBinding
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -35,19 +32,11 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import com.google.firebase.storage.FirebaseStorage
-import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
 
 class AccountEditActivity : AppCompatActivity() {
 
-    lateinit var account_edit_back_btn: ImageView
-    lateinit var account_edit_image: CircleImageView
-    lateinit var account_edit_image_btn: Button
-    lateinit var account_nickname_edit: EditText
-    lateinit var account_info_edit: EditText
-    lateinit var account_info_length: TextView
-    lateinit var account_edit_save_btn: Button
-    lateinit var password_edit_btn: Button
+    private lateinit var binding: ActivityAccountEditBinding
     lateinit var dialog: Dialog
 
     var key: String = ""
@@ -58,29 +47,21 @@ class AccountEditActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_account_edit)
+        binding = ActivityAccountEditBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.progress_layout2)
         dialog.setCancelable(false)
 
-        account_edit_back_btn = findViewById(R.id.account_edit_back_btn)
-        account_edit_image = findViewById(R.id.account_edit_image)
-        account_edit_image_btn = findViewById(R.id.account_edit_image_btn)
-        account_info_edit = findViewById(R.id.account_info_edit)
-        account_info_length = findViewById(R.id.account_info_length)
-        account_edit_save_btn = findViewById(R.id.account_edit_save_btn)
-        account_nickname_edit = findViewById(R.id.account_nickname_edit)
-        password_edit_btn = findViewById(R.id.password_edit_btn)
-
         getAccountData()
 
-        account_edit_back_btn.setOnClickListener{
+        binding.accountEditBackBtn.setOnClickListener{
             finish()
         }
 
-        account_edit_image_btn.setOnClickListener{
+        binding.accountEditImageBtn.setOnClickListener{
             ImagePicker.with(this@AccountEditActivity)
                 .crop(1f, 1f).compress(1024)
                 .maxResultSize(640, 640)
@@ -88,9 +69,9 @@ class AccountEditActivity : AppCompatActivity() {
         }
 
         // 곡 설명 터치시 editText가 스크롤 되도록 설정
-        account_info_edit.setOnTouchListener(object : View.OnTouchListener {
+        binding.accountInfoEdit.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                if (account_info_edit.hasFocus()) {
+                if (binding.accountInfoEdit.hasFocus()) {
                     v!!.parent.requestDisallowInterceptTouchEvent(true)
                     when (event!!.action and MotionEvent.ACTION_MASK) {
                         MotionEvent.ACTION_SCROLL -> {
@@ -103,35 +84,35 @@ class AccountEditActivity : AppCompatActivity() {
             }
         })
 
-        account_info_edit.addTextChangedListener(object : TextWatcher {
+        binding.accountInfoEdit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val length: Int = account_info_edit.text.length
-                account_info_length.text = "$length / 2000"
+                val length: Int = binding.accountInfoEdit.text.length
+                binding.accountInfoLength.text = "$length / 2000"
             }
             override fun afterTextChanged(s: Editable?) {}
         })
 
         // 저장
-        account_edit_save_btn.setOnClickListener{
-            if(account_nickname_edit.text.toString().isEmpty()){
+        binding.accountEditSaveBtn.setOnClickListener{
+            if(binding.accountNicknameEdit.text.toString().isEmpty()){
                 Toast.makeText(this@AccountEditActivity, getString(R.string.enter_nickname), Toast.LENGTH_SHORT).show()
             } else if(byteArray == null){
                 dialog.show()
                 val hashMap = HashMap<String, Any>()
-                hashMap["nickname"] = account_nickname_edit.text.toString()
-                hashMap["info"] = account_info_edit.text.toString()
+                hashMap["nickname"] = binding.accountNicknameEdit.text.toString()
+                hashMap["info"] = binding.accountInfoEdit.text.toString()
 
                 FirebaseDatabase.getInstance().getReference("accounts").child(key).updateChildren(hashMap)
-                editNickName(myEmail, account_nickname_edit.text.toString())
+                editNickName(myEmail, binding.accountNicknameEdit.text.toString())
             } else {
                 dialog.show()
                 uploadImageToServer(byteArray!!, myEmail)
             }
         }
 
-        password_edit_btn.setOnClickListener{
+        binding.passwordEditBtn.setOnClickListener{
             val alertEx: AlertDialog.Builder = AlertDialog.Builder(this@AccountEditActivity)
             alertEx.setMessage(getString(R.string.reset_password2))
             alertEx.setNegativeButton(getString(R.string.yes)) { _, _ ->
@@ -156,14 +137,14 @@ class AccountEditActivity : AppCompatActivity() {
                         val data = ds.getValue<AccountData>()
                         if(data != null){
                             key = ds.key.toString()
-                            account_nickname_edit.setText(data.nickname)
-                            account_info_edit.setText(data.info)
-                            account_info_length.text = data.info.length.toString() + " / 2000"
+                            binding.accountNicknameEdit.setText(data.nickname)
+                            binding.accountInfoEdit.setText(data.info)
+                            binding.accountInfoLength.text = data.info.length.toString() + " / 2000"
 
                             if(data.imageUrl == ""){
-                                account_edit_image.setImageResource(R.drawable.baseline_account_circle_24)
+                                binding.accountEditImage.setImageResource(R.drawable.baseline_account_circle_24)
                             } else {
-                                Glide.with(this@AccountEditActivity).load(data.imageUrl).into(account_edit_image)
+                                Glide.with(this@AccountEditActivity).load(data.imageUrl).into(binding.accountEditImage)
                             }
                         }
                     }
@@ -180,12 +161,12 @@ class AccountEditActivity : AppCompatActivity() {
                 val urlSong: String = task.result.toString()
 
                 val hashMap = HashMap<String, Any>()
-                hashMap["nickname"] = account_nickname_edit.text.toString()
-                hashMap["info"] = account_info_edit.text.toString()
+                hashMap["nickname"] = binding.accountNicknameEdit.text.toString()
+                hashMap["info"] = binding.accountInfoEdit.text.toString()
                 hashMap["imageUrl"] = urlSong
 
                 FirebaseDatabase.getInstance().getReference("accounts").child(key).updateChildren(hashMap)
-                editNickName(myEmail, account_nickname_edit.text.toString())
+                editNickName(myEmail, binding.accountNicknameEdit.text.toString())
             }.addOnFailureListener {
                 Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
@@ -247,7 +228,7 @@ class AccountEditActivity : AppCompatActivity() {
             image = data?.data
             // Uri를 활용하여 ImageView에 가져온 이미지 표시
             val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, image!!))
-            account_edit_image.setImageBitmap(bitmap)
+            binding.accountEditImage.setImageBitmap(bitmap)
             val byteArrayOutputStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
             byteArray = byteArrayOutputStream.toByteArray()

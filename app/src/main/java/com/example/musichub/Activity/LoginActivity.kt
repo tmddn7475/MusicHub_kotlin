@@ -6,14 +6,12 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Window
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musichub.MainActivity
 import com.example.musichub.R
+import com.example.musichub.databinding.ActivityLoginBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
@@ -21,8 +19,8 @@ class LoginActivity : AppCompatActivity() {
 
     private var saveLoginData:Boolean = false
     private lateinit var appData: SharedPreferences
-    private lateinit var login_chk:CheckBox
     private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onStart() {
         super.onStart()
@@ -33,7 +31,8 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -43,15 +42,9 @@ class LoginActivity : AppCompatActivity() {
         appData = getSharedPreferences("appData", MODE_PRIVATE)
         load()
 
-        val email_edit:EditText = findViewById(R.id.email_edit)
-        val password_edit:EditText = findViewById(R.id.password_edit)
-        val login_btn:Button = findViewById(R.id.login_btn)
-        val register_btn:Button = findViewById(R.id.register_btn)
-        login_chk = findViewById(R.id.login_chk)
-
-        login_btn.setOnClickListener{
-            val email:String = email_edit.text.toString()
-            val password:String = password_edit.text.toString()
+        binding.loginBtn.setOnClickListener{
+            val email:String = binding.emailEdit.text.toString()
+            val password:String = binding.passwordEdit.text.toString()
             dialog.show()
 
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
@@ -69,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
-        register_btn.setOnClickListener{
+        binding.registerBtn.setOnClickListener{
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
@@ -79,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun save(){
         val editor = appData.edit()
-        editor.putBoolean("SAVE_LOGIN_DATA", login_chk.isChecked)
+        editor.putBoolean("SAVE_LOGIN_DATA", binding.loginChk.isChecked)
         editor.apply()
     }
 

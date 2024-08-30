@@ -59,6 +59,7 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
     ): View {
         val v: View = inflater.inflate(R.layout.fragment_home, container, false)
 
+
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.progress_layout2)
