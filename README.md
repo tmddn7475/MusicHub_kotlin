@@ -26,6 +26,10 @@ mediaSessionService 개선
 
 파이어베이스 데이터 경로 일부 변경
 
+2024.08.31 ~ 
+
+findViewById 대신 ViewBinding 적용
+
 ***********************************
 ### 중요
 
