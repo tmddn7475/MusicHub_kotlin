@@ -38,9 +38,9 @@ class SettingFragment: PreferenceFragmentCompat() {
     }
 
     private fun logOut(){
-        val alert_ex: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        alert_ex.setMessage(getString(R.string.sign_out_alert))
-        alert_ex.setNegativeButton(getString(R.string.yes)) { _, _ ->
+        val alertEx: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        alertEx.setMessage(getString(R.string.sign_out_alert))
+        alertEx.setNegativeButton(getString(R.string.yes)) { _, _ ->
             Command.deleteAll(requireContext())
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(requireContext(), LoginActivity::class.java)
@@ -48,10 +48,10 @@ class SettingFragment: PreferenceFragmentCompat() {
             startActivity(intent)
             ActivityCompat.finishAffinity(requireActivity())
         }
-        alert_ex.setPositiveButton(getString(R.string.no)) { dialog, _ ->
+        alertEx.setPositiveButton(getString(R.string.no)) { dialog, _ ->
             dialog.dismiss()
         }
-        val alert = alert_ex.create()
+        val alert = alertEx.create()
         alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
         alert.show()
     }
