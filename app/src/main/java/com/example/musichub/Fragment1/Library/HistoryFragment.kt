@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
 import com.example.musichub.Adapter.Base.MusicListAdapter
 import com.example.musichub.Data.HistoryData
@@ -16,6 +14,7 @@ import com.example.musichub.Interface.MusicListListener
 import com.example.musichub.Interface.MusicListener
 import com.example.musichub.MainActivity
 import com.example.musichub.R
+import com.example.musichub.databinding.FragmentHistoryBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,8 +23,9 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 
 class HistoryFragment : Fragment(), MusicListListener {
-    lateinit var history_list: ListView
-    lateinit var history_text: TextView
+
+    private var _binding: FragmentHistoryBinding? = null
+    private val binding get() = _binding!!
 
     var arr1 = mutableListOf<String>()
     var items = mutableListOf<MusicData>()
@@ -45,12 +45,9 @@ class HistoryFragment : Fragment(), MusicListListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_history, container, false)
+    ): View {
+        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val email: String = FirebaseAuth.getInstance().currentUser?.email.toString()
-
-        history_list = v.findViewById(R.id.history_list)
-        history_text = v.findViewById(R.id.history_text)
         musicListAdapter = MusicListAdapter(items,this)
 
         FirebaseDatabase.getInstance().getReference("History").orderByChild("email").equalTo(email)
@@ -68,21 +65,21 @@ class HistoryFragment : Fragment(), MusicListListener {
                         }
                     }
                     if(arr1.size == 0){
-                        history_text.visibility = View.VISIBLE
+                        binding.historyText.visibility = View.VISIBLE
                     } else {
-                        history_text.visibility = View.GONE
+                        binding.historyText.visibility = View.GONE
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        history_list.setOnItemClickListener{ parent, view, position, id ->
+        binding.historyList.setOnItemClickListener{ parent, view, position, id ->
             val data = items[position]
             val url:String = data.songUrl
             musicListener.playMusic(url)
         }
 
-        return v
+        return binding.root
     }
 
     private fun getSongs(data: HistoryData){
@@ -97,7 +94,7 @@ class HistoryFragment : Fragment(), MusicListListener {
                         }
                     }
                     musicListAdapter.sort()
-                    history_list.adapter = musicListAdapter
+                    binding.historyList.adapter = musicListAdapter
                 }
                 override fun onCancelled(error: DatabaseError) {
                     Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
@@ -117,5 +114,10 @@ class HistoryFragment : Fragment(), MusicListListener {
 
             etcFragment.show(fragmentManager, etcFragment.getTag())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -7,70 +7,52 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Bundle
 import android.view.Window
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musichub.Data.AccountData
 import com.example.musichub.R
+import com.example.musichub.databinding.ActivityRegisterBinding
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
 
 class RegisterActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityRegisterBinding
+    lateinit var dialog: Dialog
     private var image: Uri? = null
     private var byteArray: ByteArray? = null
     var imageUrl: String = ""
     var email: String = ""
 
-    lateinit var register_image: CircleImageView
-    lateinit var register_image_btn: Button
-    lateinit var register_btn: Button
-    lateinit var register_back_btn: ImageView
-    lateinit var register_email: TextView
-    lateinit var register_pwd: TextView
-    lateinit var register_nickname: TextView
-
-    lateinit var dialog: Dialog
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         email = FirebaseAuth.getInstance().currentUser?.email.toString()
-
-        register_image = findViewById(R.id.register_image)
-        register_image_btn = findViewById(R.id.register_image_btn)
-        register_btn = findViewById(R.id.register_btn)
-        register_back_btn = findViewById(R.id.register_back_btn)
-        register_email = findViewById(R.id.register_email)
-        register_pwd = findViewById(R.id.register_pwd)
-        register_nickname = findViewById(R.id.register_nickname)
 
         dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.progress_layout2)
         dialog.setCancelable(false)
 
-        register_image_btn.setOnClickListener{
+        binding.registerImageBtn.setOnClickListener{
             ImagePicker.with(this)
                 .crop(1f, 1f).compress(1024)
                 .maxResultSize(640, 640)
                 .createIntent { intent -> imageLauncher.launch(intent) }
         }
 
-        register_btn.setOnClickListener{
-            val email:String = register_email.text.toString()
-            val password:String = register_pwd.text.toString()
-            val nickname:String = register_nickname.text.toString()
+        binding.registerBtn.setOnClickListener{
+            val email:String = binding.registerEmail.text.toString()
+            val password:String = binding.registerPwd.text.toString()
+            val nickname:String = binding.registerNickname.text.toString()
 
             if(email.isEmpty() or password.isEmpty() or nickname.isEmpty()){
                 Toast.makeText(this, getString(R.string.enter_all), Toast.LENGTH_SHORT).show()
@@ -89,7 +71,7 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        register_back_btn.setOnClickListener{
+        binding.registerBackBtn.setOnClickListener{
             finish()
         }
     }
@@ -129,7 +111,7 @@ class RegisterActivity : AppCompatActivity() {
             image = data?.data
             // Uri를 활용하여 ImageView에 가져온 이미지 표시
             val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, image!!))
-            register_image.setImageBitmap(bitmap)
+            binding.registerImage.setImageBitmap(bitmap)
             val byteArrayOutputStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
             byteArray = byteArrayOutputStream.toByteArray()

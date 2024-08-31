@@ -28,7 +28,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/list_back_btn"
+                    android:id="@+id/album_back_btn"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_alignParentStart="true"
@@ -36,7 +36,7 @@
                     android:src="@drawable/baseline_arrow_back_24" />
 
                 <ImageView
-                    android:id="@+id/list_edit_btn"
+                    android:id="@+id/album_edit_btn"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_alignParentEnd="true"
@@ -58,7 +58,7 @@
                 app:layout_constraintTop_toBottomOf="@id/toolbar">
 
                 <ImageView
-                    android:id="@+id/list_thumbnail"
+                    android:id="@+id/album_thumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_baseline_library_music_24"/>
@@ -77,7 +77,7 @@
                 app:layout_constraintTop_toTopOf="@+id/card_view_artist_art_container">
 
                 <TextView
-                    android:id="@+id/list_name"
+                    android:id="@+id/album_name"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_gravity="start"
@@ -89,7 +89,7 @@
 
                 <TextView
                     android:layout_marginTop="7dp"
-                    android:id="@+id/list_artist"
+                    android:id="@+id/album_artist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -98,7 +98,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/list_track_num"
+                    android:id="@+id/album_track_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -108,7 +108,7 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/list_play_btn"
+                android:id="@+id/album_play_btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/play_arrow"
@@ -129,7 +129,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/list_description"
+                android:id="@+id/album_description"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:ellipsize="end"
@@ -141,7 +141,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
             <TextView
-                android:id="@+id/list_show_more"
+                android:id="@+id/album_show_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
@@ -151,7 +151,7 @@
         </LinearLayout>
 
         <ListView
-            android:id="@+id/list_track"
+            android:id="@+id/album_track"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:dividerHeight="0px"

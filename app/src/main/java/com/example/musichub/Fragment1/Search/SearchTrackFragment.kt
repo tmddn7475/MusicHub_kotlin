@@ -7,14 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.TextView
 import com.example.musichub.Adapter.Base.MusicListAdapter
 import com.example.musichub.Data.MusicData
 import com.example.musichub.Interface.MusicListListener
 import com.example.musichub.Interface.MusicListener
 import com.example.musichub.MainActivity
-import com.example.musichub.R
+import com.example.musichub.databinding.FragmentSearchTrackBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -23,8 +21,8 @@ import com.google.firebase.database.getValue
 
 class SearchTrackFragment : Fragment(), MusicListListener {
 
-    lateinit var search_track_list: ListView
-    lateinit var none: TextView
+    private var _binding: FragmentSearchTrackBinding? = null
+    private val binding get() = _binding!!
     lateinit var musicListAdapter: MusicListAdapter
     var list = mutableListOf<MusicData>()
 
@@ -42,15 +40,12 @@ class SearchTrackFragment : Fragment(), MusicListListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_search_track, container, false)
+    ): View {
+        _binding = FragmentSearchTrackBinding.inflate(inflater, container, false)
 
-        val query: String = arguments?.getString("search").toString().lowercase()
         list.clear()
-
-        search_track_list = v.findViewById(R.id.search_track_list)
-        none = v.findViewById(R.id.none)
         musicListAdapter = MusicListAdapter(list, this)
+        val query: String = arguments?.getString("search").toString().lowercase()
 
         FirebaseDatabase.getInstance().getReference("Songs").addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -63,23 +58,23 @@ class SearchTrackFragment : Fragment(), MusicListListener {
                         }
                     }
                 }
-                search_track_list.adapter = musicListAdapter
+                binding.searchTrackList.adapter = musicListAdapter
 
                 if(list.size == 0){
-                    none.visibility = View.VISIBLE
+                    binding.none.visibility = View.VISIBLE
                 } else {
-                    none.visibility = View.GONE
+                    binding.none.visibility = View.GONE
                 }
             }
             override fun onCancelled(error: DatabaseError) {}
         })
 
-        search_track_list.setOnItemClickListener{ _, _, position, _ ->
+        binding.searchTrackList.setOnItemClickListener{ _, _, position, _ ->
             val data = list[position]
             musicListener.playMusic(data.songUrl)
         }
 
-        return v
+        return binding.root
     }
 
     override fun sendEtc(message: String) {

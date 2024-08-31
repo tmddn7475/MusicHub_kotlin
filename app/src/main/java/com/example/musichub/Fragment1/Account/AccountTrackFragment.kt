@@ -7,15 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.musichub.Adapter.Base.MusicListAdapter
 import com.example.musichub.Data.MusicData
 import com.example.musichub.Interface.MusicListListener
 import com.example.musichub.Interface.MusicListener
 import com.example.musichub.MainActivity
-import com.example.musichub.R
+import com.example.musichub.databinding.FragmentAccountTrackBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -25,6 +23,8 @@ import com.google.firebase.database.getValue
 class AccountTrackFragment : Fragment(), MusicListListener {
 
     private lateinit var musicListener:MusicListener
+    private var _binding: FragmentAccountTrackBinding? = null
+    private val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -38,12 +38,10 @@ class AccountTrackFragment : Fragment(), MusicListListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_account_track, container, false)
+    ): View {
+        _binding = FragmentAccountTrackBinding.inflate(inflater, container, false)
 
         val email = arguments?.getString("email")
-        val track_list: ListView = v.findViewById(R.id.track_list)
-        val track_none: TextView = v.findViewById(R.id.track_none)
         val list = mutableListOf<MusicData>()
         val musicListAdapter = MusicListAdapter(list, this)
 
@@ -57,10 +55,10 @@ class AccountTrackFragment : Fragment(), MusicListListener {
                             list.add(mld)
                         }
                     }
-                    track_none.visibility = View.GONE
-                    track_list.adapter = musicListAdapter
+                    binding.trackNone.visibility = View.GONE
+                    binding.trackList.adapter = musicListAdapter
                 } else {
-                    track_none.visibility = View.VISIBLE
+                    binding.trackNone.visibility = View.VISIBLE
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -68,13 +66,13 @@ class AccountTrackFragment : Fragment(), MusicListListener {
             }
         })
 
-        track_list.setOnItemClickListener { parent, view, position, id ->
+        binding.trackList.setOnItemClickListener { _, _, position, _ ->
             val data = list[position]
             val url:String = data.songUrl
             musicListener.playMusic(url)
         }
 
-        return v
+        return binding.root
     }
 
     override fun sendEtc(message: String) {
@@ -89,5 +87,10 @@ class AccountTrackFragment : Fragment(), MusicListListener {
 
             etcFragment.show(fragmentManager, etcFragment.tag)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

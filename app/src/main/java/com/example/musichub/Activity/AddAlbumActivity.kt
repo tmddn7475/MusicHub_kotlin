@@ -35,13 +35,13 @@ import java.io.ByteArrayOutputStream
 @SuppressLint("UseSwitchCompatOrMaterialCode")
 class AddAlbumActivity : AppCompatActivity() {
 
+    lateinit var binding: ActivityAddAlbumBinding
     lateinit var dialog: Dialog
     private var setMode: String = "private"
     private var image: Uri? = null
     private var byteArray: ByteArray? = null
     var nickname: String = ""
     val email:String = FirebaseAuth.getInstance().currentUser?.email.toString()
-    lateinit var binding: ActivityAddAlbumBinding
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {

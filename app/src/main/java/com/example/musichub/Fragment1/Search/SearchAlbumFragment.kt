@@ -5,13 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridView
-import android.widget.TextView
 import com.example.musichub.Adapter.Base.GridViewAdapter
 import com.example.musichub.Data.AlbumData
 import com.example.musichub.Fragment1.AlbumFragment
 import com.example.musichub.MainActivity
 import com.example.musichub.R
+import com.example.musichub.databinding.FragmentSearchAlbumBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -20,29 +19,24 @@ import com.google.firebase.database.getValue
 
 class SearchAlbumFragment : Fragment() {
 
+    private var _binding: FragmentSearchAlbumBinding? = null
+    private val binding get() = _binding!!
     lateinit var gridViewAdapter: GridViewAdapter
-    lateinit var search_gridview: GridView
-    lateinit var none: TextView
-
     var items = mutableListOf<AlbumData>()
     var keyList = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_search_album, container, false)
-
-        val query: String = arguments?.getString("search").toString().lowercase()
+    ): View {
+        _binding = FragmentSearchAlbumBinding.inflate(inflater, container, false)
 
         keyList.clear()
         items.clear()
-
-        search_gridview = v.findViewById(R.id.search_gridview)
-        none = v.findViewById(R.id.none)
         gridViewAdapter = GridViewAdapter(requireContext(), items)
+        val query: String = arguments?.getString("search").toString().lowercase()
 
-        search_gridview.setOnItemClickListener{ _, _, position, _ ->
+        binding.searchGridview.setOnItemClickListener{ _, _, position, _ ->
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val albumFragment = AlbumFragment()
@@ -64,18 +58,22 @@ class SearchAlbumFragment : Fragment() {
                         }
                     }
                 }
-                search_gridview.adapter = gridViewAdapter
+                binding.searchGridview.adapter = gridViewAdapter
 
                 if(items.size == 0){
-                    none.visibility = View.VISIBLE
+                    binding.none.visibility = View.VISIBLE
                 } else {
-                    none.visibility = View.GONE
+                    binding.none.visibility = View.GONE
                 }
             }
             override fun onCancelled(error: DatabaseError) {}
         })
 
-        return v
+        return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

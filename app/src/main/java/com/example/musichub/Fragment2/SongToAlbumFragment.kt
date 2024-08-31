@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
 import com.example.musichub.Adapter.Base.MyAlbumAdapter
 import com.example.musichub.Object.Command
 import com.example.musichub.Data.AlbumData
 import com.example.musichub.R
+import com.example.musichub.databinding.FragmentSongToAlbumBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -23,8 +22,8 @@ import com.google.firebase.database.getValue
 
 class SongToAlbumFragment : BottomSheetDialogFragment() {
 
-    lateinit var song_to_list_view: ListView
-    lateinit var song_to_list_text: TextView
+    private var _binding: FragmentSongToAlbumBinding? = null
+    private val binding get() = _binding!!
     lateinit var albumAdapter: MyAlbumAdapter
 
     val list = mutableListOf<AlbumData>()
@@ -33,25 +32,21 @@ class SongToAlbumFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_song_to_album, container, false)
-
+    ): View {
+        _binding = FragmentSongToAlbumBinding.inflate(inflater, container, false)
         val url: String = arguments?.getString("url").toString()
-
-        song_to_list_view = v.findViewById(R.id.song_to_list_view)
-        song_to_list_text = v.findViewById(R.id.song_to_list_text)
         albumAdapter = MyAlbumAdapter(list, keyList)
 
         getList()
 
-        song_to_list_view.setOnItemClickListener{ _, _, position, _ ->
+        binding.songToListView.setOnItemClickListener{ _, _, position, _ ->
             val key = keyList[position]
             Command.putTrack(key, url)
             Toast.makeText(requireContext(), getString(R.string.song_to_list), Toast.LENGTH_SHORT).show()
             dismiss()
         }
 
-        return v
+        return binding.root
     }
 
     private fun getList(){
@@ -67,10 +62,10 @@ class SongToAlbumFragment : BottomSheetDialogFragment() {
                                 keyList.add(ds.key.toString())
                             }
                         }
-                        song_to_list_view.adapter = albumAdapter
-                        song_to_list_text.visibility = View.GONE
+                        binding.songToListView.adapter = albumAdapter
+                        binding.songToListText.visibility = View.GONE
                     } else {
-                        song_to_list_text.visibility = View.VISIBLE
+                        binding.songToListText.visibility = View.VISIBLE
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
@@ -88,5 +83,10 @@ class SongToAlbumFragment : BottomSheetDialogFragment() {
         view.findViewById<ImageView>(R.id.song_to_list_dismiss).setOnClickListener{
             dismiss()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -6,15 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.TextView
 import com.example.musichub.Adapter.Base.MusicListAdapter
 import com.example.musichub.Data.MusicData
 import com.example.musichub.Interface.MusicListListener
 import com.example.musichub.Interface.MusicListener
 import com.example.musichub.Data.LikeData
 import com.example.musichub.MainActivity
-import com.example.musichub.R
+import com.example.musichub.databinding.FragmentLikeBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,8 +22,8 @@ import com.google.firebase.database.getValue
 
 class LikeFragment : Fragment(), MusicListListener {
 
-    lateinit var like_list: ListView
-    lateinit var like_text: TextView
+    private var _binding: FragmentLikeBinding? = null
+    private val binding get() = _binding!!
     lateinit var musicListAdapter: MusicListAdapter
     lateinit var musicListener: MusicListener
 
@@ -43,11 +41,9 @@ class LikeFragment : Fragment(), MusicListListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_like, container, false)
+    ): View {
+        _binding = FragmentLikeBinding.inflate(inflater, container, false)
 
-        like_list = v.findViewById(R.id.like_list)
-        like_text = v.findViewById(R.id.like_text)
         musicListAdapter = MusicListAdapter(list, this)
 
         val email:String = FirebaseAuth.getInstance().currentUser?.email.toString()
@@ -61,15 +57,15 @@ class LikeFragment : Fragment(), MusicListListener {
                                 getMusic(data.songUrl)
                             }
                         }
-                        like_text.visibility = View.GONE
+                        binding.likeText.visibility = View.GONE
                     } else {
-                        like_text.visibility = View.VISIBLE
+                        binding.likeText.visibility = View.VISIBLE
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        return v
+        return binding.root
     }
 
     private fun getMusic(url:String){
@@ -82,7 +78,7 @@ class LikeFragment : Fragment(), MusicListListener {
                             list.add(data)
                         }
                     }
-                    like_list.adapter = musicListAdapter
+                    binding.likeList.adapter = musicListAdapter
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
@@ -100,5 +96,10 @@ class LikeFragment : Fragment(), MusicListListener {
 
             etcFragment.show(fragmentManager, etcFragment.getTag())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

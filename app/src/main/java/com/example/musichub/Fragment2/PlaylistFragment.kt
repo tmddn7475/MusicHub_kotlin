@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.media3.session.MediaController
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.example.musichub.Adapter.ItemTouchHelperCallBack
 import com.example.musichub.Adapter.Recycler.PlayListAdapter
 import com.example.musichub.Data.MusicData
@@ -19,6 +18,7 @@ import com.example.musichub.Interface.PlayListListener
 import com.example.musichub.MainActivity
 import com.example.musichub.R
 import com.example.musichub.RoomDB.PlaylistDatabase
+import com.example.musichub.databinding.FragmentPlaylistBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.DataSnapshot
@@ -29,16 +29,11 @@ import com.google.firebase.database.getValue
 
 class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
 
+    private var _binding: FragmentPlaylistBinding? = null
+    val binding get() = _binding!!
     var db:PlaylistDatabase? = null
-
-    lateinit var playlistRecyclerView: RecyclerView
     lateinit var mediaController: MediaController
     lateinit var playListAdapter: PlayListAdapter
-    lateinit var playlist_progress: SeekBar
-    lateinit var playlist_media_btn: ImageView
-    lateinit var playlist_play_btn: ImageView
-    lateinit var playlist_skip_previous_btn: ImageView
-    lateinit var playlist_skip_next_btn: ImageView
 
     var list = ArrayList<MusicData>()
     private lateinit var musicListener: MusicListener
@@ -61,15 +56,8 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_playlist, container, false)
-
-        playlist_play_btn = v.findViewById(R.id.playlist_play_btn)
-        playlist_skip_next_btn = v.findViewById(R.id.playlist_skip_next_btn)
-        playlist_skip_previous_btn = v.findViewById(R.id.playlist_skip_previous_btn)
-        playlist_media_btn = v.findViewById(R.id.playlist_media_btn)
-        playlist_progress = v.findViewById(R.id.playlist_progress)
-        playlistRecyclerView = v.findViewById(R.id.playlist_recycler)
+    ): View {
+        _binding = FragmentPlaylistBinding.inflate(inflater, container, false)
 
         // room db
         db = PlaylistDatabase.getInstance(requireContext())
@@ -90,13 +78,13 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
 
         playListAdapter = PlayListAdapter(list, this, db)
         val helper = ItemTouchHelper(ItemTouchHelperCallBack(playListAdapter))
-        helper.attachToRecyclerView(playlistRecyclerView)
+        helper.attachToRecyclerView(binding.playlistRecycler)
 
         // seekbar
-        playlist_progress.progress = mediaController.currentPosition.toInt()
-        playlist_progress.max = mediaController.duration.toInt()
+        binding.playlistProgress.progress = mediaController.currentPosition.toInt()
+        binding.playlistProgress.max = mediaController.duration.toInt()
 
-        playlist_progress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+        binding.playlistProgress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {}
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
@@ -108,40 +96,40 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
 
         // 재생 버튼
         if(mediaController.isPlaying){
-            playlist_play_btn.setImageResource(R.drawable.pause)
+            binding.playlistPlayBtn.setImageResource(R.drawable.pause)
         } else {
-            playlist_play_btn.setImageResource(R.drawable.play_arrow)
+            binding.playlistPlayBtn.setImageResource(R.drawable.play_arrow)
         }
 
-        playlist_play_btn.setOnClickListener{
+        binding.playlistPlayBtn.setOnClickListener{
             if(mediaController.isPlaying){
                 mediaController.pause()
-                playlist_play_btn.setImageResource(R.drawable.play_arrow)
+                binding.playlistPlayBtn.setImageResource(R.drawable.play_arrow)
             } else {
                 mediaController.play()
-                playlist_play_btn.setImageResource(R.drawable.pause)
+                binding.playlistPlayBtn.setImageResource(R.drawable.pause)
             }
         }
 
         // 다음 곡
-        playlist_skip_next_btn.setOnClickListener{
+        binding.playlistSkipNextBtn.setOnClickListener{
             musicListener.nextMusic()
             mediaController.play()
             if(isAdded){
-                playlist_play_btn.setImageResource(R.drawable.pause)
+                binding.playlistPlayBtn.setImageResource(R.drawable.pause)
             }
         }
 
         // 전 곡
-        playlist_skip_previous_btn.setOnClickListener{
+        binding.playlistSkipPreviousBtn.setOnClickListener{
             musicListener.prevMusic()
             mediaController.play()
             if(isAdded){
-                playlist_play_btn.setImageResource(R.drawable.pause)
+                binding.playlistPlayBtn.setImageResource(R.drawable.pause)
             }
         }
 
-        playlist_media_btn.setOnClickListener{
+        binding.playlistMediaBtn.setOnClickListener{
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val mediaFragment: MediaFragment = mainActivity.mediaFragment
@@ -151,7 +139,7 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
             dismiss()
         }
 
-        return v
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -182,7 +170,7 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
                     }
                     playListAdapter.sort()
                     playListAdapter.getNumber(mainActivity.currentUrl)
-                    playlistRecyclerView.adapter = playListAdapter
+                    binding.playlistRecycler.adapter = playListAdapter
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
@@ -195,7 +183,7 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
     override fun sendMusic(message: String) {
         musicListener.playMusic(message)
         if(isAdded){
-            playlist_play_btn.setImageResource(R.drawable.pause)
+            binding.playlistPlayBtn.setImageResource(R.drawable.pause)
         }
     }
 
@@ -211,5 +199,10 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
 
             etcFragment.show(fragmentManager, etcFragment.getTag())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

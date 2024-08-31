@@ -6,15 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
 import com.example.musichub.Adapter.Base.MusicListAdapter
 import com.example.musichub.Data.MusicData
 import com.example.musichub.Interface.MusicListListener
 import com.example.musichub.Interface.MusicListener
 import com.example.musichub.MainActivity
 import com.example.musichub.R
+import com.example.musichub.databinding.FragmentCategoryBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -23,12 +21,11 @@ import com.google.firebase.database.getValue
 
 class CategoryFragment : Fragment(), MusicListListener {
 
-    lateinit var category_list: ListView
-    lateinit var category_text: TextView
+    private var _binding: FragmentCategoryBinding? = null
+    private val binding get() = _binding!!
     lateinit var musicListAdapter: MusicListAdapter
     lateinit var musicListener: MusicListener
-
-    var list_item = mutableListOf<MusicData>()
+    var listItem = mutableListOf<MusicData>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -42,33 +39,28 @@ class CategoryFragment : Fragment(), MusicListListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_category, container, false)
+    ): View {
+        _binding = FragmentCategoryBinding.inflate(inflater, container, false)
 
         val category: String = arguments?.getString("category").toString()
-        val category_name: TextView = v.findViewById(R.id.category_name)
-        val category_image: ImageView = v.findViewById(R.id.category_image)
-        val category_back_btn: ImageView = v.findViewById(R.id.category_back_btn)
-        category_list = v.findViewById(R.id.category_list)
-        category_text = v.findViewById(R.id.category_text)
 
-        category_name.text = category
-        category_image.setImageResource(getImage(category))
+        binding.categoryName.text = category
+        binding.categoryImage.setImageResource(getImage(category))
 
-        musicListAdapter = MusicListAdapter(list_item, this)
+        musicListAdapter = MusicListAdapter(listItem, this)
         getSongs(category)
 
-        category_list.setOnItemClickListener { parent, view, position, id ->
-            val data = list_item[position]
+        binding.categoryList.setOnItemClickListener { _, _, position, _ ->
+            val data = listItem[position]
             val url:String = data.songUrl
             musicListener.playMusic(url)
         }
 
-        category_back_btn.setOnClickListener{
+        binding.categoryBackBtn.setOnClickListener{
             back()
         }
 
-        return v
+        return binding.root
     }
 
     private fun getImage(str: String): Int = when(str) {
@@ -89,18 +81,18 @@ class CategoryFragment : Fragment(), MusicListListener {
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.children.iterator().hasNext()){
-                        list_item.clear()
+                        listItem.clear()
                         for(ds: DataSnapshot in snapshot.children) {
                             val data = ds.getValue<MusicData>()
                             if(data != null){
-                                list_item.add(data)
+                                listItem.add(data)
                             }
                         }
-                        category_list.adapter = musicListAdapter
-                        category_text.visibility = View.GONE
+                        binding.categoryList.adapter = musicListAdapter
+                        binding.categoryText.visibility = View.GONE
                     } else {
-                        category_list.visibility = View.GONE
-                        category_text.visibility = View.VISIBLE
+                        binding.categoryList.visibility = View.GONE
+                        binding.categoryText.visibility = View.VISIBLE
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
@@ -126,5 +118,10 @@ class CategoryFragment : Fragment(), MusicListListener {
 
             etcFragment.show(fragmentManager, etcFragment.getTag())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -5,15 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
 import com.example.musichub.Adapter.Base.AccountListAdapter
 import com.example.musichub.Data.AccountData
 import com.example.musichub.Data.FollowData
 import com.example.musichub.Fragment1.Account.AccountFragment
 import com.example.musichub.MainActivity
 import com.example.musichub.R
+import com.example.musichub.databinding.FragmentFollowingBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -22,9 +20,8 @@ import com.google.firebase.database.getValue
 
 class FollowingFragment : Fragment() {
 
-    lateinit var following_back_btn: ImageView
-    lateinit var following_list: ListView
-    lateinit var following_none: TextView
+    private var _binding: FragmentFollowingBinding? = null
+    private val binding get() = _binding!!
     lateinit var accountListAdapter: AccountListAdapter
 
     val list = mutableListOf<AccountData>()
@@ -32,14 +29,10 @@ class FollowingFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_following, container, false)
+    ): View {
+        _binding = FragmentFollowingBinding.inflate(inflater, container, false)
 
         val email = arguments?.getString("email").toString()
-
-        following_back_btn = v.findViewById(R.id.following_back_btn)
-        following_list = v.findViewById(R.id.following_list)
-        following_none = v.findViewById(R.id.textView1)
         accountListAdapter = AccountListAdapter(list)
 
         FirebaseDatabase.getInstance().getReference("Follow").orderByChild("email").equalTo(email)
@@ -53,16 +46,16 @@ class FollowingFragment : Fragment() {
                                 getAccount(data.follow)
                             }
                         }
-                        following_none.visibility = View.GONE
+                        binding.textView1.visibility = View.GONE
                     } else {
-                        following_none.visibility = View.VISIBLE
+                        binding.textView1.visibility = View.VISIBLE
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        following_list.setOnItemClickListener { _, _, position, _ ->
+        binding.followingList.setOnItemClickListener { _, _, position, _ ->
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val accountFragment = AccountFragment()
@@ -73,11 +66,11 @@ class FollowingFragment : Fragment() {
             fragmentManager.beginTransaction().replace(R.id.container, accountFragment).addToBackStack(null).commit()
         }
 
-        following_back_btn.setOnClickListener{
+        binding.followingBackBtn.setOnClickListener{
             back()
         }
 
-        return v
+        return binding.root
     }
 
     private fun getAccount(email: String){
@@ -90,7 +83,7 @@ class FollowingFragment : Fragment() {
                             list.add(data)
                         }
                     }
-                    following_list.adapter = accountListAdapter
+                    binding.followingList.adapter = accountListAdapter
                 }
 
                 override fun onCancelled(error: DatabaseError) {}
@@ -102,5 +95,10 @@ class FollowingFragment : Fragment() {
         val fragmentManager = mainActivity.supportFragmentManager
         fragmentManager.beginTransaction().remove(this).commit()
         fragmentManager.popBackStack()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

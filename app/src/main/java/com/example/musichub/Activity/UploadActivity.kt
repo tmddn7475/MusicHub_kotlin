@@ -16,9 +16,6 @@ import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -28,6 +25,7 @@ import com.example.musichub.Data.AccountData
 import com.example.musichub.Object.Command
 import com.example.musichub.Data.MusicData
 import com.example.musichub.R
+import com.example.musichub.databinding.ActivityUploadBinding
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -42,45 +40,28 @@ import java.util.concurrent.TimeUnit
 
 class UploadActivity : AppCompatActivity() {
 
-    var uriSong:Uri? = null
-    var image:Uri? = null
-    var byteArray: ByteArray? = null
+    private lateinit var binding: ActivityUploadBinding
+    private var uriSong:Uri? = null
+    private var image:Uri? = null
+    private var byteArray: ByteArray? = null
 
     lateinit var fileName:String
     lateinit var songUrl:String
     lateinit var imageUrl:String
     lateinit var songLength:String
     lateinit var nickName:String
-
-    lateinit var uploadImage:ImageView
-    lateinit var uploadSelectSong:ImageView
-    lateinit var uploadBackBtn:ImageView
-    lateinit var songNameEdit:EditText
-    lateinit var songCategoryEdit:EditText
-    lateinit var songDescriptionEdit:EditText
-    lateinit var descriptionLength:TextView
-    lateinit var uploadBtn: Button
-
     lateinit var dialog: Dialog
 
-    val email:String = FirebaseAuth.getInstance().currentUser?.email.toString()
+    private val email:String = FirebaseAuth.getInstance().currentUser?.email.toString()
     private val storageReference = FirebaseStorage.getInstance().getReference()
-    private val category_arr:Array<String> = arrayOf("None", "Ambient", "Classical", "Dance & EDM",
+    private val categoryArr:Array<String> = arrayOf("None", "Ambient", "Classical", "Dance & EDM",
         "Disco", "Hip hop", "Jazz", "R&B", "Reggae", "Rock")
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_upload)
-
-        uploadImage = findViewById(R.id.upload_image)
-        uploadSelectSong = findViewById(R.id.selectSongButton)
-        uploadBackBtn = findViewById(R.id.upload_back_btn)
-        songNameEdit = findViewById(R.id.upload_song_name)
-        songCategoryEdit = findViewById(R.id.upload_song_category)
-        songDescriptionEdit = findViewById(R.id.upload_song_description)
-        descriptionLength = findViewById(R.id.upload_length)
-        uploadBtn = findViewById(R.id.upload_btn)
+        binding = ActivityUploadBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         dialog = Dialog(this@UploadActivity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -90,24 +71,24 @@ class UploadActivity : AppCompatActivity() {
         getNickname(email)
 
         // 곡 썸네일
-        uploadImage.clipToOutline = true
-        uploadImage.setOnClickListener{
+        binding.uploadImage.clipToOutline = true
+        binding.uploadImage.setOnClickListener{
             ImagePicker.with(this@UploadActivity)
                 .crop(1f, 1f).compress(1024)
                 .maxResultSize(640, 640)
                 .createIntent { intent -> imageLauncher.launch(intent) }
         }
 
-        uploadSelectSong.setOnClickListener{
+        binding.selectSongButton.setOnClickListener{
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.setType("audio/*")
             songLauncher.launch(intent)
         }
 
         // 곡 설명 터치시 editText가 스크롤 되도록 설정
-        songDescriptionEdit.setOnTouchListener(object : View.OnTouchListener {
+        binding.uploadSongDescription.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                if (songDescriptionEdit.hasFocus()) {
+                if (binding.uploadSongDescription.hasFocus()) {
                     v!!.parent.requestDisallowInterceptTouchEvent(true)
                     when (event!!.action and MotionEvent.ACTION_MASK) {
                         MotionEvent.ACTION_SCROLL -> {
@@ -120,43 +101,43 @@ class UploadActivity : AppCompatActivity() {
             }
         })
 
-        songDescriptionEdit.addTextChangedListener(object : TextWatcher{
+        binding.uploadSongDescription.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val length: Int = songDescriptionEdit.text.length
-                descriptionLength.text = "$length / 2000"
+                val length: Int = binding.uploadSongDescription.text.length
+                binding.uploadLength.text = "$length / 2000"
             }
             override fun afterTextChanged(s: Editable?) {}
         })
 
         // 카테고리
-        songCategoryEdit.setOnClickListener{
+        binding.uploadSongCategory.setOnClickListener{
             AlertDialog.Builder(this@UploadActivity)
-                .setItems(category_arr) { dialog, which ->
-                    songCategoryEdit.setText(category_arr[which])
+                .setItems(categoryArr) { dialog, which ->
+                    binding.uploadSongCategory.setText(categoryArr[which])
                 }.show()
         }
 
-        uploadBtn.setOnClickListener{
+        binding.uploadBtn.setOnClickListener{
             if(uriSong == null){
                 Toast.makeText(this@UploadActivity, getString(R.string.select_track), Toast.LENGTH_SHORT).show()
-            } else if(songNameEdit.text.equals("") and songCategoryEdit.text.equals("") and songDescriptionEdit.text.equals("")) {
+            } else if(binding.uploadSongName.text.equals("") and binding.uploadSongCategory.text.equals("") and binding.uploadSongDescription.text.equals("")) {
                 Toast.makeText(this@UploadActivity, getString(R.string.enter_all), Toast.LENGTH_SHORT).show()
             } else if (image == null) {
                 Toast.makeText(this@UploadActivity, getString(R.string.select_image), Toast.LENGTH_SHORT).show()
             } else {
                 dialog.show()
-                fileName = songNameEdit.text.toString()
-                val description = songDescriptionEdit.text.toString()
-                val category = songCategoryEdit.text.toString()
+                fileName = binding.uploadSongName.text.toString()
+                val description = binding.uploadSongDescription.text.toString()
+                val category = binding.uploadSongCategory.text.toString()
 
                 uploadImageToServer(byteArray!!, fileName)
                 uploadFileToServer(uriSong!!, fileName, description, songLength, category)
             }
         }
 
-        uploadBackBtn.setOnClickListener{
+        binding.uploadBackBtn.setOnClickListener{
             finish()
         }
     }
@@ -166,7 +147,7 @@ class UploadActivity : AppCompatActivity() {
             result.data?.data?.let { uri ->
                 uriSong = uri
                 fileName = getFileName(uri).toString()
-                songNameEdit.setText(fileName)
+                binding.uploadSongName.setText(fileName)
                 songLength = getSongDuration(uri)
             }
         } else {
@@ -182,7 +163,7 @@ class UploadActivity : AppCompatActivity() {
             image = data?.data
             // Uri를 활용하여 ImageView에 가져온 이미지 표시
             val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, image!!))
-            uploadImage.setImageBitmap(bitmap)
+            binding.uploadImage.setImageBitmap(bitmap)
             val byteArrayOutputStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
             byteArray = byteArrayOutputStream.toByteArray()

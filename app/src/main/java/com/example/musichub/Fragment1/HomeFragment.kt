@@ -11,8 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.ImageView
-import android.widget.ListView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -32,22 +30,19 @@ import com.example.musichub.R
 import com.example.musichub.Activity.UploadActivity
 import com.example.musichub.Object.Command
 import com.example.musichub.Data.AccountData
+import com.example.musichub.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
-import de.hdodenhof.circleimageview.CircleImageView
 
 class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener {
 
     val musicListener:MusicListener = _musicListener
-
-    lateinit var songsList: ListView
-    lateinit var upload: ImageView
-    lateinit var account: CircleImageView
-    lateinit var logout: ImageView
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     val email: String = FirebaseAuth.getInstance().currentUser?.email.toString()
 
@@ -57,8 +52,7 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val v: View = inflater.inflate(R.layout.fragment_home, container, false)
-
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -66,15 +60,9 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
         dialog.setCancelable(false)
         dialog.show()
 
-        songsList = v.findViewById(R.id.songsList)
-        upload = v.findViewById(R.id.home_upload)
-        account = v.findViewById(R.id.home_account)
-        logout = v.findViewById(R.id.home_logout)
-
         homeIntent()
         
         // 카테고리
-        val categoryRecycler: RecyclerView = v.findViewById(R.id.category_recycler)
         val list = mutableListOf<CategoryData>()
         list.add(CategoryData(text = "Ambient", image = R.drawable.ambient))
         list.add(CategoryData(text = "Classical", image = R.drawable.classical))
@@ -87,8 +75,8 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
         list.add(CategoryData(text = "Rock", image = R.drawable.rock))
 
         val categoryAdapter = CategoryAdapter(list)
-        categoryRecycler.adapter = categoryAdapter
-        categoryRecycler.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
+        binding.categoryRecycler.adapter = categoryAdapter
+        binding.categoryRecycler.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
 
         // 최신 곡
         val list_item = mutableListOf<MusicData>()
@@ -103,8 +91,7 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
                     }
                 }
                 dialog.dismiss()
-                songsList.adapter = musicListAdapter
-
+                binding.songsList.adapter = musicListAdapter
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
@@ -112,23 +99,43 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
             }
         })
 
-        songsList.setOnItemClickListener { _, _, position, _ ->
+        binding.songsList.setOnItemClickListener { _, _, position, _ ->
             val data = list_item[position]
             val url:String = data.songUrl
             musicListener.playMusic(url)
         }
 
-        return v
+        // 내 계정 사진 가져오기
+        FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
+            .addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for(ds: DataSnapshot in snapshot.children){
+                        val data = ds.getValue<AccountData>()
+                        if(data != null){
+                            if(isAdded && data.imageUrl != ""){
+                                Glide.with(requireContext()).load(data.imageUrl).into(binding.homeAccount)
+                            } else {
+                                binding.homeAccount.setImageResource(R.drawable.baseline_account_circle_24)
+                            }
+                        }
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
+                }
+            })
+
+        return binding.root
     }
 
     private fun homeIntent(){
         // 업로드
-        upload.setOnClickListener{
+        binding.homeUpload.setOnClickListener{
             val intent = Intent(requireContext(), UploadActivity::class.java)
             startActivity(intent)
         }
         // 내 계정
-        account.setOnClickListener{
+        binding.homeAccount.setOnClickListener{
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val accountFragment = AccountFragment()
@@ -139,7 +146,7 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
             fragmentManager.beginTransaction().replace(R.id.container, accountFragment).addToBackStack(null).commit()
         }
         // 로그아웃
-        logout.setOnClickListener{
+        binding.homeLogout.setOnClickListener{
             val alert_ex:AlertDialog.Builder = AlertDialog.Builder(requireContext())
             alert_ex.setMessage(getString(R.string.sign_out_alert))
             alert_ex.setNegativeButton(getString(R.string.yes)) { _, _ ->
@@ -157,25 +164,6 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
             alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
             alert.show()
         }
-        // 내 계정 사진 가져오기
-        FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
-            .addListenerForSingleValueEvent(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    for(ds: DataSnapshot in snapshot.children){
-                        val data = ds.getValue<AccountData>()
-                        if(data != null){
-                            if(isAdded && data.imageUrl != ""){
-                                Glide.with(requireContext()).load(data.imageUrl).into(account)
-                            } else {
-                                account.setImageResource(R.drawable.baseline_account_circle_24)
-                            }
-                        }
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
-                }
-            })
     }
 
     override fun sendEtc(message: String) {

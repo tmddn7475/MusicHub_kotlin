@@ -12,9 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,27 +29,23 @@ import com.example.musichub.Fragment1.Account.AccountFragment
 import com.example.musichub.Interface.MusicListener
 import com.example.musichub.MainActivity
 import com.example.musichub.R
+import com.example.musichub.databinding.FragmentFeedBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
-import de.hdodenhof.circleimageview.CircleImageView
 
 class FeedFragment : Fragment() {
 
-    lateinit var feed_account_recycler:RecyclerView
-    lateinit var feed_list: ListView
-    lateinit var feed_text: TextView
+    private var _binding: FragmentFeedBinding? = null
+    private val binding get() = _binding!!
     lateinit var dialog: Dialog
     lateinit var feedListAdapter: FeedListAdapter
     lateinit var feedAccountAdapter: FeedAccountAdapter
     lateinit var accountList:MutableList<AccountData>
     lateinit var songList:MutableList<MusicData>
-    lateinit var feed_logout: ImageView
-    lateinit var feed_upload: ImageView
-    lateinit var feed_account: CircleImageView
 
     private lateinit var musicListener: MusicListener
     val email:String = FirebaseAuth.getInstance().currentUser?.email.toString()
@@ -69,8 +62,8 @@ class FeedFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_feed, container, false)
+    ): View {
+        _binding = FragmentFeedBinding.inflate(inflater, container, false)
 
         dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -78,22 +71,15 @@ class FeedFragment : Fragment() {
         dialog.setCancelable(false)
         dialog.show()
 
-        feed_text = v.findViewById(R.id.feed_text)
-        feed_list = v.findViewById(R.id.feed_list)
-        feed_logout = v.findViewById(R.id.feed_logout)
-        feed_upload = v.findViewById(R.id.feed_upload)
-        feed_account = v.findViewById(R.id.feed_account)
-
         accountList = mutableListOf()
         songList = mutableListOf()
-        feed_account_recycler = v.findViewById(R.id.feed_account_recycler)
         feedAccountAdapter = FeedAccountAdapter(accountList)
-        feed_account_recycler.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
+        binding.feedAccountRecycler.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
 
         feedListAdapter = FeedListAdapter(songList, musicListener)
         addItem()
 
-        feed_list.setOnItemClickListener{ parent, view, position, id ->
+        binding.feedList.setOnItemClickListener{ _, _, position, _ ->
             val data = songList[position]
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
@@ -107,17 +93,17 @@ class FeedFragment : Fragment() {
 
         click()
 
-        return v
+        return binding.root
     }
 
     private fun click(){
         // 업로드
-        feed_upload.setOnClickListener{
+        binding.feedUpload.setOnClickListener{
             val intent = Intent(requireContext(), UploadActivity::class.java)
             startActivity(intent)
         }
         // 내 계정
-        feed_account.setOnClickListener{
+        binding.feedAccount.setOnClickListener{
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val accountFragment = AccountFragment()
@@ -128,7 +114,7 @@ class FeedFragment : Fragment() {
             fragmentManager.beginTransaction().replace(R.id.container, accountFragment).addToBackStack(null).commit()
         }
         // 로그아웃
-        feed_logout.setOnClickListener{
+        binding.feedLogout.setOnClickListener{
             val alert_ex: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             alert_ex.setMessage(getString(R.string.sign_out_alert))
             alert_ex.setNegativeButton(getString(R.string.yes)) { _, _ ->
@@ -154,9 +140,9 @@ class FeedFragment : Fragment() {
                         val data = ds.getValue<AccountData>()
                         if(data != null){
                             if(isAdded && data.imageUrl != ""){
-                                Glide.with(requireContext()).load(data.imageUrl).into(feed_account)
+                                Glide.with(requireContext()).load(data.imageUrl).into(binding.feedAccount)
                             } else {
-                                feed_account.setImageResource(R.drawable.baseline_account_circle_24)
+                                binding.feedAccount.setImageResource(R.drawable.baseline_account_circle_24)
                             }
                         }
                     }
@@ -179,11 +165,11 @@ class FeedFragment : Fragment() {
                             if(data != null){
                                 addItem2(data.follow)
                             }
-                            feed_text.visibility = View.GONE
+                            binding.feedText.visibility = View.GONE
                         }
                         dialog.dismiss()
                     } else {
-                        feed_text.visibility = View.VISIBLE
+                        binding.feedText.visibility = View.VISIBLE
                         dialog.dismiss()
                     }
                 }
@@ -201,7 +187,7 @@ class FeedFragment : Fragment() {
                             accountList.add(data)
                         }
                     }
-                    feed_account_recycler.adapter = feedAccountAdapter
+                    binding.feedAccountRecycler.adapter = feedAccountAdapter
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
@@ -216,9 +202,14 @@ class FeedFragment : Fragment() {
                         }
                     }
                     feedListAdapter.sort()
-                    feed_list.adapter = feedListAdapter
+                    binding.feedList.adapter = feedListAdapter
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

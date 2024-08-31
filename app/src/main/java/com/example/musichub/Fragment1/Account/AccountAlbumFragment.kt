@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.musichub.Data.AlbumData
 import com.example.musichub.Adapter.Base.GridViewAdapter
 import com.example.musichub.Fragment1.AlbumFragment
 import com.example.musichub.MainActivity
 import com.example.musichub.R
+import com.example.musichub.databinding.FragmentAccountAlbumBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,24 +23,23 @@ class AccountAlbumFragment : Fragment() {
     lateinit var gridViewAdapter: GridViewAdapter
     lateinit var keyList: MutableList<String>
     lateinit var items: MutableList<AlbumData>
-    lateinit var albumGridView: GridView
-    lateinit var album_none: TextView
+
+    private var _binding: FragmentAccountAlbumBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_account_album, container, false)
+    ): View {
+        _binding = FragmentAccountAlbumBinding.inflate(inflater, container, false)
         val email: String = arguments?.getString("email").toString()
-        albumGridView = v.findViewById(R.id.list_gridview)
-        album_none = v.findViewById(R.id.list_none)
 
         keyList = mutableListOf()
         items = mutableListOf()
         gridViewAdapter = GridViewAdapter(requireContext(), items)
 
         getList(email)
-        albumGridView.setOnItemClickListener{ parent, view, position, id ->
+        binding.listGridview.setOnItemClickListener{ _, _, position, _ ->
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val albumFragment = AlbumFragment()
@@ -52,7 +50,7 @@ class AccountAlbumFragment : Fragment() {
             fragmentManager.beginTransaction().replace(R.id.container, albumFragment).addToBackStack(null).commit()
         }
 
-        return v
+        return binding.root
     }
 
     private fun getList(str: String){
@@ -69,14 +67,19 @@ class AccountAlbumFragment : Fragment() {
                                 }
                             }
                         }
-                        album_none.visibility = View.GONE
-                        albumGridView.adapter = gridViewAdapter
+                        binding.listNone.visibility = View.GONE
+                        binding.listGridview.adapter = gridViewAdapter
                     } else {
-                        album_none.visibility = View.VISIBLE
+                        binding.listNone.visibility = View.VISIBLE
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {}
             })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

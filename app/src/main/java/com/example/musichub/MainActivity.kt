@@ -174,12 +174,12 @@ class MainActivity : AppCompatActivity(), MusicListener {
             }
 
             if(playlistFragment.isAdded){
-                playlistFragment.playlist_progress.progress = mediaController?.currentPosition!!.toInt()
-                playlistFragment.playlist_progress.max = mediaController?.duration!!.toInt()
+                playlistFragment.binding.playlistProgress.progress = mediaController?.currentPosition!!.toInt()
+                playlistFragment.binding.playlistProgress.max = mediaController?.duration!!.toInt()
             }
             if(mediaFragment.isAdded){
-                mediaFragment.media_seekbar.progress = mediaController?.currentPosition!!.toInt()
-                mediaFragment.media_seekbar.max = mediaController?.duration!!.toInt()
+                mediaFragment.binding.mediaSeekbar.progress = mediaController?.currentPosition!!.toInt()
+                mediaFragment.binding.mediaSeekbar.max = mediaController?.duration!!.toInt()
                 updatePlayingTime()
             }
         }
@@ -196,9 +196,9 @@ class MainActivity : AppCompatActivity(), MusicListener {
         val secs = totalSecs - (minute * 60)
 
         if(secs < 10){
-            mediaFragment.media_song_current.text = "$minute:0$secs"
+            mediaFragment.binding.mediaSongCurrent.text = "$minute:0$secs"
         } else {
-            mediaFragment.media_song_current.text = "$minute:$secs"
+            mediaFragment.binding.mediaSongCurrent.text = "$minute:$secs"
         }
     }
 

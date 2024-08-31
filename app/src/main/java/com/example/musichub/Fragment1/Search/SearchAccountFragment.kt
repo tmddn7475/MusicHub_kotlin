@@ -5,13 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.TextView
 import com.example.musichub.Adapter.Base.AccountListAdapter
 import com.example.musichub.Data.AccountData
 import com.example.musichub.Fragment1.Account.AccountFragment
 import com.example.musichub.MainActivity
 import com.example.musichub.R
+import com.example.musichub.databinding.FragmentSearchAccountBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -20,23 +19,20 @@ import com.google.firebase.database.getValue
 
 class SearchAccountFragment : Fragment() {
 
-    lateinit var account_list: ListView
+    private var _binding: FragmentSearchAccountBinding? = null
+    private val binding get() = _binding!!
     lateinit var accountListAdapter: AccountListAdapter
-    lateinit var none: TextView
     var list = mutableListOf<AccountData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_search_account, container, false)
-
-        val query: String = arguments?.getString("search").toString().lowercase()
+    ): View {
+        _binding = FragmentSearchAccountBinding.inflate(inflater, container, false)
 
         list.clear()
-        account_list = v.findViewById(R.id.search_account_list)
-        none = v.findViewById(R.id.none)
         accountListAdapter = AccountListAdapter(list)
+        val query: String = arguments?.getString("search").toString().lowercase()
 
         FirebaseDatabase.getInstance().getReference("accounts").addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -48,18 +44,18 @@ class SearchAccountFragment : Fragment() {
                         }
                     }
                 }
-                account_list.adapter = accountListAdapter
+                binding.searchAccountList.adapter = accountListAdapter
 
                 if(list.size == 0){
-                    none.visibility = View.VISIBLE
+                    binding.none.visibility = View.VISIBLE
                 } else {
-                    none.visibility = View.GONE
+                    binding.none.visibility = View.GONE
                 }
             }
             override fun onCancelled(error: DatabaseError) {}
         })
 
-        account_list.setOnItemClickListener{parent, view, position, id ->
+        binding.searchAccountList.setOnItemClickListener{ _, _, position, _ ->
             val mainActivity: MainActivity = context as MainActivity
             val fragmentManager = mainActivity.supportFragmentManager
             val accountFragment = AccountFragment()
@@ -70,7 +66,11 @@ class SearchAccountFragment : Fragment() {
             fragmentManager.beginTransaction().replace(R.id.container, accountFragment).addToBackStack(null).commit()
         }
 
-        return v
+        return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

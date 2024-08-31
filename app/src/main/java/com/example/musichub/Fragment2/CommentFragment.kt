@@ -7,11 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.musichub.Adapter.Recycler.CommentAdapter
 import com.example.musichub.Object.Command
@@ -22,50 +19,35 @@ import com.example.musichub.Fragment1.Account.AccountFragment
 import com.example.musichub.Interface.CommentListener
 import com.example.musichub.MainActivity
 import com.example.musichub.R
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
+import com.example.musichub.databinding.FragmentCommentBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 
 class CommentFragment : BottomSheetDialogFragment(), CommentListener {
 
-    lateinit var comment_song_thumnail: ImageView
-    lateinit var comment_song_name: TextView
-    lateinit var comment_song_artist: TextView
-    lateinit var comment_recycler: RecyclerView
-    lateinit var comment_edit: EditText
-    lateinit var comment_send: ImageView
+    private var _binding: FragmentCommentBinding? = null
+    private val binding get() = _binding!!
     lateinit var commentAdapter: CommentAdapter
-
     lateinit var nickname: String
     lateinit var imageUrl: String
-
     var list = mutableListOf<CommentData>()
     var keyList = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_comment, container, false)
+    ): View {
+        _binding = FragmentCommentBinding.inflate(inflater, container, false)
 
-        comment_song_thumnail = v.findViewById(R.id.comment_song_thumnail)
-        comment_song_name = v.findViewById(R.id.comment_song_name)
-        comment_song_artist = v.findViewById(R.id.comment_song_artist)
-        comment_recycler = v.findViewById(R.id.comment_recycler)
-        comment_edit = v.findViewById(R.id.comment_edit)
-        comment_send = v.findViewById(R.id.comment_send)
-
-        comment_song_name.setSingleLine(true)
-        comment_song_name.ellipsize = TextUtils.TruncateAt.MARQUEE
-        comment_song_name.isSelected = true
+        binding.commentSongName.setSingleLine(true)
+        binding.commentSongName.ellipsize = TextUtils.TruncateAt.MARQUEE
+        binding.commentSongName.isSelected = true
 
         val email: String = FirebaseAuth.getInstance().currentUser?.email.toString()
         val songUrl: String = arguments?.getString("url")!!
@@ -76,17 +58,17 @@ class CommentFragment : BottomSheetDialogFragment(), CommentListener {
         setComments(songUrl)
 
         // 댓글 쓰기
-        comment_send.setOnClickListener{
-            val comment = comment_edit.text.toString()
+        binding.commentSend.setOnClickListener{
+            val comment = binding.commentEdit.text.toString()
             if(comment.isEmpty()){
                 Toast.makeText(context, getString(R.string.enter_all), Toast.LENGTH_SHORT).show()
             } else {
                 uploadComment(email, nickname, imageUrl, comment, songUrl)
-                comment_edit.text.clear()
+                binding.commentEdit.text.clear()
             }
         }
 
-        return v
+        return binding.root
     }
 
     // 댓글 등록
@@ -127,11 +109,11 @@ class CommentFragment : BottomSheetDialogFragment(), CommentListener {
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for(ds: DataSnapshot in snapshot.children){
-                            val data = ds.getValue<MusicData>()
+                        val data = ds.getValue<MusicData>()
                         if(data != null){
-                            comment_song_name.text = data.songName
-                            comment_song_artist.text = data.songArtist
-                            Glide.with(this@CommentFragment).load(data.imageUrl).into(comment_song_thumnail)
+                            binding.commentSongName.text = data.songName
+                            binding.commentSongArtist.text = data.songArtist
+                            Glide.with(this@CommentFragment).load(data.imageUrl).into(binding.commentSongThumnail)
                         }
                     }
                 }
@@ -153,7 +135,7 @@ class CommentFragment : BottomSheetDialogFragment(), CommentListener {
                         }
                     }
                     commentAdapter.notifyDataSetChanged()
-                    comment_recycler.adapter = commentAdapter
+                    binding.commentRecycler.adapter = commentAdapter
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
@@ -192,5 +174,10 @@ class CommentFragment : BottomSheetDialogFragment(), CommentListener {
             mainActivity.etcFragment.dismiss()
         }
         dismiss()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -9,11 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.musichub.Activity.AccountEditActivity
 import com.example.musichub.Activity.UploadActivity
@@ -24,6 +21,7 @@ import com.example.musichub.Object.Command
 import com.example.musichub.Fragment1.Follow.FollowerFragment
 import com.example.musichub.Fragment1.Follow.FollowingFragment
 import com.example.musichub.MainActivity
+import com.example.musichub.databinding.FragmentAccountBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
@@ -32,30 +30,22 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
-import de.hdodenhof.circleimageview.CircleImageView
 
 class AccountFragment : Fragment() {
 
-    lateinit var account_circleImage:CircleImageView
-    lateinit var account_upload: ImageView
-    lateinit var account_follow: ImageView
-    lateinit var account_edit: ImageView
-    lateinit var account_name:TextView
-    lateinit var account_followers:TextView
-    lateinit var account_following:TextView
-    lateinit var account_info:TextView
-    lateinit var account_show_more:TextView
     lateinit var dialog: Dialog
+    private var getEmail:String = ""
+    var followCheck: Boolean = false
+    var followKey: String = ""
 
-    var getEmail:String = ""
-    var follow_check: Boolean = false
-    var follow_key: String = ""
+    private var _binding: FragmentAccountBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_account, container, false)
+    ): View {
+        _binding = FragmentAccountBinding.inflate(inflater, container, false)
 
         dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -63,25 +53,12 @@ class AccountFragment : Fragment() {
         dialog.setCancelable(false)
         dialog.show()
 
-        account_upload = v.findViewById(R.id.account_upload)
-        account_follow = v.findViewById(R.id.account_follow)
-        account_edit = v.findViewById(R.id.account_edit)
-        account_circleImage = v.findViewById(R.id.account_circleImage)
-        account_name = v.findViewById(R.id.account_name)
-        account_followers = v.findViewById(R.id.account_followers)
-        account_following = v.findViewById(R.id.account_following)
-        account_info = v.findViewById(R.id.account_info)
-        account_show_more = v.findViewById(R.id.account_show_more)
-
         // 계정정보
         getEmail = arguments?.getString("email").toString()
         getAccountData(getEmail)
 
         // viewPager
-        val tabLayout: TabLayout = v.findViewById(R.id.account_tabLayout)
-        val viewPager: ViewPager2 = v.findViewById(R.id.account_viewPager)
         val viewPagerAdapter = ViewPagerAdapter(requireActivity())
-
         val trackFragment = AccountTrackFragment()
         val albumFragment = AccountAlbumFragment()
 
@@ -93,13 +70,13 @@ class AccountFragment : Fragment() {
         viewPagerAdapter.addFragment(trackFragment, getString(R.string.track))
         viewPagerAdapter.addFragment(albumFragment, getString(R.string.album))
 
-        viewPager.adapter = viewPagerAdapter
-        val tm = TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, position: Int ->
+        binding.accountViewPager.adapter = viewPagerAdapter
+        val tm = TabLayoutMediator(binding.accountTabLayout, binding.accountViewPager) { tab: TabLayout.Tab, position: Int ->
             tab.setText(viewPagerAdapter.getTitle(position))
         }
         tm.attach()
 
-        account_followers.setOnClickListener{
+        binding.accountFollowers.setOnClickListener{
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val followerFragment = FollowerFragment()
@@ -110,7 +87,7 @@ class AccountFragment : Fragment() {
             fragmentManager.beginTransaction().replace(R.id.container, followerFragment).addToBackStack(null).commit()
         }
 
-        account_following.setOnClickListener{
+        binding.accountFollowing.setOnClickListener{
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val followingFragment = FollowingFragment()
@@ -122,56 +99,55 @@ class AccountFragment : Fragment() {
         }
 
         // 계정 info
-        account_show_more.setOnClickListener{
+        binding.accountShowMore.setOnClickListener{
             showMore()
         }
 
-        val account_back_btn:ImageView = v.findViewById(R.id.account_back_btn)
-        account_back_btn.setOnClickListener{
+        binding.accountBackBtn.setOnClickListener{
             back()
         }
 
         // 업로드
-        account_upload.setOnClickListener{
+        binding.accountUpload.setOnClickListener{
             val intent = Intent(requireContext(), UploadActivity::class.java)
             startActivity(intent)
         }
 
         // 계정 정보 수정
-        account_edit.setOnClickListener{
+        binding.accountEdit.setOnClickListener{
             val intent = Intent(requireContext(), AccountEditActivity::class.java)
             startActivity(intent)
         }
 
         // 팔로우
-        account_follow.setOnClickListener{
-            if(follow_check){
-                Command.unfollow(follow_key)
-                account_follow.setImageResource(R.drawable.baseline_person_add_24)
+        binding.accountFollow.setOnClickListener{
+            if(followCheck){
+                Command.unfollow(followKey)
+                binding.accountFollow.setImageResource(R.drawable.baseline_person_add_24)
                 Toast.makeText(requireContext(), getString(R.string.unfollow), Toast.LENGTH_SHORT).show()
-                follow_check = false
+                followCheck = false
             } else {
                 Command.follow(getEmail)
-                account_follow.setImageResource(R.drawable.baseline_person_add_disabled_24)
+                binding.accountFollow.setImageResource(R.drawable.baseline_person_add_disabled_24)
                 Toast.makeText(requireContext(), getString(R.string.follow), Toast.LENGTH_SHORT).show()
-                follow_check = true
+                followCheck = true
             }
         }
 
-        return v
+        return binding.root
     }
 
     private fun getAccountData(email: String){
         val myEmail = FirebaseAuth.getInstance().currentUser?.email.toString()
 
         if(myEmail == email){
-            account_upload.visibility = View.VISIBLE
-            account_follow.visibility = View.GONE
-            account_edit.visibility = View.VISIBLE
+            binding.accountUpload.visibility = View.VISIBLE
+            binding.accountFollow.visibility = View.GONE
+            binding.accountEdit.visibility = View.VISIBLE
         } else {
-            account_upload.visibility = View.GONE
-            account_follow.visibility = View.VISIBLE
-            account_edit.visibility = View.GONE
+            binding.accountUpload.visibility = View.GONE
+            binding.accountFollow.visibility = View.VISIBLE
+            binding.accountEdit.visibility = View.GONE
             setFollow(myEmail, email)
         }
 
@@ -181,24 +157,24 @@ class AccountFragment : Fragment() {
                     for(ds: DataSnapshot in snapshot.children) {
                         val data = ds.getValue<AccountData>()
                         if (data != null) {
-                            account_name.text = data.nickname
+                            binding.accountName.text = data.nickname
 
                             if(data.imageUrl == ""){
-                                account_circleImage.setImageResource(R.drawable.baseline_account_circle_24)
+                                binding.accountCircleImage.setImageResource(R.drawable.baseline_account_circle_24)
                             } else {
-                                Glide.with(requireContext()).load(data.imageUrl).into(account_circleImage)
+                                Glide.with(requireContext()).load(data.imageUrl).into(binding.accountCircleImage)
                             }
 
                             if(data.info == "") {
-                                account_info.visibility = View.GONE
-                                account_show_more.visibility = View.GONE
+                                binding.accountInfo.visibility = View.GONE
+                                binding.accountShowMore.visibility = View.GONE
                             } else {
-                                account_info.visibility = View.VISIBLE
-                                account_info.text = data.info
-                                if(account_info.lineCount < 2){
-                                    account_show_more.visibility = View.GONE
+                                binding.accountInfo.visibility = View.VISIBLE
+                                binding.accountInfo.text = data.info
+                                if(binding.accountInfo.lineCount < 2){
+                                    binding.accountShowMore.visibility = View.GONE
                                 } else {
-                                    account_show_more.visibility = View.VISIBLE
+                                    binding.accountShowMore.visibility = View.VISIBLE
                                     showMore()
                                 }
                             }
@@ -219,9 +195,9 @@ class AccountFragment : Fragment() {
                     for (ds: DataSnapshot in snapshot.children) num++
 
                     if(num < 2){
-                        account_followers.text = "$num follower · "
+                        binding.accountFollowers.text = "$num follower · "
                     } else {
-                        account_followers.text = "$num followers · "
+                        binding.accountFollowers.text = "$num followers · "
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
@@ -234,7 +210,7 @@ class AccountFragment : Fragment() {
                     var num = 0
                     for (ds: DataSnapshot in snapshot.children) num++
 
-                    account_following.text = "$num following"
+                    binding.accountFollowing.text = "$num following"
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
@@ -248,13 +224,13 @@ class AccountFragment : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.children.iterator().hasNext()){
                         for (ds: DataSnapshot in snapshot.children){
-                            follow_key = ds.key.toString()
-                            account_follow.setImageResource(R.drawable.baseline_person_add_disabled_24)
-                            follow_check = true
+                            followKey = ds.key.toString()
+                            binding.accountFollow.setImageResource(R.drawable.baseline_person_add_disabled_24)
+                            followCheck = true
                         }
                     } else {
-                        account_follow.setImageResource(R.drawable.baseline_person_add_24)
-                        follow_check = false
+                        binding.accountFollow.setImageResource(R.drawable.baseline_person_add_24)
+                        followCheck = false
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
@@ -263,14 +239,14 @@ class AccountFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun showMore(){
-        if(account_info.maxLines == 1){
-            account_info.maxLines = Int.MAX_VALUE
-            account_info.ellipsize = null
-            account_show_more.text = getString(R.string.show_less)
+        if(binding.accountInfo.maxLines == 1){
+            binding.accountInfo.maxLines = Int.MAX_VALUE
+            binding.accountInfo.ellipsize = null
+            binding.accountShowMore.text = getString(R.string.show_less)
         } else {
-            account_info.maxLines = 1
-            account_info.ellipsize = TextUtils.TruncateAt.END
-            account_show_more.text = getString(R.string.show_more)
+            binding.accountInfo.maxLines = 1
+            binding.accountInfo.ellipsize = TextUtils.TruncateAt.END
+            binding.accountShowMore.text = getString(R.string.show_more)
         }
     }
 
@@ -279,5 +255,10 @@ class AccountFragment : Fragment() {
         val fragmentManager = mainActivity.supportFragmentManager
         fragmentManager.beginTransaction().remove(this).commit()
         fragmentManager.popBackStack()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

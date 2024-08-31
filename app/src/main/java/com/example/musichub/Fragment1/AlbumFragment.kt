@@ -11,9 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.musichub.Adapter.Base.MusicListAdapter
@@ -28,6 +25,7 @@ import com.example.musichub.MainActivity
 import com.example.musichub.R
 import com.example.musichub.RoomDB.PlaylistDatabase
 import com.example.musichub.RoomDB.PlaylistEntity
+import com.example.musichub.databinding.FragmentAlbumBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -37,20 +35,12 @@ import com.google.firebase.database.getValue
 
 class AlbumFragment : Fragment(), MusicListListener {
 
-    lateinit var list_thumbnail: ImageView
-    lateinit var list_back_btn: ImageView
-    lateinit var list_edit_btn: ImageView
-    lateinit var list_name: TextView
-    lateinit var list_artist: TextView
-    lateinit var list_track_num: TextView
-    lateinit var list_play_btn: ImageView
-    lateinit var list_description: TextView
-    lateinit var list_show_more: TextView
-    lateinit var list_track: ListView
+    private var _binding: FragmentAlbumBinding? = null
+    private val binding get() = _binding!!
     lateinit var musicListAdapter: MusicListAdapter
     lateinit var musicListener: MusicListener
 
-    var track_num: Int = 0
+    var trackNum: Int = 0
     var list = mutableListOf<MusicData>()
     private var db: PlaylistDatabase? = null
     private val myEmail: String = FirebaseAuth.getInstance().currentUser?.email.toString()
@@ -67,8 +57,8 @@ class AlbumFragment : Fragment(), MusicListListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_album, container, false)
+    ): View {
+        _binding = FragmentAlbumBinding.inflate(inflater, container, false)
 
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -79,36 +69,25 @@ class AlbumFragment : Fragment(), MusicListListener {
         val key: String = arguments?.getString("key").toString()
         db = PlaylistDatabase.getInstance(requireContext())
 
-        list_thumbnail = v.findViewById(R.id.list_thumbnail)
-        list_back_btn = v.findViewById(R.id.list_back_btn)
-        list_edit_btn = v.findViewById(R.id.list_edit_btn)
-        list_name = v.findViewById(R.id.list_name)
-        list_artist = v.findViewById(R.id.list_artist)
-        list_play_btn = v.findViewById(R.id.list_play_btn)
-        list_track_num = v.findViewById(R.id.list_track_num)
-        list_description = v.findViewById(R.id.list_description)
-        list_show_more = v.findViewById(R.id.list_show_more)
-        list_track = v.findViewById(R.id.list_track)
-
         musicListAdapter = MusicListAdapter(list, this)
 
-        list_back_btn.setOnClickListener{
+        binding.albumBackBtn.setOnClickListener{
             back()
         }
 
         // 앨범 수정
-        list_edit_btn.setOnClickListener{
+        binding.albumEditBtn.setOnClickListener{
             val intent = Intent(requireContext(), AlbumEditActivity::class.java)
             intent.putExtra("key", key)
             startActivity(intent)
         }
 
-        list_show_more.setOnClickListener{
+        binding.albumShowMore.setOnClickListener{
             showMore()
         }
 
         // 앨범 재생
-        list_play_btn.setOnClickListener{
+        binding.albumPlayBtn.setOnClickListener{
             playAlbum()
             musicListener.playMusic(list[0].songUrl)
             Toast.makeText(requireContext(), getString(R.string.song_to_list), Toast.LENGTH_SHORT).show()
@@ -121,24 +100,24 @@ class AlbumFragment : Fragment(), MusicListListener {
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<AlbumData>()
                         if(data != null){
-                            list_name.text = data.listName
-                            list_artist.text = data.nickname
-                            list_description.text = data.description
-                            Glide.with(requireContext()).load(data.imageUrl).into(list_thumbnail)
+                            binding.albumName.text = data.listName
+                            binding.albumArtist.text = data.nickname
+                            binding.albumDescription.text = data.description
+                            Glide.with(requireContext()).load(data.imageUrl).into(binding.albumThumbnail)
 
                             if(data.description == ""){
-                                list_description.visibility = View.GONE
+                                binding.albumDescription.visibility = View.GONE
                             }
                             if(data.email == myEmail){
-                                list_edit_btn.visibility = View.VISIBLE
+                                binding.albumEditBtn.visibility = View.VISIBLE
                             }
                         }
                     }
 
-                    if(list_description.lineCount < 2) {
-                        list_show_more.visibility = View.GONE
+                    if(binding.albumDescription.lineCount < 2) {
+                        binding.albumShowMore.visibility = View.GONE
                     } else {
-                        list_show_more.visibility = View.VISIBLE
+                        binding.albumShowMore.visibility = View.VISIBLE
                         showMore()
                     }
                 }
@@ -151,7 +130,7 @@ class AlbumFragment : Fragment(), MusicListListener {
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     list.clear()
-                    track_num = 0
+                    trackNum = 0
                     if(snapshot.children.iterator().hasNext()){
                         for(ds: DataSnapshot in snapshot.children){
                             val data = ds.getValue<AlbumToSongData>()
@@ -161,14 +140,14 @@ class AlbumFragment : Fragment(), MusicListListener {
                         }
                         dialog.dismiss()
                     } else {
-                        list_track_num.text = "0 track"
+                        binding.albumTrackNum.text = "0 track"
                         dialog.dismiss()
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        return v
+        return binding.root
     }
 
     private fun getTracks(url: String, time: String){
@@ -181,16 +160,16 @@ class AlbumFragment : Fragment(), MusicListListener {
                         if(data != null){
                             data.time = time
                             list.add(data)
-                            track_num++
+                            trackNum++
                         }
                     }
-                    if(track_num < 2) {
-                        list_track_num.text = "${track_num} track"
+                    if(trackNum < 2) {
+                        binding.albumTrackNum.text = "${trackNum} track"
                     } else {
-                        list_track_num.text = "${track_num} tracks"
+                        binding.albumTrackNum.text = "${trackNum} tracks"
                     }
                     musicListAdapter.sort()
-                    list_track.adapter = musicListAdapter
+                    binding.albumTrack.adapter = musicListAdapter
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
@@ -198,14 +177,14 @@ class AlbumFragment : Fragment(), MusicListListener {
 
     @SuppressLint("SetTextI18n")
     private fun showMore(){
-        if(list_description.maxLines == 1){
-            list_description.maxLines = Int.MAX_VALUE
-            list_description.ellipsize = null
-            list_show_more.text = getString(R.string.show_less)
+        if(binding.albumDescription.maxLines == 1){
+            binding.albumDescription.maxLines = Int.MAX_VALUE
+            binding.albumDescription.ellipsize = null
+            binding.albumShowMore.text = getString(R.string.show_less)
         } else {
-            list_description.maxLines = 1
-            list_description.ellipsize = TextUtils.TruncateAt.END
-            list_show_more.text = getString(R.string.show_more)
+            binding.albumDescription.maxLines = 1
+            binding.albumDescription.ellipsize = TextUtils.TruncateAt.END
+            binding.albumShowMore.text = getString(R.string.show_more)
         }
     }
 
@@ -239,5 +218,10 @@ class AlbumFragment : Fragment(), MusicListListener {
         val fragmentManager = mainActivity.supportFragmentManager
         fragmentManager.beginTransaction().remove(this).commit()
         fragmentManager.popBackStack()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

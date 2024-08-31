@@ -11,13 +11,11 @@ import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import android.view.Window
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.musichub.Data.MusicData
 import com.example.musichub.R
+import com.example.musichub.databinding.ActivitySongEditBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -27,24 +25,19 @@ import com.google.firebase.storage.FirebaseStorage
 
 class SongEditActivity : AppCompatActivity() {
 
-    lateinit var song_edit_back_btn: ImageView
-    lateinit var edit_save_btn: TextView
-    lateinit var song_edit_name: EditText
-    lateinit var song_edit_category: EditText
-    lateinit var song_edit_description: EditText
-    lateinit var song_edit_length: TextView
-    lateinit var song_delete: TextView
+    private lateinit var binding: ActivitySongEditBinding
     lateinit var progressDialog: Dialog
 
     var songKey: String = ""
     var imageUrl: String = ""
-    private val category_arr:Array<String> = arrayOf("None", "Ambient", "Classical", "Dance & EDM",
+    private val categoryArr:Array<String> = arrayOf("None", "Ambient", "Classical", "Dance & EDM",
         "Disco", "Hip hop", "Jazz", "R&B", "Reggae", "Rock")
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_song_edit)
+        binding = ActivitySongEditBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         progressDialog = Dialog(this)
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -53,20 +46,12 @@ class SongEditActivity : AppCompatActivity() {
 
         val songUrl: String = intent.getStringExtra("url").toString()
 
-        song_edit_back_btn = findViewById(R.id.song_edit_back_btn)
-        edit_save_btn = findViewById(R.id.edit_save_btn)
-        song_edit_name = findViewById(R.id.song_edit_name)
-        song_edit_category = findViewById(R.id.song_edit_category)
-        song_edit_description = findViewById(R.id.song_edit_description)
-        song_edit_length = findViewById(R.id.song_edit_length)
-        song_delete = findViewById(R.id.song_delete)
-
         getData(songUrl)
 
         // 곡 설명 터치시 editText가 스크롤 되도록 설정
-        song_edit_description.setOnTouchListener(object : View.OnTouchListener {
+        binding.songEditDescription.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                if (song_edit_description.hasFocus()) {
+                if (binding.songEditDescription.hasFocus()) {
                     v!!.parent.requestDisallowInterceptTouchEvent(true)
                     when (event!!.action and MotionEvent.ACTION_MASK) {
                         MotionEvent.ACTION_SCROLL -> {
@@ -80,30 +65,30 @@ class SongEditActivity : AppCompatActivity() {
         })
 
         // 글자 수 제한
-        song_edit_description.addTextChangedListener(object : TextWatcher {
+        binding.songEditDescription.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val length: Int = song_edit_description.text.length
-                song_edit_length.text = "$length / 2000"
+                val length: Int = binding.songEditDescription.text.length
+                binding.songEditLength.text = "$length / 2000"
             }
             override fun afterTextChanged(s: Editable?) {}
         })
 
         // 카테고리
-        song_edit_category.setOnClickListener{
+        binding.songEditCategory.setOnClickListener{
             AlertDialog.Builder(this@SongEditActivity)
-                .setItems(category_arr) { dialog, which ->
-                    song_edit_category.setText(category_arr[which])
+                .setItems(categoryArr) { _, which ->
+                    binding.songEditCategory.setText(categoryArr[which])
                 }.show()
         }
 
-        edit_save_btn.setOnClickListener{
+        binding.editSaveBtn.setOnClickListener{
             progressDialog.show()
             saveEdit()
         }
 
-        song_delete.setOnClickListener{
+        binding.songDelete.setOnClickListener{
             val alert_ex:AlertDialog.Builder = AlertDialog.Builder(this@SongEditActivity)
             alert_ex.setMessage(getString(R.string.track_delete_alert))
             alert_ex.setNegativeButton(getString(R.string.yes)) { _, _ ->
@@ -118,16 +103,16 @@ class SongEditActivity : AppCompatActivity() {
             alert.show()
         }
 
-        song_edit_back_btn.setOnClickListener{
+        binding.songEditBackBtn.setOnClickListener{
             finish()
         }
     }
 
     private fun saveEdit(){
         val hashMap = HashMap<String, Any>()
-        hashMap["songName"] = song_edit_name.text.toString()
-        hashMap["songCategory"] = song_edit_category.text.toString()
-        hashMap["songInfo"] = song_edit_description.text.toString()
+        hashMap["songName"] = binding.songEditName.text.toString()
+        hashMap["songCategory"] = binding.songEditCategory.text.toString()
+        hashMap["songInfo"] = binding.songEditDescription.text.toString()
 
         FirebaseDatabase.getInstance().getReference("Songs").child(songKey).updateChildren(hashMap)
         Toast.makeText(this, getString(R.string.update_track), Toast.LENGTH_SHORT).show()
@@ -199,10 +184,10 @@ class SongEditActivity : AppCompatActivity() {
                         if(data != null){
                             songKey = ds.key.toString()
                             imageUrl = data.imageUrl
-                            song_edit_name.setText(data.songName)
-                            song_edit_category.setText(data.songCategory)
-                            song_edit_description.setText(data.songInfo)
-                            song_edit_length.text = data.songInfo.length.toString() + " / 2000"
+                            binding.songEditName.setText(data.songName)
+                            binding.songEditCategory.setText(data.songCategory)
+                            binding.songEditDescription.setText(data.songInfo)
+                            binding.songEditLength.text = data.songInfo.length.toString() + " / 2000"
                         }
                     }
                 }

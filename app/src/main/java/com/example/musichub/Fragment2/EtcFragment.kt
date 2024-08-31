@@ -6,10 +6,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.musichub.Activity.SongEditActivity
@@ -21,6 +18,7 @@ import com.example.musichub.MainActivity
 import com.example.musichub.R
 import com.example.musichub.RoomDB.PlaylistDatabase
 import com.example.musichub.RoomDB.PlaylistEntity
+import com.example.musichub.databinding.FragmentEtcBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -33,55 +31,33 @@ import com.google.firebase.database.getValue
 
 class EtcFragment : BottomSheetDialogFragment() {
 
-    lateinit var etc_song_thumnail: ImageView
-    lateinit var etc_like_img: ImageView
-    lateinit var etc_song_info: Button
-    lateinit var etc_artist_info: Button
-    lateinit var etc_song_name: TextView
-    lateinit var etc_song_artist: TextView
-    lateinit var etc_add_my_list: TextView
-    lateinit var etc_add_playlist: TextView
-    lateinit var etc_like: TextView
-    lateinit var etc_comment: TextView
-    lateinit var etc_song_edit: TextView
+    private var _binding: FragmentEtcBinding? = null
+    private val binding get() = _binding!!
 
-    private var like_key = ""
+    private var likeKey = ""
     private var email: String = ""
-    private var like_check: Boolean = false
+    private var likeCheck: Boolean = false
     private var db: PlaylistDatabase? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_etc, container, false)
+    ): View {
+        _binding = FragmentEtcBinding.inflate(inflater, container, false)
 
         val getUrl: String = arguments?.getString("url").toString()
         db = PlaylistDatabase.getInstance(requireContext())
 
-        etc_song_thumnail = v.findViewById(R.id.etc_song_thumnail)
-        etc_song_name = v.findViewById(R.id.etc_song_name)
-        etc_song_artist = v.findViewById(R.id.etc_song_artist)
-
-        etc_song_info = v.findViewById(R.id.etc_song_info)
-        etc_artist_info = v.findViewById(R.id.etc_artist_info)
-        etc_add_my_list = v.findViewById(R.id.etc_add_my_list)
-        etc_add_playlist = v.findViewById(R.id.etc_add_playlist)
-        etc_like_img = v.findViewById(R.id.etc_like_img)
-        etc_like = v.findViewById(R.id.etc_like)
-        etc_comment = v.findViewById(R.id.etc_comment)
-        etc_song_edit = v.findViewById(R.id.etc_song_edit)
-
-        etc_song_name.setSingleLine(true)
-        etc_song_name.ellipsize = TextUtils.TruncateAt.MARQUEE // 흐르게 만들기
-        etc_song_name.isSelected = true
+        binding.etcSongName.setSingleLine(true)
+        binding.etcSongName.ellipsize = TextUtils.TruncateAt.MARQUEE // 흐르게 만들기
+        binding.etcSongName.isSelected = true
 
         getData(getUrl)
         val mainActivity = activity as MainActivity
         val fragmentManager = mainActivity.supportFragmentManager
 
         // 곡 정보
-        etc_song_info.setOnClickListener{
+        binding.etcSongInfo.setOnClickListener{
             val songInfoFragment = SongInfoFragment()
             val bundle = Bundle()
             bundle.putString("url", getUrl)
@@ -97,7 +73,7 @@ class EtcFragment : BottomSheetDialogFragment() {
             dismiss()
         }
         // 아티스트 정보
-        etc_artist_info.setOnClickListener{
+        binding.etcArtistInfo.setOnClickListener{
             val accountFragment = AccountFragment()
             val bundle = Bundle()
             bundle.putString("email", email)
@@ -114,7 +90,7 @@ class EtcFragment : BottomSheetDialogFragment() {
         }
 
         // 내 앨범에 담기
-        etc_add_my_list.setOnClickListener{
+        binding.etcAddMyList.setOnClickListener{
             val songToAlbumFragment = SongToAlbumFragment()
             val bundle = Bundle()
             bundle.putString("url", getUrl)
@@ -123,7 +99,7 @@ class EtcFragment : BottomSheetDialogFragment() {
         }
 
         // 재셍목록에 담기
-        etc_add_playlist.setOnClickListener{
+        binding.etcAddPlaylist.setOnClickListener{
             val r = Runnable {
                 if(db?.musicDAO()?.getCount(getUrl)!! < 1){
                     val data = PlaylistEntity(songUrl = getUrl, time = Command.getTime2())
@@ -137,20 +113,20 @@ class EtcFragment : BottomSheetDialogFragment() {
         }
 
         // 좋아요
-        etc_like.setOnClickListener{
-            if(like_check){
-                Command.uncheckLike(like_key)
-                etc_like_img.setImageResource(R.drawable.baseline_favorite_border_24)
-                like_check = false
+        binding.etcLike.setOnClickListener{
+            if(likeCheck){
+                Command.uncheckLike(likeKey)
+                binding.etcLikeImg.setImageResource(R.drawable.baseline_favorite_border_24)
+                likeCheck = false
             } else {
                 Command.checkLike(getUrl)
-                etc_like_img.setImageResource(R.drawable.baseline_favorite_24)
-                like_check = true
+                binding.etcLikeImg.setImageResource(R.drawable.baseline_favorite_24)
+                likeCheck = true
             }
         }
 
         // 댓글 보기
-        etc_comment.setOnClickListener{
+        binding.etcComment.setOnClickListener{
             val commentFragment = CommentFragment()
             val bundle = Bundle()
             bundle.putString("url", getUrl)
@@ -159,13 +135,13 @@ class EtcFragment : BottomSheetDialogFragment() {
         }
 
         // 곡 정보 수정
-        etc_song_edit.setOnClickListener {
+        binding.etcSongEdit.setOnClickListener {
             val intent = Intent(requireContext(), SongEditActivity::class.java)
             intent.putExtra("url", getUrl)
             startActivity(intent)
         }
 
-        return v
+        return binding.root
     }
 
     private fun getData(url: String){
@@ -178,15 +154,15 @@ class EtcFragment : BottomSheetDialogFragment() {
                         val mld = ds.getValue<MusicData>()
                         if (mld != null) {
                             if(mld.email != myEmail){
-                                etc_song_edit.visibility = View.GONE
+                                binding.etcSongEdit.visibility = View.GONE
                             } else {
-                                etc_song_edit.visibility = View.VISIBLE
+                                binding.etcSongEdit.visibility = View.VISIBLE
                             }
 
                             email = mld.email
-                            etc_song_name.text = mld.songName
-                            etc_song_artist.text = mld.songArtist
-                            Glide.with(requireContext()).load(mld.imageUrl).into(etc_song_thumnail)
+                            binding.etcSongName.text = mld.songName
+                            binding.etcSongArtist.text = mld.songArtist
+                            Glide.with(requireContext()).load(mld.imageUrl).into(binding.etcSongThumnail)
                         }
                     }
                 }
@@ -198,13 +174,13 @@ class EtcFragment : BottomSheetDialogFragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.children.iterator().hasNext()){
                         for(ds: DataSnapshot in snapshot.children) {
-                            like_key = ds.key.toString()
-                            like_check = true
-                            etc_like_img.setImageResource(R.drawable.baseline_favorite_24)
+                            likeKey = ds.key.toString()
+                            likeCheck = true
+                            binding.etcLikeImg.setImageResource(R.drawable.baseline_favorite_24)
                         }
                     } else {
-                        like_check = false
-                        etc_like_img.setImageResource(R.drawable.baseline_favorite_border_24)
+                        likeCheck = false
+                        binding.etcLikeImg.setImageResource(R.drawable.baseline_favorite_border_24)
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
@@ -221,5 +197,10 @@ class EtcFragment : BottomSheetDialogFragment() {
         view.findViewById<ImageButton>(R.id.etc_dismiss_btn).setOnClickListener{
             dismiss()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

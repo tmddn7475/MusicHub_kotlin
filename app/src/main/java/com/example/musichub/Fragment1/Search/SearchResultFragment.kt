@@ -5,30 +5,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.viewpager2.widget.ViewPager2
 import com.example.musichub.Adapter.ViewPagerAdapter
 import com.example.musichub.MainActivity
 import com.example.musichub.R
+import com.example.musichub.databinding.FragmentSearchResultBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class SearchResultFragment : Fragment() {
+
+    private var _binding: FragmentSearchResultBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_search_result, container, false)
-
-        val str: String = arguments?.getString("search").toString()
-
-        val search_result_back_btn: ImageView = v.findViewById(R.id.search_result_back_btn)
-        val tabLayout: TabLayout = v.findViewById(R.id.tabLayout)
-        val viewPager: ViewPager2 = v.findViewById(R.id.viewPager)
+    ): View {
+        _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
 
         val searchTrackFragment = SearchTrackFragment()
         val searchAccountFragment = SearchAccountFragment()
         val searchAlbumFragment = SearchAlbumFragment()
+        val str: String = arguments?.getString("search").toString()
 
         val bundle = Bundle()
         bundle.putString("search", str)
@@ -41,17 +39,17 @@ class SearchResultFragment : Fragment() {
         viewPagerAdapter.addFragment(searchAccountFragment, getString(R.string.account))
         viewPagerAdapter.addFragment(searchAlbumFragment,  getString(R.string.album))
 
-        viewPager.adapter = viewPagerAdapter
-        val tm = TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, position: Int ->
+        binding.viewPager.adapter = viewPagerAdapter
+        val tm = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab: TabLayout.Tab, position: Int ->
             tab.setText(viewPagerAdapter.getTitle(position))
         }
         tm.attach()
 
-        search_result_back_btn.setOnClickListener{
+        binding.searchResultBackBtn.setOnClickListener{
             back()
         }
 
-        return v
+        return binding.root
     }
 
     private fun back(){
@@ -59,5 +57,10 @@ class SearchResultFragment : Fragment() {
         val fragmentManager = mainActivity.supportFragmentManager
         fragmentManager.beginTransaction().remove(this).commit()
         fragmentManager.popBackStack()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

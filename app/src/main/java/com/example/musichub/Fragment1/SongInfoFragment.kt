@@ -10,14 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.musichub.Activity.SongEditActivity
 import com.example.musichub.Data.MusicData
 import com.example.musichub.MainActivity
 import com.example.musichub.R
+import com.example.musichub.databinding.FragmentSongInfoBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -28,24 +27,16 @@ import java.util.Calendar
 
 class SongInfoFragment : Fragment() {
 
-    val ONE_DAY: Int = 24 * 60 * 60 * 1000
-    lateinit var info_song_name: TextView
-    lateinit var info_song_artist: TextView
-    lateinit var info_song_play: TextView
-    lateinit var info_song_like: TextView
-    lateinit var info_song_duration: TextView
-    lateinit var info_song_time: TextView
-    lateinit var info_song_desc: TextView
-    lateinit var info_song_thumbnail: ImageView
-    lateinit var info_edit_btn: ImageView
-
+    private var _binding: FragmentSongInfoBinding? = null
+    private val binding get() = _binding!!
+    private val ONE_DAY: Int = 24 * 60 * 60 * 1000
     lateinit var dialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.fragment_song_info, container, false)
+    ): View {
+        _binding = FragmentSongInfoBinding.inflate(inflater, container, false)
 
         val getUrl: String = arguments?.getString("url").toString()
 
@@ -55,34 +46,23 @@ class SongInfoFragment : Fragment() {
         dialog.setCancelable(false)
         dialog.show()
 
-        val info_back_btn: ImageView = v.findViewById(R.id.info_back_btn)
-        info_song_name = v.findViewById(R.id.info_song_name)
-        info_song_artist = v.findViewById(R.id.info_song_artist)
-        info_song_play = v.findViewById(R.id.info_song_play)
-        info_song_like = v.findViewById(R.id.info_song_like)
-        info_song_duration = v.findViewById(R.id.info_song_duration)
-        info_song_time = v.findViewById(R.id.info_song_time)
-        info_song_desc = v.findViewById(R.id.info_song_desc)
-        info_song_thumbnail = v.findViewById(R.id.info_song_thumnail)
-        info_edit_btn = v.findViewById(R.id.info_edit_btn)
-
-        info_song_name.setSingleLine(true)
-        info_song_name.ellipsize = TextUtils.TruncateAt.MARQUEE
-        info_song_name.isSelected = true
+        binding.infoSongName.setSingleLine(true)
+        binding.infoSongName.ellipsize = TextUtils.TruncateAt.MARQUEE
+        binding.infoSongName.isSelected = true
 
         getData(getUrl)
 
-        info_back_btn.setOnClickListener{
+        binding.infoBackBtn.setOnClickListener{
             back()
         }
 
-        info_edit_btn.setOnClickListener{
+        binding.infoEditBtn.setOnClickListener{
             val intent = Intent(requireContext(), SongEditActivity::class.java)
             intent.putExtra("url", getUrl)
             startActivity(intent)
         }
 
-        return v
+        return binding.root
     }
 
     private fun getData(url: String){
@@ -94,7 +74,7 @@ class SongInfoFragment : Fragment() {
                     for(ds in snapshot.children){
                         num += 1
                     }
-                    info_song_play.text = num.toString()
+                    binding.infoSongPlay.text = num.toString()
                 }
                 override fun onCancelled(error: DatabaseError) {
                     Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
@@ -109,7 +89,7 @@ class SongInfoFragment : Fragment() {
                     for(ds in snapshot.children){
                         num += 1
                     }
-                    info_song_like.text = num.toString()
+                    binding.infoSongLike.text = num.toString()
                 }
                 override fun onCancelled(error: DatabaseError) {
                     Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
@@ -125,17 +105,17 @@ class SongInfoFragment : Fragment() {
                         val data = ds.getValue<MusicData>()
 
                         if (data != null) {
-                            info_song_name.text = data.songName
-                            info_song_artist.text = data.songArtist
-                            info_song_duration.text = " · " + data.songDuration
-                            info_song_desc.text = data.songInfo
-                            Glide.with(requireContext()).load(data.imageUrl).into(info_song_thumbnail)
+                            binding.infoSongName.text = data.songName
+                            binding.infoSongArtist.text = data.songArtist
+                            binding.infoSongDuration.text = " · " + data.songDuration
+                            binding.infoSongDesc.text = data.songInfo
+                            Glide.with(requireContext()).load(data.imageUrl).into(binding.infoSongThumnail)
                             getDay(data.time, data.songCategory)
 
                             if(data.email == FirebaseAuth.getInstance().currentUser?.email.toString()){
-                                info_edit_btn.visibility = View.VISIBLE
+                                binding.infoEditBtn.visibility = View.VISIBLE
                             } else {
-                                info_edit_btn.visibility = View.GONE
+                                binding.infoEditBtn.visibility = View.GONE
                             }
                         }
                     }
@@ -170,10 +150,10 @@ class SongInfoFragment : Fragment() {
 
         if (result <= 1) {
             goalDate = "$category · $result day ago"
-            info_song_time.text = goalDate
+            binding.infoSongTime.text = goalDate
         } else if (result <= 30) {
             goalDate = "$category · $result days ago"
-            info_song_time.text = goalDate
+            binding.infoSongTime.text = goalDate
         } else if (result <= 365) {
             result /= 30
             goalDate = if (result <= 1) {
@@ -181,7 +161,7 @@ class SongInfoFragment : Fragment() {
             } else {
                 "$category · $result months ago"
             }
-            info_song_time.text = goalDate
+            binding.infoSongTime.text = goalDate
         } else {
             result /= 365
             goalDate = if (result <= 1) {
@@ -189,7 +169,12 @@ class SongInfoFragment : Fragment() {
             } else {
                 "$category · $result years ago"
             }
-            info_song_time.text = goalDate
+            binding.infoSongTime.text = goalDate
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
