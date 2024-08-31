@@ -1,4 +1,5 @@
-# MusicHub (kotlin)
+MusicHub (kotlin)
+=============
 
 Supported Language - English (99%), Korean
 
@@ -12,23 +13,16 @@ kotlin을 공부 할 겸 자바로 개발했던 앱을 다시 kotlin으로 개�
 
 의도치 않게 버그나 에러가 발생할 수 있습니다.
 
-### 변경점
+변경점
+-------------
 
-영어 언어 추가
+영어 언어 추가, SQLite -> RoomDB로 변경
 
-SQLite -> RoomDB로 변경
+Package 경로 일부 변경, mediaSessionService 개선
 
-Package 경로 일부 변경
+많은 코드들을 개선 및 변경, 파이어베이스 데이터 경로 일부 변경
 
-mediaSessionService 개선
-
-많은 코드들을 개선 및 변경
-
-파이어베이스 데이터 경로 일부 변경
-
-2024.08.31 ~ 
-
-findViewById 대신 ViewBinding 적용
+2024.08.31 - findViewById 대신 ViewBinding 적용
 
 ***********************************
 ### 중요
