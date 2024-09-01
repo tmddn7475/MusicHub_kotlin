@@ -13,7 +13,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -117,8 +116,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         binding.include.barSongName.isSelected = true
 
         // media controller
-        val frameLayout:FrameLayout = findViewById(R.id.media_player_bar_bg)
-        frameLayout.setOnClickListener{
+        binding.include.mediaPlayerBarBg.setOnClickListener{
             if(binding.include.barSongName.text != ""){
                 mediaFragment.show(supportFragmentManager, mediaFragment.tag)
                 mediaFragment.setController(mediaController)
@@ -229,7 +227,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         }
     }
 
-    // fragment
+    // fragment 이동
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
     }

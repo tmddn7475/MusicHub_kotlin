@@ -94,7 +94,6 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
                 binding.songsList.adapter = musicListAdapter
             }
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(requireContext(), getString(R.string.try_again), Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
         })
