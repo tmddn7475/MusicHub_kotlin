@@ -317,7 +317,6 @@ class MainActivity : AppCompatActivity(), MusicListener {
             try {
                 val playlistData = db?.musicDAO()?.getPlaylist()!!
                 var num = 0
-
                 for(i in playlistData.indices){
                     if(playlistData[i].songUrl == preference.getString("url", null)){
                         num = i
