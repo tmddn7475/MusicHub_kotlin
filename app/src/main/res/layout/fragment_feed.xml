@@ -21,13 +21,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="MusicHub"
+                android:gravity="start"
+                android:text="@string/app_name"
                 android:textStyle="bold"
-                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
                 android:layout_centerVertical="true"
                 android:textColor="@color/white"
-                android:textSize="24dp" />
+                android:textSize="24sp" />
 
             <ImageView
                 android:id="@+id/feed_logout"
@@ -76,7 +76,7 @@
 
     <TextView
         android:id="@+id/feed_text"
-        android:text="팔로우 한 유저가 없습니다"
+        android:text="@string/not_exist"
         android:gravity="center"
         android:layout_marginTop="50dp"
         android:visibility="invisible"
