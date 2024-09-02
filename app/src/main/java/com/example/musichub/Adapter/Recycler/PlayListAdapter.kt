@@ -23,9 +23,9 @@ class PlayListAdapter(val list: ArrayList<MusicData>, var playListListener: Play
         return ViewHolder(view)
     }
 
-    var selected: Int = -1
+    private var selected: Int = -1
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "RecyclerView")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (position == selected) {
             holder.songName.setTextColor(Color.parseColor("#00B3EF"))
@@ -64,6 +64,7 @@ class PlayListAdapter(val list: ArrayList<MusicData>, var playListListener: Play
         for(i in list.indices){
             if(list[i].songUrl == url){
                 selected = i
+                break
             }
         }
         notifyDataSetChanged()
