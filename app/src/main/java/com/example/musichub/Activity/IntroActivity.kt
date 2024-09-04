@@ -18,7 +18,6 @@ class IntroActivity : AppCompatActivity() {
         setContentView(R.layout.activity_intro)
 
         val internet = Command.getInternet(this)
-
         if(internet == 0){
             val alertEx: AlertDialog.Builder = AlertDialog.Builder(this)
             alertEx.setMessage(getString(R.string.check_network))
