@@ -114,7 +114,7 @@ class UploadActivity : AppCompatActivity() {
         // 카테고리
         binding.uploadSongCategory.setOnClickListener{
             AlertDialog.Builder(this@UploadActivity)
-                .setItems(categoryArr) { dialog, which ->
+                .setItems(categoryArr) { _, which ->
                     binding.uploadSongCategory.setText(categoryArr[which])
                 }.show()
         }

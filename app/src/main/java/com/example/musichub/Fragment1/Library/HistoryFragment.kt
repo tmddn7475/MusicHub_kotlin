@@ -73,7 +73,7 @@ class HistoryFragment : Fragment(), MusicListListener {
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        binding.historyList.setOnItemClickListener{ parent, view, position, id ->
+        binding.historyList.setOnItemClickListener{ _, _, position, _ ->
             val data = items[position]
             val url:String = data.songUrl
             musicListener.playMusic(url)

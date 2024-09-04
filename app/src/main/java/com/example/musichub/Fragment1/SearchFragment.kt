@@ -47,7 +47,7 @@ class SearchFragment : Fragment() {
         val thread = Thread(run)
         thread.start()
 
-        binding.searchRecent.setOnItemClickListener{ parent, view, position, id ->
+        binding.searchRecent.setOnItemClickListener{ _, _, position, _ ->
             val data:String = list[position]
             binding.searchView.setQuery("", false)
             val mainActivity = (activity as MainActivity)

@@ -54,7 +54,7 @@ class FollowerFragment : Fragment() {
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        binding.followerList.setOnItemClickListener { parent, view, position, id ->
+        binding.followerList.setOnItemClickListener { _, _, position, _ ->
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val accountFragment = AccountFragment()
