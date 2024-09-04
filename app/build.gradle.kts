@@ -1,5 +1,4 @@
 plugins {
-    id("kotlin-kapt")
     id("com.google.devtools.ksp")
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
