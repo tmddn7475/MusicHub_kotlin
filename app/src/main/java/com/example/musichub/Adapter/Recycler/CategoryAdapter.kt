@@ -21,8 +21,8 @@ class CategoryAdapter(val list: MutableList<CategoryData>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.category_text.text = list[position].text
-        holder.category_image.setImageResource(list[position].image)
+        holder.categoryText.text = list[position].text
+        holder.categoryImage.setImageResource(list[position].image)
 
         holder.itemView.setOnClickListener{
             val mainActivity: MainActivity = holder.itemView.context as MainActivity
@@ -41,7 +41,7 @@ class CategoryAdapter(val list: MutableList<CategoryData>) : RecyclerView.Adapte
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val category_image: ImageView = itemView.findViewById(R.id.category_image)
-        val category_text: TextView = itemView.findViewById(R.id.category_text)
+        val categoryImage: ImageView = itemView.findViewById(R.id.category_image)
+        val categoryText: TextView = itemView.findViewById(R.id.category_text)
     }
 }

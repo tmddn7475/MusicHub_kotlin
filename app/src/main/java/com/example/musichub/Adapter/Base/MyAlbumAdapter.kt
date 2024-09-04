@@ -32,21 +32,21 @@ class MyAlbumAdapter(val list: MutableList<AlbumData>, val keyList: MutableList<
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         return (convertView ?: LayoutInflater.from(parent?.context).inflate(R.layout.album_layout, parent, false)).apply {
-            val album_thumbnail:ImageView = findViewById(R.id.my_list_thumbnail)
-            val album_lock:ImageView = findViewById(R.id.my_list_lock)
-            val album_name:TextView = findViewById(R.id.my_list_name)
-            val album_delete:ImageView = findViewById(R.id.my_list_delete)
+            val albumThumbnail:ImageView = findViewById(R.id.my_list_thumbnail)
+            val albumLock:ImageView = findViewById(R.id.my_list_lock)
+            val albumName:TextView = findViewById(R.id.my_list_name)
+            val albumDelete:ImageView = findViewById(R.id.my_list_delete)
 
-            Glide.with(context).load(list[position].imageUrl).into(album_thumbnail)
-            album_name.text = list[position].listName
+            Glide.with(context).load(list[position].imageUrl).into(albumThumbnail)
+            albumName.text = list[position].listName
 
             if(list[position].list_mode == "private"){
-                album_lock.visibility = View.VISIBLE
+                albumLock.visibility = View.VISIBLE
             } else {
-                album_lock.visibility = View.GONE
+                albumLock.visibility = View.GONE
             }
 
-            album_delete.setOnClickListener {
+            albumDelete.setOnClickListener {
                 val alert_ex: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(context)
                 alert_ex.setMessage(context.getString(R.string.album_delete_alert))
                 alert_ex.setNegativeButton(context.getString(R.string.yes)) { _, _ ->

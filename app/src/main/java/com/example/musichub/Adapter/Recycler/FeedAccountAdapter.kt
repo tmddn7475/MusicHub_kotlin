@@ -29,11 +29,11 @@ class FeedAccountAdapter(val list: MutableList<AccountData>): RecyclerView.Adapt
         val item = list[position]
 
         if(item.imageUrl == ""){
-            holder.feed_account_image.setImageResource(R.drawable.baseline_account_circle_24)
+            holder.feedAccountImage.setImageResource(R.drawable.baseline_account_circle_24)
         } else {
-            Glide.with(holder.itemView).load(item.imageUrl).into(holder.feed_account_image)
+            Glide.with(holder.itemView).load(item.imageUrl).into(holder.feedAccountImage)
         }
-        holder.feed_account_name.text = item.nickname
+        holder.feedAccountName.text = item.nickname
 
         holder.itemView.setOnClickListener{
             val mainActivity = holder.itemView.context as MainActivity
@@ -48,7 +48,7 @@ class FeedAccountAdapter(val list: MutableList<AccountData>): RecyclerView.Adapt
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var feed_account_image: CircleImageView = itemView.findViewById(R.id.feed_account_image)
-        var feed_account_name: TextView = itemView.findViewById(R.id.feed_account_name)
+        var feedAccountImage: CircleImageView = itemView.findViewById(R.id.feed_account_image)
+        var feedAccountName: TextView = itemView.findViewById(R.id.feed_account_name)
     }
 }

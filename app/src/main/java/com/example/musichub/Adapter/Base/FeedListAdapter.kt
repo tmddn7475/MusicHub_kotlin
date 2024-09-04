@@ -36,31 +36,31 @@ class FeedListAdapter(val list: MutableList<MusicData>, val musicListener: Music
         return (view ?: LayoutInflater.from(parent?.context).inflate(R.layout.feed_list_layout, parent, false)).apply {
             val data:MusicData = list[position]
 
-            val feed_post: TextView = findViewById(R.id.feed_post)
-            val feed_song_duration: TextView = findViewById(R.id.feed_song_duration)
-            val feed_song_name: TextView = findViewById(R.id.feed_song_name)
-            val feed_play_btn:ImageView = findViewById(R.id.feed_play_btn)
-            val feed_song_image: ImageView = findViewById(R.id.feed_song_image)
-            val feed_blur_image: ImageView = findViewById(R.id.feed_blur_image)
+            val feedPost: TextView = findViewById(R.id.feed_post)
+            val feedSongDuration: TextView = findViewById(R.id.feed_song_duration)
+            val feedSongName: TextView = findViewById(R.id.feed_song_name)
+            val feedPlayBtn:ImageView = findViewById(R.id.feed_play_btn)
+            val feedSongImage: ImageView = findViewById(R.id.feed_song_image)
+            val feedBlurImage: ImageView = findViewById(R.id.feed_blur_image)
 
-            feed_song_name.text = data.songName
-            feed_song_duration.text = data.songDuration
-            feed_post.text = getDday(data.time, data.songArtist)
+            feedSongName.text = data.songName
+            feedSongDuration.text = data.songDuration
+            feedPost.text = getDay(data.time, data.songArtist)
 
-            Glide.with(this).load(data.imageUrl).into(feed_song_image)
+            Glide.with(this).load(data.imageUrl).into(feedSongImage)
             Glide.with(this).load(data.imageUrl) // 이미지 블러 처리
-                .apply(RequestOptions.bitmapTransform(BlurTransformation(10, 3))).into(feed_blur_image)
+                .apply(RequestOptions.bitmapTransform(BlurTransformation(10, 3))).into(feedBlurImage)
 
-            feed_play_btn.setOnClickListener{
+            feedPlayBtn.setOnClickListener{
                 musicListener.playMusic(data.songUrl)
             }
 
-            feed_post.setSingleLine(true)
-            feed_post.ellipsize = TextUtils.TruncateAt.MARQUEE
-            feed_post.isSelected = true
-            feed_song_name.setSingleLine(true)
-            feed_song_name.ellipsize = TextUtils.TruncateAt.MARQUEE
-            feed_song_name.isSelected = true
+            feedPost.setSingleLine(true)
+            feedPost.ellipsize = TextUtils.TruncateAt.MARQUEE
+            feedPost.isSelected = true
+            feedSongName.setSingleLine(true)
+            feedSongName.ellipsize = TextUtils.TruncateAt.MARQUEE
+            feedSongName.isSelected = true
         }
     }
 
@@ -70,7 +70,7 @@ class FeedListAdapter(val list: MutableList<MusicData>, val musicListener: Music
         list.sortWith(comparator.reversed())
     }
 
-    private fun getDday(time:String, artist:String): String{
+    private fun getDay(time:String, artist:String): String{
         val times = time.split("/")
 
         val dDayCalendar = Calendar.getInstance()

@@ -24,12 +24,12 @@ class SearchListAdapter(val list: MutableList<String>, val db: PlaylistDatabase?
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         return (convertView ?: LayoutInflater.from(parent?.context).inflate(R.layout.search_recent_layout, parent, false)).apply {
-            val search_text: TextView = findViewById(R.id.recent_text)
-            val search_delete: ImageView = findViewById(R.id.recent_delete)
+            val searchText: TextView = findViewById(R.id.recent_text)
+            val searchDelete: ImageView = findViewById(R.id.recent_delete)
 
-            search_text.text = list[position]
+            searchText.text = list[position]
 
-            search_delete.setOnClickListener {
+            searchDelete.setOnClickListener {
                 delete(list[position])
                 list.removeAt(position)
                 notifyDataSetChanged()

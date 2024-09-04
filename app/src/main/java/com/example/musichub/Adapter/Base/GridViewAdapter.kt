@@ -28,13 +28,13 @@ class GridViewAdapter(val context: Context, val items: MutableList<AlbumData>): 
     @SuppressLint("ViewHolder", "InflateParams")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         return (convertView ?: LayoutInflater.from(parent?.context).inflate(R.layout.grid_item, parent, false)).apply {
-            val grid_image:ImageView = findViewById(R.id.grid_image)
-            val grid_name:TextView = findViewById(R.id.grid_name)
-            val grid_artist:TextView = findViewById(R.id.grid_artist)
+            val gridImage:ImageView = findViewById(R.id.grid_image)
+            val gridName:TextView = findViewById(R.id.grid_name)
+            val gridArtist:TextView = findViewById(R.id.grid_artist)
 
-            Glide.with(context).load(items[position].imageUrl).into(grid_image)
-            grid_name.text = items[position].listName
-            grid_artist.text = items[position].nickname
+            Glide.with(context).load(items[position].imageUrl).into(gridImage)
+            gridName.text = items[position].listName
+            gridArtist.text = items[position].nickname
         }
     }
 }

@@ -31,25 +31,25 @@ class CommentAdapter(val list: MutableList<CommentData>, val keyList: MutableLis
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (list[position].imageUrl == "") {
-            holder.comment_user_image.setImageResource(R.drawable.baseline_account_circle_24)
+            holder.commentUserImage.setImageResource(R.drawable.baseline_account_circle_24)
         } else {
-            Glide.with(holder.itemView).load(list[position].imageUrl).into(holder.comment_user_image)
+            Glide.with(holder.itemView).load(list[position].imageUrl).into(holder.commentUserImage)
         }
 
         if (list[position].email == email) {
-            holder.comment_delete.visibility = View.VISIBLE
+            holder.commentDelete.visibility = View.VISIBLE
         } else {
-            holder.comment_delete.visibility = View.GONE
+            holder.commentDelete.visibility = View.GONE
         }
 
-        holder.comment_user_name.text = list[position].nickname + " · " + list[position].time.substring(0, 10)
-        holder.comment_text.text = list[position].comment
+        holder.commentUserName.text = list[position].nickname + " · " + list[position].time.substring(0, 10)
+        holder.commentText.text = list[position].comment
 
-        holder.comment_user_image.setOnClickListener{
+        holder.commentUserImage.setOnClickListener{
             commentListener.goProfile(list[position].email)
         }
 
-        holder.comment_delete.setOnClickListener {
+        holder.commentDelete.setOnClickListener {
             val alert_ex: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
             alert_ex.setMessage(holder.itemView.context.getString(R.string.comment_delete))
             alert_ex.setNegativeButton(holder.itemView.context.getString(R.string.yes)) { _, _ ->
@@ -71,10 +71,10 @@ class CommentAdapter(val list: MutableList<CommentData>, val keyList: MutableLis
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val comment_user_image: CircleImageView = itemView.findViewById(R.id.comment_user_image)
-        val comment_user_name: TextView = itemView.findViewById(R.id.comment_user_name)
-        val comment_text: TextView = itemView.findViewById(R.id.comment_text)
-        val comment_delete: ImageView = itemView.findViewById(R.id.comment_delete)
+        val commentUserImage: CircleImageView = itemView.findViewById(R.id.comment_user_image)
+        val commentUserName: TextView = itemView.findViewById(R.id.comment_user_name)
+        val commentText: TextView = itemView.findViewById(R.id.comment_text)
+        val commentDelete: ImageView = itemView.findViewById(R.id.comment_delete)
     }
 
     private fun deleteComment(key: String){
