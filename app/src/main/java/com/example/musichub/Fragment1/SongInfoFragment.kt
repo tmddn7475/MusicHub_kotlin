@@ -56,6 +56,7 @@ class SongInfoFragment : Fragment() {
             back()
         }
 
+        // 곡 정보 수정
         binding.infoEditBtn.setOnClickListener{
             val intent = Intent(requireContext(), SongEditActivity::class.java)
             intent.putExtra("url", getUrl)

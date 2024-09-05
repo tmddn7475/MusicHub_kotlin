@@ -83,11 +83,13 @@ class SongEditActivity : AppCompatActivity() {
                 }.show()
         }
 
+        // 곡 정보 수정
         binding.editSaveBtn.setOnClickListener{
             progressDialog.show()
             saveEdit()
         }
 
+        // 곡 삭제 
         binding.songDelete.setOnClickListener{
             val alert_ex:AlertDialog.Builder = AlertDialog.Builder(this@SongEditActivity)
             alert_ex.setMessage(getString(R.string.track_delete_alert))
