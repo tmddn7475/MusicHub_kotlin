@@ -170,7 +170,6 @@ class HomeFragment() : Fragment(), MusicListListener {
                 dialog.dismiss()
             }
             val alert = alert_ex.create()
-            alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
             alert.show()
         }
     }

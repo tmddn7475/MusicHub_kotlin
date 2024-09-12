@@ -223,7 +223,6 @@ class MainActivity : AppCompatActivity(), MusicListener {
                 onDestroy()
             }.setCancelable(false)
             val alert = alertEx.create()
-            alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
             alert.show()
         } else {
             handler.postDelayed({ this.updateProgressIndicator() }, 330)

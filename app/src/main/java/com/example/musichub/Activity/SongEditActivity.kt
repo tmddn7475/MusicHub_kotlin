@@ -101,7 +101,6 @@ class SongEditActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
             val alert = alert_ex.create()
-            alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
             alert.show()
         }
 

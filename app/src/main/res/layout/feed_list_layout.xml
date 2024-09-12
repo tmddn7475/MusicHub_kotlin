@@ -105,7 +105,7 @@
             android:adjustViewBounds="true"
             android:background="@drawable/circle"
             android:src="@drawable/baseline_play_arrow_24"
-            app:tint="@color/white" />
+            app:tint="@color/black" />
 
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

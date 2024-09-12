@@ -1,5 +1,6 @@
 package com.example.musichub.Fragment1
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -14,6 +15,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -99,12 +101,12 @@ class FeedFragment() : Fragment() {
 
     private fun click(){
         // 업로드
-        binding.feedUpload.setOnClickListener{
+        binding.feedUpload.setOnClickListener {
             val intent = Intent(requireContext(), UploadActivity::class.java)
             startActivity(intent)
         }
         // 내 계정
-        binding.feedAccount.setOnClickListener{
+        binding.feedAccount.setOnClickListener {
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
             val accountFragment = AccountFragment()
@@ -115,7 +117,7 @@ class FeedFragment() : Fragment() {
             fragmentManager.beginTransaction().replace(R.id.container, accountFragment).addToBackStack(null).commit()
         }
         // 로그아웃
-        binding.feedLogout.setOnClickListener{
+        binding.feedLogout.setOnClickListener {
             val alert_ex: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             alert_ex.setMessage(getString(R.string.sign_out_alert))
             alert_ex.setNegativeButton(getString(R.string.yes)) { _, _ ->
@@ -130,14 +132,13 @@ class FeedFragment() : Fragment() {
                 dialog.dismiss()
             }
             val alert = alert_ex.create()
-            alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
             alert.show()
         }
 
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
-            .addListenerForSingleValueEvent(object : ValueEventListener{
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val binding = getBind() ?: return
+                    val binding = getBind() ?: return dialog.dismiss()
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<AccountData>()
                         if(data != null){
@@ -159,9 +160,9 @@ class FeedFragment() : Fragment() {
     // 팔로우 계정 가져오기
     private fun addItem(){
         FirebaseDatabase.getInstance().getReference("Follow").orderByChild("email").equalTo(email)
-            .addListenerForSingleValueEvent(object : ValueEventListener{
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val binding = getBind() ?: return dialog.dismiss()
+                    val binding = getBind() ?: return
                     if(snapshot.children.iterator().hasNext()){
                         for(ds: DataSnapshot in snapshot.children) {
                             val data = ds.getValue<FollowData>()
@@ -182,7 +183,7 @@ class FeedFragment() : Fragment() {
     // 팔로우 곡 가져오기
     private fun addItem2(email: String){
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
-            .addListenerForSingleValueEvent(object : ValueEventListener{
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children) {
@@ -197,7 +198,7 @@ class FeedFragment() : Fragment() {
             })
 
         FirebaseDatabase.getInstance().getReference("Songs").orderByChild("email").equalTo(email)
-            .addListenerForSingleValueEvent(object : ValueEventListener{
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children) {

@@ -59,7 +59,6 @@ class MyAlbumAdapter(val list: MutableList<AlbumData>, val keyList: MutableList<
                     dialog.dismiss()
                 }
                 val alert = alert_ex.create()
-                alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
                 alert.show()
             }
         }

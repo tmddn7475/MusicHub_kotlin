@@ -49,7 +49,6 @@ class IntroActivity : AppCompatActivity() {
                 finishAffinity()
             }.setCancelable(false)
             val alert = alertEx.create()
-            alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
             alert.show()
         } else {
             val handler = Handler(Looper.getMainLooper())

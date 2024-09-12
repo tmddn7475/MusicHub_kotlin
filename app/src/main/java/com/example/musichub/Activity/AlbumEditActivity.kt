@@ -94,7 +94,6 @@ class AlbumEditActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
             val alert = alertEx.create()
-            alert.window!!.setBackgroundDrawable(ColorDrawable(Color.DKGRAY))
             alert.show()
         }
 
