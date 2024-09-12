@@ -1,5 +1,6 @@
 package com.example.musichub.Activity
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -9,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.musichub.Object.Command
 import com.example.musichub.R
 
@@ -16,6 +18,28 @@ class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
+
+        // preference
+        val preference = getSharedPreferences("com.example.musichub_preferences", Activity.MODE_PRIVATE)
+        val editor = preference.edit()
+
+        val current: String = preference.getString("display_mode", "system").toString()
+        editor.putString("display_mode", current)
+        editor.apply() // 저장
+
+        // 다크 모드 설정
+        val str = preference.getString("display_mode", null).toString()
+        when (str){
+            "system" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            "light" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            "dark" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+        }
 
         val internet = Command.getInternet(this)
         if(internet == 0){

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -31,6 +33,23 @@ class SettingFragment: PreferenceFragmentCompat() {
             "account_edit" -> {
                 val intent = Intent(requireContext(), AccountEditActivity::class.java)
                 startActivity(intent)
+            }
+            "display_mode" -> {
+                preference.setOnPreferenceChangeListener{ _, newValue ->
+                    Log.d("Test", newValue.toString())
+                    when (newValue){
+                        "system" -> {
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                        }
+                        "light" -> {
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        }
+                        "dark" -> {
+                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        }
+                    }
+                    true
+                }
             }
             else -> logOut()
         }

@@ -75,4 +75,8 @@
     <string name="comment_delete">해당 댓글을 삭제하시겠습니까?</string>
     <string name="sign_up_complete">회원가입이 완료되었습니다</string>
     <string name="password_6">비밀번호를 6자 이상으로 설정해주세요</string>
+    <string name="display_mode">화면 모드 설정</string>
+    <string name="system">시스템 설정 모드</string>
+    <string name="light">라이트 모드</string>
+    <string name="dark">다크 모드</string>
 </resources>

@@ -51,11 +51,14 @@ class LibraryFragment : Fragment() {
         }
         tm.attach()
 
+        // 설정
         binding.setting.setOnClickListener{
             val intent = Intent(requireContext(), SettingActivity::class.java)
             startActivity(intent)
+            activity?.finishAffinity()
         }
 
+        // 내 계정
         binding.libraryAccount.setOnClickListener{
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager

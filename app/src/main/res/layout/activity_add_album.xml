@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:layout_marginTop="32dp"
                 android:layout_marginStart="36dp"
                 android:textSize="18sp" />
@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:maxLength="40"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="32dp"
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:textSize="18sp"
                 android:text="@string/description"
                 android:layout_marginStart="36dp" />
@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:gravity="start"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="32dp"
@@ -136,14 +136,14 @@
                     android:layout_height="30dp"
                     android:layout_weight="1"
                     android:text="@string/privacy"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text"
                     android:textSize="18sp" />
 
                 <Switch
                     android:id="@+id/my_list_set"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             </LinearLayout>
@@ -157,7 +157,7 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="32dp"
                 android:backgroundTint="@color/blue_dark"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:text="@string/save_change"
                 android:textSize="20sp"
                 app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.MediumComponent" />

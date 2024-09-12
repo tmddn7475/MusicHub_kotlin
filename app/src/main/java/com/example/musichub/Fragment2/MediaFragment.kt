@@ -202,7 +202,7 @@ class MediaFragment() : BottomSheetDialogFragment() {
             })
 
         FirebaseDatabase.getInstance().getReference("Like").orderByChild("email_songUrl").equalTo(email + "_" + url).limitToFirst(1)
-            .addValueEventListener(object : ValueEventListener{
+            .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.children.iterator().hasNext()) {
                         //exist

@@ -29,8 +29,6 @@ class PlayListAdapter(val list: ArrayList<MusicData>, var playListListener: Play
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (position == selected) {
             holder.songName.setTextColor(Color.parseColor("#00B3EF"))
-        } else {
-            holder.songName.setTextColor(Color.WHITE)
         }
 
         holder.songName.text = list[position].songName

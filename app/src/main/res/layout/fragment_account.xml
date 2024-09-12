@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:textSize="16sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/text"/>
 
             <TextView
                 android:id="@+id/account_show_more"

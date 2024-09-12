@@ -129,6 +129,7 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
             }
         }
 
+        // mediaFragment
         binding.playlistMediaBtn.setOnClickListener{
             val mainActivity = (activity as MainActivity)
             val fragmentManager = mainActivity.supportFragmentManager
@@ -155,6 +156,7 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
         }
     }
 
+    // 플레이리스트의 곡 가져오기
     private fun getTrack(url:String, time:String) {
         val mainActivity = (activity as MainActivity)
 
@@ -180,6 +182,7 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
         playListAdapter.getNumber(url)
     }
 
+    // 리스트에서 클릭한 음악을 인터페이스를 통해 보냄
     override fun sendMusic(message: String) {
         musicListener.playMusic(message)
         if(isAdded){
@@ -187,6 +190,7 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
         }
     }
 
+    // EtcFragment
     override fun sendEtc(message: String) {
         val mainActivity = (activity as MainActivity)
         val fragmentManager = mainActivity.supportFragmentManager
