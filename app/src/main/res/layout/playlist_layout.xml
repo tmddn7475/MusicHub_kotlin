@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/gray"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,7 +59,7 @@
             android:text="노래"
             android:textAlignment="gravity"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/playlist_etc"
@@ -78,7 +77,7 @@
             android:text="아티스트"
             android:textAlignment="gravity"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#878383"
+            android:textColor="@color/gray2"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/playlist_etc"
             app:layout_constraintStart_toEndOf="@+id/card_view_artist_art_container"

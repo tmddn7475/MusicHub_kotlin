@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment1.Follow.FollowerFragment">
 
@@ -38,7 +38,7 @@
                 android:layout_toEndOf="@+id/follower_back_btn"
                 android:text="Followers"
                 android:textSize="24sp"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:textStyle="bold" />
 
         </RelativeLayout>
@@ -46,7 +46,7 @@
         <TextView
             android:id="@+id/textView1"
             android:text="@string/not_exist"
-            android:textColor="@color/white"
+            android:textColor="@color/text"
             android:gravity="center"
             android:visibility="gone"
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="0px"
-            android:divider="@color/black"/>
+            android:divider="@color/background"/>
 
     </LinearLayout>
 

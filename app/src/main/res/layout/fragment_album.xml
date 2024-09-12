@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black"
+    android:background="@color/background"
     tools:context=".Fragment1.AlbumFragment">
 
     <LinearLayout
@@ -21,7 +21,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,18 +82,18 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text=""
-                    android:textColor="@color/white"
+                    android:textColor="@color/text"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_marginTop="7dp"
                     android:id="@+id/album_artist"
+                    android:layout_marginTop="7dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text=""
-                    android:textColor="#B5B5B5"
+                    android:textColor="@color/gray2"
                     android:textSize="18sp" />
 
                 <TextView
@@ -103,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text=""
-                    android:textColor="#B5B5B5"
+                    android:textColor="@color/gray2"
                     android:textSize="18sp"/>
             </LinearLayout>
 
@@ -111,10 +110,8 @@
                 android:id="@+id/album_play_btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/play_arrow"
+                android:src="@drawable/baseline_play_arrow_24"
                 android:background="@drawable/circle"
-                android:paddingStart="12dp"
-                android:paddingEnd="8dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
@@ -130,7 +127,7 @@
 
             <TextView
                 android:id="@+id/album_description"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:textSize="18sp"
                 android:ellipsize="end"
                 android:layout_width="match_parent"
@@ -155,7 +152,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:dividerHeight="0px"
-            android:divider="@color/black"/>
+            android:divider="@color/background"/>
 
     </LinearLayout>
 

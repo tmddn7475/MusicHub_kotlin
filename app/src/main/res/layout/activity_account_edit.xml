@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@color/black"
+    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.AccountEditActivity">
@@ -23,7 +23,7 @@
             android:layout_marginStart="6dp"
             android:gravity="start"
             android:text="@string/edit_account"
-            android:textColor="@color/white"
+            android:textColor="@color/text"
             android:layout_centerInParent="true"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -64,9 +64,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:backgroundTint="@color/gray3"
+                android:backgroundTint="@color/gray"
+                android:textColor="@color/text"
                 android:text="@string/set_profile"
-                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/account_edit_image"
@@ -80,7 +80,7 @@
                 android:textSize="18sp"
                 android:text="@string/nickname"
                 android:layout_marginStart="36dp"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/song_edit_category" />
 
@@ -112,7 +112,7 @@
                 android:textSize="18sp"
                 android:text="@string/bio"
                 android:layout_marginStart="36dp"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/song_edit_category" />
 
@@ -131,9 +131,7 @@
                 android:paddingEnd="10dp"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                android:scrollbarStyle="insideInset"
-                android:scrollbars="vertical"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/text"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -142,7 +140,7 @@
 
             <TextView
                 android:id="@+id/account_info_length"
-                android:textColor="@color/gray3"
+                android:textColor="@color/text"
                 android:layout_gravity="end"
                 android:text="0 / 2000"
                 android:textSize="14sp"
@@ -157,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/save_change"
                 android:textSize="24sp"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:layout_marginTop="40dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
@@ -170,12 +168,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/change_pwd"
                 android:textSize="24sp"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="32dp"
-                android:backgroundTint="@color/gray3"
+                android:backgroundTint="@color/gray"
                 app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.MediumComponent" />
         </LinearLayout>
 

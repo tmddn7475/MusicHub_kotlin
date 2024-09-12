@@ -16,6 +16,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -94,16 +95,18 @@ class MainActivity : AppCompatActivity(), MusicListener {
         email = FirebaseAuth.getInstance().currentUser?.email.toString()
         db = PlaylistDatabase.getInstance(this)
 
-        mediaFragment = MediaFragment(this)
+        mediaFragment = MediaFragment()
         playlistFragment = PlaylistFragment()
         etcFragment = EtcFragment()
 
         // bottomNavigationView
-        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment(this)).commit()
+        binding.bottomNavigationView.selectedItemId = R.id.bottom_home
+        replaceFragment(HomeFragment())
+
         binding.bottomNavigationView.setOnItemSelectedListener {
             replaceFragment(
                 when (it.itemId) {
-                    R.id.bottom_home -> HomeFragment(this)
+                    R.id.bottom_home -> HomeFragment()
                     R.id.bottom_feed -> FeedFragment()
                     R.id.bottom_search -> SearchFragment()
                     else -> LibraryFragment()
@@ -136,10 +139,10 @@ class MainActivity : AppCompatActivity(), MusicListener {
             if(binding.include.barSongName.text != ""){
                 if(mediaController?.isPlaying == true){
                     mediaController?.pause()
-                    binding.include.barPlayPauseBtn.setImageResource(R.drawable.play_arrow)
+                    binding.include.barPlayPauseBtn.setImageResource(R.drawable.baseline_play_arrow_24)
                 } else {
                     mediaController?.play()
-                    binding.include.barPlayPauseBtn.setImageResource(R.drawable.pause)
+                    binding.include.barPlayPauseBtn.setImageResource(R.drawable.baseline_pause_24)
                 }
             }
         }
@@ -203,9 +206,9 @@ class MainActivity : AppCompatActivity(), MusicListener {
     // 재생 상태 확인
     private fun checkPlayState() {
         if (mediaController?.isPlaying() == true) {
-            binding.include.barPlayPauseBtn.setImageResource(R.drawable.pause)
+            binding.include.barPlayPauseBtn.setImageResource(R.drawable.baseline_pause_24)
         } else if (mediaController?.isPlaying() == false) {
-            binding.include.barPlayPauseBtn.setImageResource(R.drawable.play_arrow)
+            binding.include.barPlayPauseBtn.setImageResource(R.drawable.baseline_play_arrow_24)
         }
     }
 
@@ -406,12 +409,13 @@ class MainActivity : AppCompatActivity(), MusicListener {
                         getString(R.string.tap_back_again),
                         Snackbar.LENGTH_SHORT
                     ).setAnchorView(R.id.include)
-                        .setTextColor(Color.WHITE).setBackgroundTint(Color.parseColor("#323232")).show()
+                        .setTextColor(ContextCompat.getColor(this@MainActivity, R.color.text))
+                        .setBackgroundTint(ContextCompat.getColor(this@MainActivity, R.color.gray)).show()
                 } else if (System.currentTimeMillis() <= backPressedTime + 2000) {
                     finishAffinity()
                 }
             } else if (fragment is FeedFragment || fragment is SearchFragment || fragment is LibraryFragment) {
-                supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment(MainActivity())).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commit()
                 binding.bottomNavigationView.selectedItemId = R.id.bottom_home
             } else {
                 if (fragment != null) {

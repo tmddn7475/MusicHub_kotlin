@@ -37,7 +37,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 
-class FeedFragment : Fragment() {
+class FeedFragment() : Fragment() {
 
     private var _binding: FragmentFeedBinding? = null
     private val binding get() = _binding!!
@@ -46,8 +46,8 @@ class FeedFragment : Fragment() {
     lateinit var feedAccountAdapter: FeedAccountAdapter
     lateinit var accountList:MutableList<AccountData>
     lateinit var songList:MutableList<MusicData>
+    lateinit var musicListener: MusicListener
 
-    private lateinit var musicListener: MusicListener
     val email:String = FirebaseAuth.getInstance().currentUser?.email.toString()
 
     override fun onAttach(context: Context) {
@@ -77,6 +77,7 @@ class FeedFragment : Fragment() {
         binding.feedAccountRecycler.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
 
         feedListAdapter = FeedListAdapter(songList, musicListener)
+
         addItem()
 
         binding.feedList.setOnItemClickListener{ _, _, position, _ ->

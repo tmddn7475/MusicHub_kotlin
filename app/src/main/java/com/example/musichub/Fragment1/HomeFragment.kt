@@ -1,8 +1,8 @@
 package com.example.musichub.Fragment1
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -38,15 +38,23 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 
-class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener {
+class HomeFragment() : Fragment(), MusicListListener {
 
-    val musicListener:MusicListener = _musicListener
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    lateinit var musicListener: MusicListener
 
     val email: String = FirebaseAuth.getInstance().currentUser?.email.toString()
 
-    @SuppressLint("NotifyDataSetChanged")
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            musicListener = context as MusicListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context.toString())
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,7 +69,7 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
         dialog.show()
 
         homeIntent()
-        
+
         // 카테고리
         val list = mutableListOf<CategoryData>()
         list.add(CategoryData(text = "Ambient", image = R.drawable.ambient))
@@ -79,27 +87,27 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
         binding.categoryRecycler.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
 
         // 최신 곡
-        val list_item = mutableListOf<MusicData>()
-        val musicListAdapter = MusicListAdapter(list_item, this)
+        val listItem = mutableListOf<MusicData>()
+        val musicListAdapter = MusicListAdapter(listItem, this)
         FirebaseDatabase.getInstance().getReference("Songs").limitToLast(8)
             .addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for(ds: DataSnapshot in snapshot.children) {
-                    val mld = ds.getValue<MusicData>()
-                    if (mld != null) {
-                        list_item.add(0, mld)
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for(ds: DataSnapshot in snapshot.children) {
+                        val mld = ds.getValue<MusicData>()
+                        if (mld != null) {
+                            listItem.add(0, mld)
+                        }
                     }
+                    dialog.dismiss()
+                    binding.songsList.adapter = musicListAdapter
                 }
-                dialog.dismiss()
-                binding.songsList.adapter = musicListAdapter
-            }
-            override fun onCancelled(error: DatabaseError) {
-                dialog.dismiss()
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    dialog.dismiss()
+                }
+            })
 
         binding.songsList.setOnItemClickListener { _, _, position, _ ->
-            val data = list_item[position]
+            val data = listItem[position]
             val url:String = data.songUrl
             musicListener.playMusic(url)
         }
@@ -177,5 +185,10 @@ class HomeFragment(_musicListener:MusicListener) : Fragment(), MusicListListener
 
             etcFragment.show(fragmentManager, etcFragment.getTag())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

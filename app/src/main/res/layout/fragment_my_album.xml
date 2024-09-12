@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black"
+    android:background="@color/background"
     tools:context=".Fragment1.Library.MyAlbumFragment">
 
     <TextView
         android:id="@+id/add_my_list"
         android:text="@string/add_album"
-        android:textColor="@color/white"
+        android:textColor="@color/text"
         android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         android:id="@+id/my_list_view"
         android:layout_marginTop="42dp"
         android:dividerHeight="0px"
-        android:divider="@color/black"
+        android:divider="@color/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -33,6 +33,6 @@
         android:text="@string/not_exist"
         android:visibility="gone"
         android:gravity="center"
-        android:textColor="@color/white"/>
+        android:textColor="@color/text"/>
 
 </FrameLayout>

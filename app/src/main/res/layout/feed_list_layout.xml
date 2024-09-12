@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/black"
+    android:background="@color/background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
@@ -13,7 +13,7 @@
         android:layout_marginEnd="12dp"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
-        app:cardBackgroundColor="@color/gray3"
+        app:cardBackgroundColor="@color/gray"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,7 @@
         android:layout_width="88dp"
         android:layout_height="88dp"
         android:layout_marginStart="8dp"
-        app:cardBackgroundColor="@color/black"
+        app:cardBackgroundColor="@color/background"
         app:cardCornerRadius="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/cardView3"
         app:layout_constraintStart_toStartOf="@+id/cardView3"
@@ -104,10 +104,8 @@
             android:layout_margin="8dp"
             android:adjustViewBounds="true"
             android:background="@drawable/circle"
-            android:paddingStart="12dp"
-            android:paddingEnd="8dp"
-            android:src="@drawable/play_arrow"
-            app:tint="@color/black" />
+            android:src="@drawable/baseline_play_arrow_24"
+            app:tint="@color/white" />
 
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

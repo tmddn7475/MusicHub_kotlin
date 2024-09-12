@@ -96,18 +96,18 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
 
         // 재생 버튼
         if(mediaController.isPlaying){
-            binding.playlistPlayBtn.setImageResource(R.drawable.pause)
+            binding.playlistPlayBtn.setImageResource(R.drawable.baseline_pause_24)
         } else {
-            binding.playlistPlayBtn.setImageResource(R.drawable.play_arrow)
+            binding.playlistPlayBtn.setImageResource(R.drawable.baseline_play_arrow_24)
         }
 
         binding.playlistPlayBtn.setOnClickListener{
             if(mediaController.isPlaying){
                 mediaController.pause()
-                binding.playlistPlayBtn.setImageResource(R.drawable.play_arrow)
+                binding.playlistPlayBtn.setImageResource(R.drawable.baseline_play_arrow_24)
             } else {
                 mediaController.play()
-                binding.playlistPlayBtn.setImageResource(R.drawable.pause)
+                binding.playlistPlayBtn.setImageResource(R.drawable.baseline_pause_24)
             }
         }
 
@@ -116,7 +116,7 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
             musicListener.nextMusic()
             mediaController.play()
             if(isAdded){
-                binding.playlistPlayBtn.setImageResource(R.drawable.pause)
+                binding.playlistPlayBtn.setImageResource(R.drawable.baseline_pause_24)
             }
         }
 
@@ -125,7 +125,7 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
             musicListener.prevMusic()
             mediaController.play()
             if(isAdded){
-                binding.playlistPlayBtn.setImageResource(R.drawable.pause)
+                binding.playlistPlayBtn.setImageResource(R.drawable.baseline_pause_24)
             }
         }
 
@@ -183,7 +183,7 @@ class PlaylistFragment : BottomSheetDialogFragment(), PlayListListener {
     override fun sendMusic(message: String) {
         musicListener.playMusic(message)
         if(isAdded){
-            binding.playlistPlayBtn.setImageResource(R.drawable.pause)
+            binding.playlistPlayBtn.setImageResource(R.drawable.baseline_pause_24)
         }
     }
 

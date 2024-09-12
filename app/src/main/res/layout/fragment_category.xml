@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black"
+    android:background="@color/background"
     tools:context=".Fragment1.CategoryFragment">
 
     <ImageView
@@ -41,8 +41,7 @@
             android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
             android:textSize="24sp"
-            android:textColor="@color/white"
-            android:text=""
+            android:textColor="@color/text"
             android:layout_gravity="center"
             android:textStyle="bold"
             android:layout_width="wrap_content"
@@ -51,19 +50,19 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/gray"/>
+            android:background="@color/gray2"/>
 
         <ListView
             android:id="@+id/category_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="0px"
-            android:divider="@color/black"
+            android:divider="@color/background"
             android:visibility="visible"/>
 
         <TextView
             android:id="@+id/category_text"
-            android:textColor="@color/white"
+            android:textColor="@color/text"
             android:textSize="16sp"
             android:text="@string/not_exist"
             android:gravity="center"

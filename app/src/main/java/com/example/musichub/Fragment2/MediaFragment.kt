@@ -1,6 +1,7 @@
 package com.example.musichub.Fragment2
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -28,23 +29,33 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import java.util.concurrent.TimeUnit
 
-class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() {
+class MediaFragment() : BottomSheetDialogFragment() {
 
     private var _binding: FragmentMediaBinding? = null
     val binding get() = _binding!!
-    lateinit var mediaController: MediaController
-    lateinit var data: MusicData
     var mediaEmail: String = ""
     var likeCheck: Boolean = false
     var likeKey: String = ""
 
-    val musicListener = _musicListener
+    lateinit var mediaController: MediaController
+    lateinit var data: MusicData
+    lateinit var musicListener: MusicListener
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            musicListener = context as MusicListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context.toString())
+        }
+    }
 
     fun setController(controller: MediaController?){
         if (controller != null) {
             mediaController = controller
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -94,6 +105,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
             }
         }
 
+        // 계정
         binding.mediaAccount.setOnClickListener{
             val fragmentManager = mainActivity.supportFragmentManager
             val accountFragment = AccountFragment()
@@ -120,18 +132,18 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
 
         // play 버튼
         if(mediaController.isPlaying){
-            binding.mediaPlayBtn.setImageResource(R.drawable.pause)
+            binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
         } else {
-            binding.mediaPlayBtn.setImageResource(R.drawable.play_arrow)
+            binding.mediaPlayBtn.setImageResource(R.drawable.baseline_play_arrow_24)
         }
 
         binding.mediaPlayBtn.setOnClickListener{
             if(mediaController.isPlaying){
                 mediaController.pause()
-                binding.mediaPlayBtn.setImageResource(R.drawable.play_arrow)
+                binding.mediaPlayBtn.setImageResource(R.drawable.baseline_play_arrow_24)
             } else {
                 mediaController.play()
-                binding.mediaPlayBtn.setImageResource(R.drawable.pause)
+                binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
             }
         }
 
@@ -141,7 +153,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
             binding.mediaSeekbar.progress = 0
             mediaController.play()
             if(isAdded){
-                binding.mediaPlayBtn.setImageResource(R.drawable.pause)
+                binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
             }
         }
 
@@ -151,7 +163,7 @@ class MediaFragment(_musicListener:MusicListener) : BottomSheetDialogFragment() 
             binding.mediaSeekbar.progress = 0
             mediaController.play()
             if(isAdded){
-                binding.mediaPlayBtn.setImageResource(R.drawable.pause)
+                binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
             }
         }
 

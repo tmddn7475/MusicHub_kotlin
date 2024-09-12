@@ -90,4 +90,9 @@ class SearchTrackFragment : Fragment(), MusicListListener {
             etcFragment.show(fragmentManager, etcFragment.getTag())
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

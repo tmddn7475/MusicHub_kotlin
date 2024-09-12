@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#424242"
+    android:background="@color/gray"
     tools:context=".Fragment2.EtcFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,8 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_weight="1"
-                android:text=""
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
@@ -62,8 +61,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:text=""
-                android:textColor="#B5B5B5"
+                android:textColor="@color/text"
                 android:textSize="18sp"
                 android:maxLines="1"
                 android:layout_marginStart="10dp"
@@ -100,10 +98,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/gray"
+                android:backgroundTint="@color/background"
                 android:text="@string/song_info"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.None" />
 
             <View
@@ -117,10 +115,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/gray"
+                android:backgroundTint="@color/background"
                 android:text="@string/artist_info"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.None" />
         </LinearLayout>
 
@@ -137,7 +135,7 @@
                 android:id="@+id/etc_add_my_list"
                 android:text="@string/add_to_my_album"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingVertical="12dp"
@@ -149,7 +147,7 @@
                 android:id="@+id/etc_add_playlist"
                 android:text="@string/add_to_list"
                 android:textSize="18sp"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingVertical="12dp"
@@ -168,6 +166,7 @@
                     android:layout_height="50dp"
                     android:paddingVertical="12dp"
                     android:paddingStart="16dp"
+                    android:paddingEnd="0dp"
                     android:src="@drawable/baseline_favorite_border_24" />
 
                 <TextView
@@ -175,9 +174,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="52dp"
+                    android:paddingEnd="0dp"
                     android:paddingVertical="12dp"
                     android:text="@string/like"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text"
                     android:textSize="18sp" />
 
             </RelativeLayout>
@@ -190,7 +190,7 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
                 android:text="@string/comments"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:textSize="18sp"
                 app:drawableLeftCompat="@drawable/baseline_comment_24" />
 
@@ -203,7 +203,7 @@
                 android:paddingVertical="12dp"
                 android:visibility="gone"
                 android:text="@string/edit_track"
-                android:textColor="@color/white"
+                android:textColor="@color/text"
                 android:textSize="18sp"
                 app:drawableLeftCompat="@drawable/baseline_edit_24" />
 

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="업로드 중...."
-        android:textColor="@color/white"
+        android:textColor="@color/text"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminateTint="@color/white"
+        android:indeterminateTint="@color/text"
         app:layout_constraintStart_toStartOf="@+id/text"
         app:layout_constraintTop_toBottomOf="@+id/text" />
 
@@ -35,7 +35,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
         android:text="100%"
-        android:textColor="@color/white"
+        android:textColor="@color/text"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/progress"
         app:layout_constraintTop_toBottomOf="@+id/text" />

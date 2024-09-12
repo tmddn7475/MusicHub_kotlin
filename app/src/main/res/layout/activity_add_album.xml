@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/background"
     tools:context=".Activity.AddAlbumActivity">
 
     <RelativeLayout
@@ -22,7 +22,7 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:textSize="24sp"
-            android:textColor="@color/white"
+            android:textColor="@color/text"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -114,7 +114,7 @@
 
             <TextView
                 android:id="@+id/list_description_length"
-                android:textColor="@color/gray3"
+                android:textColor="@color/text"
                 android:layout_gravity="end"
                 android:text="0 / 2000"
                 android:textSize="14sp"

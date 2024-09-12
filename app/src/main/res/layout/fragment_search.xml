@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black"
+    android:background="@color/background"
     tools:context=".Fragment1.SearchFragment">
 
     <LinearLayout
@@ -29,12 +29,12 @@
             android:gravity="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
+            android:textColor="@color/text"
             android:text="@string/recent" />
 
         <TextView
             android:id="@+id/none"
-            android:textColor="@color/white"
+            android:textColor="@color/background"
             android:textSize="16sp"
             android:text="@string/not_exist"
             android:visibility="gone"
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="0px"
-            android:divider="@color/black"/>
+            android:divider="@color/background"/>
 
     </LinearLayout>
 
