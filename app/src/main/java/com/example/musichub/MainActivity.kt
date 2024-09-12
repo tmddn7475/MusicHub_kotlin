@@ -415,7 +415,6 @@ class MainActivity : AppCompatActivity(), MusicListener {
                     finishAffinity()
                 }
             } else if (fragment is FeedFragment || fragment is SearchFragment || fragment is LibraryFragment) {
-                supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commit()
                 binding.bottomNavigationView.selectedItemId = R.id.bottom_home
             } else {
                 if (fragment != null) {

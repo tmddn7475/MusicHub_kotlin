@@ -42,29 +42,30 @@ android {
 }
 
 dependencies {
-    implementation (libs.androidx.swiperefreshlayout)
-
+    // roomDB
     implementation (libs.androidx.room.runtime)
     annotationProcessor (libs.androidx.room.room.compiler)
-    // To use Kotlin annotation processing tool (kapt)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.room.compiler)
 
+    // mediaPlayer
     implementation (libs.androidx.media3.session)
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.exoplayer.dash)
     implementation(libs.androidx.media3.ui)
 
+    // glide
     implementation (libs.glide.transformations)
     implementation (libs.gpuimage)
-
-    implementation (libs.imagepicker)
-
-    implementation (libs.androidx.work.runtime)
-    implementation (libs.circleimageview)
-    implementation (libs.androidx.preference)
     implementation (libs.glide)
 
+    // imagepicker
+    implementation (libs.imagepicker)
+
+    implementation (libs.circleimageview)
+    implementation (libs.androidx.work.runtime)
+    implementation (libs.androidx.preference)
+    implementation (libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

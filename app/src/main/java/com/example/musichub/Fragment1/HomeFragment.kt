@@ -183,7 +183,7 @@ class HomeFragment() : Fragment(), MusicListListener {
             bundle.putString("url", message)
             etcFragment.setArguments(bundle)
 
-            etcFragment.show(fragmentManager, etcFragment.getTag())
+            etcFragment.show(fragmentManager, etcFragment.tag)
         }
     }
 
