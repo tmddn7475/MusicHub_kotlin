@@ -92,6 +92,7 @@ class HomeFragment() : Fragment(), MusicListListener {
         FirebaseDatabase.getInstance().getReference("Songs").limitToLast(8)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return dialog.dismiss()
                     for(ds: DataSnapshot in snapshot.children) {
                         val mld = ds.getValue<MusicData>()
                         if (mld != null) {
@@ -116,6 +117,7 @@ class HomeFragment() : Fragment(), MusicListListener {
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<AccountData>()
                         if(data != null){
@@ -185,6 +187,10 @@ class HomeFragment() : Fragment(), MusicListListener {
 
             etcFragment.show(fragmentManager, etcFragment.tag)
         }
+    }
+
+    private fun getBind(): FragmentHomeBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

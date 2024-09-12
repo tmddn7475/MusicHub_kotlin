@@ -56,7 +56,6 @@ class MediaFragment() : BottomSheetDialogFragment() {
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -131,50 +130,52 @@ class MediaFragment() : BottomSheetDialogFragment() {
         }
 
         // play 버튼
-        if(mediaController.isPlaying){
-            binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
-        } else {
-            binding.mediaPlayBtn.setImageResource(R.drawable.baseline_play_arrow_24)
-        }
-
-        binding.mediaPlayBtn.setOnClickListener{
+        if(getBind() != null){
             if(mediaController.isPlaying){
-                mediaController.pause()
-                binding.mediaPlayBtn.setImageResource(R.drawable.baseline_play_arrow_24)
+                binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
             } else {
+                binding.mediaPlayBtn.setImageResource(R.drawable.baseline_play_arrow_24)
+            }
+
+            binding.mediaPlayBtn.setOnClickListener{
+                if(mediaController.isPlaying){
+                    mediaController.pause()
+                    binding.mediaPlayBtn.setImageResource(R.drawable.baseline_play_arrow_24)
+                } else {
+                    mediaController.play()
+                    binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
+                }
+            }
+
+            // 다음 곡
+            binding.mediaNextBtn.setOnClickListener{
+                musicListener.nextMusic()
+                binding.mediaSeekbar.progress = 0
                 mediaController.play()
-                binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
+                if(isAdded){
+                    binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
+                }
             }
-        }
 
-        // 다음 곡
-        binding.mediaNextBtn.setOnClickListener{
-            musicListener.nextMusic()
-            binding.mediaSeekbar.progress = 0
-            mediaController.play()
-            if(isAdded){
-                binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
+            // 전 곡
+            binding.mediaPreviousBtn.setOnClickListener{
+                musicListener.prevMusic()
+                binding.mediaSeekbar.progress = 0
+                mediaController.play()
+                if(isAdded){
+                    binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
+                }
             }
-        }
 
-        // 전 곡
-        binding.mediaPreviousBtn.setOnClickListener{
-            musicListener.prevMusic()
-            binding.mediaSeekbar.progress = 0
-            mediaController.play()
-            if(isAdded){
-                binding.mediaPlayBtn.setImageResource(R.drawable.baseline_pause_24)
+            // playlist
+            binding.mediaPlaylistBtn.setOnClickListener{
+                val fragmentManager = mainActivity.supportFragmentManager
+                val playlistFragment = mainActivity.playlistFragment
+
+                playlistFragment.setController(mediaController)
+                playlistFragment.show(fragmentManager, playlistFragment.tag)
+                dismiss()
             }
-        }
-
-        // playlist
-        binding.mediaPlaylistBtn.setOnClickListener{
-            val fragmentManager = mainActivity.supportFragmentManager
-            val playlistFragment = mainActivity.playlistFragment
-
-            playlistFragment.setController(mediaController)
-            playlistFragment.show(fragmentManager, playlistFragment.tag)
-            dismiss()
         }
 
         return binding.root
@@ -187,6 +188,7 @@ class MediaFragment() : BottomSheetDialogFragment() {
         FirebaseDatabase.getInstance().getReference("Songs").orderByChild("songUrl").equalTo(url).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return dismiss()
                     for(ds in snapshot.children) {
                         val mld = ds.getValue<MusicData>()
                         if (mld != null) {
@@ -204,6 +206,7 @@ class MediaFragment() : BottomSheetDialogFragment() {
         FirebaseDatabase.getInstance().getReference("Like").orderByChild("email_songUrl").equalTo(email + "_" + url).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     if (snapshot.children.iterator().hasNext()) {
                         //exist
                         for (ds in snapshot.children) {
@@ -240,6 +243,7 @@ class MediaFragment() : BottomSheetDialogFragment() {
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for (ds in snapshot.children) {
                         val data = ds.getValue<AccountData>()
                         if (data != null) {
@@ -267,6 +271,11 @@ class MediaFragment() : BottomSheetDialogFragment() {
             dismiss()
         }
     }
+
+    private fun getBind(): FragmentMediaBinding? {
+        return _binding
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

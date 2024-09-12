@@ -137,6 +137,7 @@ class FeedFragment() : Fragment() {
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<AccountData>()
                         if(data != null){
@@ -160,6 +161,7 @@ class FeedFragment() : Fragment() {
         FirebaseDatabase.getInstance().getReference("Follow").orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return dialog.dismiss()
                     if(snapshot.children.iterator().hasNext()){
                         for(ds: DataSnapshot in snapshot.children) {
                             val data = ds.getValue<FollowData>()
@@ -182,6 +184,7 @@ class FeedFragment() : Fragment() {
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children) {
                         val data = ds.getValue<AccountData>()
                         if(data != null){
@@ -196,6 +199,7 @@ class FeedFragment() : Fragment() {
         FirebaseDatabase.getInstance().getReference("Songs").orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children) {
                         val data = ds.getValue<MusicData>()
                         if(data != null){
@@ -207,6 +211,10 @@ class FeedFragment() : Fragment() {
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
+    }
+
+    private fun getBind(): FragmentFeedBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {
