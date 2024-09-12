@@ -3,12 +3,12 @@ package com.example.musichub.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Window
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.musichub.MainActivity
 import com.example.musichub.R
 import com.example.musichub.databinding.ActivityLoginBinding
@@ -92,7 +92,8 @@ class LoginActivity : AppCompatActivity() {
             if (System.currentTimeMillis() > backPressedTime + 2000){
                 backPressedTime = System.currentTimeMillis()
                 Snackbar.make(findViewById(R.id.login_activity), getString(R.string.tap_back_again), Snackbar.LENGTH_SHORT)
-                    .setTextColor(Color.WHITE).setBackgroundTint(Color.parseColor("#323232")).show()
+                    .setTextColor(ContextCompat.getColor(this@LoginActivity, R.color.text))
+                    .setBackgroundTint(ContextCompat.getColor(this@LoginActivity, R.color.gray)).show()
             } else if (System.currentTimeMillis() <= backPressedTime + 2000){
                 finishAffinity()
             }
