@@ -24,6 +24,8 @@ Package 경로 일부 변경, mediaSessionService 개선
 
 2024.08.31 - findViewById 대신 ViewBinding 적용
 
+2024.09.13 - 라이트 모드, 다크 모드 변경 가능
+
 ***********************************
 ### 중요
 
