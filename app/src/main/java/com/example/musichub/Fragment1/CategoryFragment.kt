@@ -80,6 +80,7 @@ class CategoryFragment : Fragment(), MusicListListener {
         FirebaseDatabase.getInstance().getReference("Songs").orderByChild("songCategory").equalTo(str)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     if(snapshot.children.iterator().hasNext()){
                         listItem.clear()
                         for(ds: DataSnapshot in snapshot.children) {
@@ -118,6 +119,10 @@ class CategoryFragment : Fragment(), MusicListListener {
 
             etcFragment.show(fragmentManager, etcFragment.getTag())
         }
+    }
+
+    private fun getBind(): FragmentCategoryBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

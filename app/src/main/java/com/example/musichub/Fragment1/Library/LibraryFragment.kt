@@ -74,6 +74,7 @@ class LibraryFragment : Fragment() {
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<AccountData>()
                         if(data != null){
@@ -91,6 +92,10 @@ class LibraryFragment : Fragment() {
             })
 
         return binding.root
+    }
+
+    private fun getBind(): FragmentLibraryBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

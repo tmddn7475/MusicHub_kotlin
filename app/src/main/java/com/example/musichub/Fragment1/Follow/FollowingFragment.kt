@@ -38,6 +38,7 @@ class FollowingFragment : Fragment() {
         FirebaseDatabase.getInstance().getReference("Follow").orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     if(snapshot.children.iterator().hasNext()){
                         list.clear()
                         for(ds: DataSnapshot in snapshot.children){
@@ -77,6 +78,7 @@ class FollowingFragment : Fragment() {
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<AccountData>()
                         if(data != null){
@@ -95,6 +97,10 @@ class FollowingFragment : Fragment() {
         val fragmentManager = mainActivity.supportFragmentManager
         fragmentManager.beginTransaction().remove(this).commit()
         fragmentManager.popBackStack()
+    }
+
+    private fun getBind(): FragmentFollowingBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

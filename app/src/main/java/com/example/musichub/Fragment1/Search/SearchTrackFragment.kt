@@ -49,6 +49,7 @@ class SearchTrackFragment : Fragment(), MusicListListener {
 
         FirebaseDatabase.getInstance().getReference("Songs").addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                val binding = getBind() ?: return
                 for(ds: DataSnapshot in snapshot.children){
                     val data = ds.getValue<MusicData>()
                     if(data != null){
@@ -89,6 +90,10 @@ class SearchTrackFragment : Fragment(), MusicListListener {
 
             etcFragment.show(fragmentManager, etcFragment.getTag())
         }
+    }
+
+    private fun getBind(): FragmentSearchTrackBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

@@ -50,6 +50,7 @@ class LikeFragment : Fragment(), MusicListListener {
         FirebaseDatabase.getInstance().getReference("Like").orderByChild("email").equalTo(email)
             .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     if(snapshot.children.iterator().hasNext()){
                         for(ds: DataSnapshot in snapshot.children) {
                             val data = ds.getValue<LikeData>()
@@ -72,6 +73,7 @@ class LikeFragment : Fragment(), MusicListListener {
         FirebaseDatabase.getInstance().getReference("Songs").orderByChild("songUrl").equalTo(url).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children) {
                         val data = ds.getValue<MusicData>()
                         if(data != null){
@@ -96,6 +98,10 @@ class LikeFragment : Fragment(), MusicListListener {
 
             etcFragment.show(fragmentManager, etcFragment.getTag())
         }
+    }
+
+    private fun getBind(): FragmentLikeBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

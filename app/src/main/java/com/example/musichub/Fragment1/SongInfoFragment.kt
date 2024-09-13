@@ -71,6 +71,7 @@ class SongInfoFragment : Fragment() {
         FirebaseDatabase.getInstance().getReference("History").orderByChild("songUrl").equalTo(url)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     var num = 0
                     for(ds in snapshot.children){
                         num += 1
@@ -86,6 +87,7 @@ class SongInfoFragment : Fragment() {
         FirebaseDatabase.getInstance().getReference("Like").orderByChild("songUrl").equalTo(url)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     var num = 0
                     for(ds in snapshot.children){
                         num += 1
@@ -102,6 +104,7 @@ class SongInfoFragment : Fragment() {
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for(ds:DataSnapshot in snapshot.children){
                         val data = ds.getValue<MusicData>()
 
@@ -172,6 +175,10 @@ class SongInfoFragment : Fragment() {
             }
             binding.infoSongTime.text = goalDate
         }
+    }
+
+    private fun getBind(): FragmentSongInfoBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

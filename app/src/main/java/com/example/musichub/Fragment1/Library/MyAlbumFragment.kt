@@ -62,6 +62,7 @@ class MyAlbumFragment : Fragment() {
         FirebaseDatabase.getInstance().getReference("PlayLists").orderByChild("email").equalTo(email)
             .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     list.clear()
                     keyList.clear()
                     for(ds: DataSnapshot in snapshot.children) {
@@ -82,6 +83,10 @@ class MyAlbumFragment : Fragment() {
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
+    }
+
+    private fun getBind(): FragmentMyAlbumBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

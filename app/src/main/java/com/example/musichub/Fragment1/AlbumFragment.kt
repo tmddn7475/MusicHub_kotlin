@@ -98,6 +98,7 @@ class AlbumFragment : Fragment(), MusicListListener {
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for(ds: DataSnapshot in snapshot.children){
+                        val binding = getBind() ?: return
                         val data = ds.getValue<AlbumData>()
                         if(data != null){
                             binding.albumName.text = data.listName
@@ -129,6 +130,7 @@ class AlbumFragment : Fragment(), MusicListListener {
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     list.clear()
                     trackNum = 0
                     if(snapshot.children.iterator().hasNext()){
@@ -155,6 +157,7 @@ class AlbumFragment : Fragment(), MusicListListener {
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children){
                         val data = ds.getValue<MusicData>()
                         if(data != null){
@@ -218,6 +221,10 @@ class AlbumFragment : Fragment(), MusicListListener {
         val fragmentManager = mainActivity.supportFragmentManager
         fragmentManager.beginTransaction().remove(this).commit()
         fragmentManager.popBackStack()
+    }
+
+    private fun getBind(): FragmentAlbumBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

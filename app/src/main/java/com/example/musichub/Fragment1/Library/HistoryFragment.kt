@@ -53,6 +53,7 @@ class HistoryFragment : Fragment(), MusicListListener {
         FirebaseDatabase.getInstance().getReference("History").orderByChild("email").equalTo(email)
             .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     arr1.clear()
                     items.clear()
                     for(ds: DataSnapshot in snapshot.children) {
@@ -86,6 +87,7 @@ class HistoryFragment : Fragment(), MusicListListener {
         FirebaseDatabase.getInstance().getReference("Songs").orderByChild("songUrl").equalTo(data.songUrl).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children){
                         val mld = ds.getValue<MusicData>()
                         if(mld != null){
@@ -114,6 +116,10 @@ class HistoryFragment : Fragment(), MusicListListener {
 
             etcFragment.show(fragmentManager, etcFragment.getTag())
         }
+    }
+
+    private fun getBind(): FragmentHistoryBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

@@ -47,23 +47,24 @@ class AccountTrackFragment : Fragment(), MusicListListener {
 
         FirebaseDatabase.getInstance().getReference("Songs").orderByChild("email")
             .equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.children.iterator().hasNext()){
-                    for(ds: DataSnapshot in snapshot.children) {
-                        val mld = ds.getValue<MusicData>()
-                        if (mld != null) {
-                            list.add(mld)
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
+                    if(snapshot.children.iterator().hasNext()){
+                        for(ds: DataSnapshot in snapshot.children) {
+                            val mld = ds.getValue<MusicData>()
+                            if (mld != null) {
+                                list.add(mld)
+                            }
                         }
+                        binding.trackNone.visibility = View.GONE
+                        binding.trackList.adapter = musicListAdapter
+                    } else {
+                        binding.trackNone.visibility = View.VISIBLE
                     }
-                    binding.trackNone.visibility = View.GONE
-                    binding.trackList.adapter = musicListAdapter
-                } else {
-                    binding.trackNone.visibility = View.VISIBLE
                 }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Failed to read value.", error.toException())
-            }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "Failed to read value.", error.toException())
+                }
         })
 
         binding.trackList.setOnItemClickListener { _, _, position, _ ->
@@ -87,6 +88,10 @@ class AccountTrackFragment : Fragment(), MusicListListener {
 
             etcFragment.show(fragmentManager, etcFragment.tag)
         }
+    }
+
+    private fun getBind(): FragmentAccountTrackBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

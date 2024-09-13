@@ -49,6 +49,7 @@ class SearchAlbumFragment : Fragment() {
 
         FirebaseDatabase.getInstance().getReference("PlayLists").addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                val binding = getBind() ?: return
                 for(ds: DataSnapshot in snapshot.children){
                     val data = ds.getValue<AlbumData>()
                     if(data != null){
@@ -70,6 +71,10 @@ class SearchAlbumFragment : Fragment() {
         })
 
         return binding.root
+    }
+    
+    private fun getBind(): FragmentSearchAlbumBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

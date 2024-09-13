@@ -154,6 +154,7 @@ class AccountFragment : Fragment() {
         FirebaseDatabase.getInstance().getReference("accounts").orderByChild("email").equalTo(email).limitToFirst(1)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     for(ds: DataSnapshot in snapshot.children) {
                         val data = ds.getValue<AccountData>()
                         if (data != null) {
@@ -191,6 +192,7 @@ class AccountFragment : Fragment() {
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     var num = 0
                     for (ds: DataSnapshot in snapshot.children) num++
 
@@ -207,6 +209,7 @@ class AccountFragment : Fragment() {
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     var num = 0
                     for (ds: DataSnapshot in snapshot.children) num++
 
@@ -222,6 +225,7 @@ class AccountFragment : Fragment() {
         FirebaseDatabase.getInstance().getReference("Follow").orderByChild("email_follow").equalTo(str).limitToFirst(1)
             .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val binding = getBind() ?: return
                     if(snapshot.children.iterator().hasNext()){
                         for (ds: DataSnapshot in snapshot.children){
                             followKey = ds.key.toString()
@@ -255,6 +259,10 @@ class AccountFragment : Fragment() {
         val fragmentManager = mainActivity.supportFragmentManager
         fragmentManager.beginTransaction().remove(this).commit()
         fragmentManager.popBackStack()
+    }
+
+    private fun getBind(): FragmentAccountBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {

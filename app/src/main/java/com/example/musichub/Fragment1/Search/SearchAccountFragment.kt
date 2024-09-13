@@ -36,6 +36,7 @@ class SearchAccountFragment : Fragment() {
 
         FirebaseDatabase.getInstance().getReference("accounts").addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                val binding = getBind() ?: return
                 for(ds: DataSnapshot in snapshot.children) {
                     val data = ds.getValue<AccountData>()
                     if(data != null){
@@ -67,6 +68,10 @@ class SearchAccountFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun getBind(): FragmentSearchAccountBinding? {
+        return _binding
     }
 
     override fun onDestroyView() {
