@@ -19,7 +19,7 @@
             app:queryBackground="@null"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:inputType="textPersonName"/>
+            android:inputType="text"/>
 
         <TextView
             android:layout_width="wrap_content"
