@@ -32,7 +32,8 @@
                 android:textColor="@color/text"
                 android:textSize="24sp"
                 android:layout_centerVertical="true"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="RelativeOverlap" />
 
             <ImageView
                 android:id="@+id/play_list_down_btn"
@@ -51,6 +52,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/playlist_progress"
             android:layout_below="@+id/toolbar"
+            tools:listitem="@layout/playlist_layout"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <SeekBar
