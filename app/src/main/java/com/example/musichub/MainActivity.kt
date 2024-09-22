@@ -5,8 +5,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.ComponentName
 import android.content.SharedPreferences
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -385,6 +383,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         thread.start()
     }
 
+    // 최근 들은 곡 저장
     private fun putHistory(str: String){
         // 현재 타임스탬프를 가져오기
         val timestamp = Calendar.getInstance().timeInMillis
