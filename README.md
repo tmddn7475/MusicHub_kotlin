@@ -29,7 +29,7 @@ Package 경로 일부 변경, mediaSessionService 개선
 ***********************************
 ### 중요
 
-1. 어플을 실행하기 위해선 먼저 파이어베이스를 연동해주시길 바랍니다
+1. 어플을 실행하기 위해선 먼저 파이어베이스와 연동해주시길 바랍니다
 
    To run the app, please connect Firebase first
    
