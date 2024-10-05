@@ -51,7 +51,7 @@ class HistoryFragment : Fragment(), MusicListListener {
         musicListAdapter = MusicListAdapter(items,this)
 
         FirebaseDatabase.getInstance().getReference("History").orderByChild("email").equalTo(email)
-            .addValueEventListener(object : ValueEventListener{
+            .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val binding = getBind() ?: return
                     arr1.clear()
