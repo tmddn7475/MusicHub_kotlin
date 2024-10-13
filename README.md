@@ -35,7 +35,11 @@ Package 경로 일부 변경, mediaSessionService 개선
 3. Realtime Database, Authentication, Storage을 만들어주세요
 
    Please create Realtime Database, Authentication, and Storage
-   
+
+<p align="left">  
+  <img width="500" alt="0" src="https://github.com/user-attachments/assets/46499810-7f28-4264-ba61-a1bafc7a756b">
+</p>
+
 <img width="250" alt="1" src="https://github.com/user-attachments/assets/dde87610-c257-439c-8817-16a6852de2f4">
 <img width="250" alt="2" src="https://github.com/user-attachments/assets/20406ed2-65fb-483d-970a-d0166c429d32">
 <img width="250" alt="3" src="https://github.com/user-attachments/assets/4d2a9253-5525-4de2-8463-161ad125a1f7">
