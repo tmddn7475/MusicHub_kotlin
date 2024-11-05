@@ -4,8 +4,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +36,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 
-class HomeFragment() : Fragment(), MusicListListener {
+class HomeFragment: Fragment(), MusicListListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!

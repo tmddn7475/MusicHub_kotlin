@@ -278,7 +278,9 @@ class MainActivity : AppCompatActivity(), MusicListener {
                         }
                     }
                 }
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    nextSong()
+                }
             })
     }
 
