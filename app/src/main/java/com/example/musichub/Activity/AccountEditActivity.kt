@@ -151,7 +151,7 @@ class AccountEditActivity : AppCompatActivity() {
     }
 
     private fun uploadImageToServer(byteArray: ByteArray, email: String){
-        FirebaseStorage.getInstance().getReference().child("Accounts_Thumbnails")
+        FirebaseStorage.getInstance().reference.child("Accounts_Thumbnails")
             .child(email).putBytes(byteArray).addOnSuccessListener { p0 ->
                 val task: Task<Uri> = p0!!.storage.downloadUrl
                 while (!task.isComplete);
