@@ -3,8 +3,6 @@ package com.example.musichub.Activity
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher

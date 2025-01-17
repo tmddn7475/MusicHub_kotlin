@@ -2,8 +2,6 @@ package com.example.musichub.Adapter.Recycler
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
